@@ -10,6 +10,8 @@
 #include <random>
 #include <set>
 
+#include "rand.h"
+#include "mates.h"
 
 sf::Texture tex_tileset;
 
@@ -59,8 +61,8 @@ struct InputState
 };
 InputState input_state;
 
-const int WINDOW_WIDTH = 1024;
-const int WINDOW_HEIGHT = 720;
+const int WINDOW_WIDTH = 1920;
+const int WINDOW_HEIGHT = 1080;
 
 enum AnimationType
 {
@@ -88,7 +90,7 @@ AnimationData anim_lib[] =
 	//ANIM_EXAMPLE
 	{   1, 
 		{ 
-			{1 * 16, 1 * 16, 16, 16},
+			{2 * 16, 3 * 16, 16, 16},
 		}, 
 		{
 			100
@@ -116,7 +118,7 @@ struct Animation
 			current_frame++;
 			if (current_frame >= anim_data->frames)
 			{
-				//current_frame = 0;
+				current_frame = 0;
 			}
 		}
 	}
@@ -209,7 +211,8 @@ namespace EntS
 	PlayerState ent_state[MAX_ENTITIES];
 	int pos_x[MAX_ENTITIES];
 	int pos_y[MAX_ENTITIES];
-	int speed[MAX_ENTITIES];
+	int speed_x[MAX_ENTITIES];
+	int speed_y[MAX_ENTITIES];
 	
 	Animation anim[MAX_ENTITIES];
 
@@ -241,12 +244,18 @@ namespace EntS
 		ent_type[id] = type;
 		pos_x[id] = x;
 		pos_y[id] = y;
-		speed[id] = 0;
+		speed_x[id] = 0;
+		speed_y[id] = 0;
 
 		if (type == ENTITY_EXAMPLE)
 		{
+			anim[id].Ensure(AnimationType::ANIM_EXAMPLE);
 			ent_state[id] = PlayerState::IDLE;
-			speed[id] = 5;
+
+			float angle = Dice::rollf(360);
+
+			speed_x[id] = cosf(Mates::DegsToRads(angle)) *50;
+			speed_y[id] = sinf(Mates::DegsToRads(angle)) *50;
 		}
 
 		anim[id].ResetAnim();
@@ -256,6 +265,30 @@ namespace EntS
 
 	void UpdateEntityExample(int id, int dt)
 	{
+		pos_x[id] += speed_x[id] * dt;
+		pos_y[id] += speed_y[id] * dt;
+
+		if (pos_x[id] < 0 && speed_x[id] < 0)
+		{
+			speed_x[id] = -speed_x[id];
+			pos_x[id] = 0;
+		}
+		if (pos_x[id] > 192000 && speed_x[id] > 0)
+		{
+			speed_x[id] = -speed_x[id];
+			pos_x[id] = 192000;
+		}
+		if (pos_y[id] < 0 && speed_y[id] < 0)
+		{
+			speed_y[id] = -speed_y[id];
+			pos_y[id] = 0;
+		}
+		if (pos_y[id] > 102000 && speed_y[id] > 0)
+		{
+			speed_y[id] = -speed_y[id];
+			pos_y[id] = 102000;
+		}
+
 	}
 
 	bool Collision(int a, int b)
@@ -279,14 +312,15 @@ namespace EntS
 				if (ent_type[j] == EntityType::NONE) continue;
 				if (i == j) continue;
 
-
-				//TRAINER ACTIVATOR
 				if (ent_type[i] == EntityType::ENTITY_EXAMPLE && 
-					ent_type[j] != EntityType::ENTITY_EXAMPLE &&
+					ent_type[j] == EntityType::ENTITY_EXAMPLE &&
 					Collision(i,j))
 				{
-					ent_type[i] = EntityType::NONE;
-					ent_type[j] = EntityType::NONE;
+					speed_x[i] = -speed_x[i];
+					speed_y[i] = -speed_y[i];
+
+					speed_x[j] = -speed_x[j];
+					speed_y[j] = -speed_y[j];
 				}
 
 			}
@@ -303,7 +337,7 @@ namespace EntS
 			{
 				case EntityType::ENTITY_EXAMPLE:
 				{
-					UpdateEntityExample(dt, id);
+					UpdateEntityExample(id, dt);
 				} break;
 			}
 
@@ -336,7 +370,7 @@ namespace EntS
 		{
 			int id = draw_list[i];
 
-			spr.setScale(1, 1);
+			spr.setScale(4, 4);
 			spr.setOrigin(0, 0);
 			
 			int x = pos_x[id];
@@ -359,6 +393,7 @@ sf::Sprite sprite;
 
 void LoadGame(sf::RenderWindow& window)
 {
+	texture.loadFromFile("data/spritesheet.png");
 	font.loadFromFile("data/PressStart2P.ttf");
 
 	sprite.setTexture(texture);
@@ -385,6 +420,11 @@ int main()
 	sf::Clock clk_frame;
 	sf::Clock clk_general;
 
+	for (int i = 0; i < 2000; ++i)
+		EntS::SpawnEntity(EntS::EntityType::ENTITY_EXAMPLE, 200, 200);
+
+
+
 	while (window.isOpen()) 
 	{
 		int time_general = clk_general.getElapsedTime().asMilliseconds();
@@ -404,6 +444,8 @@ int main()
 
 		input_state.UpdateInput();
 		ImGui::SFML::Update(window, clk_imgui.restart());
+
+		EntS::UpdateEntities(dt);
 
 		//view.setCenter(cam_x, cam_y);
 
