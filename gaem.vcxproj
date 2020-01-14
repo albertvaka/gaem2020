@@ -141,6 +141,11 @@
     <ClInclude Include="imgui_sfml\imgui-SFML.h" />
     <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
     <ClInclude Include="src\animation.h" />
+    <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\super_factorio.h" />
+    <ClInclude Include="src\entity_system.h" />
+    <ClInclude Include="src\game_data.h" />
+    <ClInclude Include="src\entity_example.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\mates.h" />
     <ClInclude Include="src\rand.h" />

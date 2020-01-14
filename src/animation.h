@@ -72,7 +72,7 @@ struct Animation
 		}
 	}
 
-	void ResetAnim()
+	void Reset()
 	{
 		anim_timer = 0;
 		current_frame = 0;
@@ -83,7 +83,7 @@ struct Animation
 		if (anim_type != type)
 		{
 			anim_type = type;
-			ResetAnim();
+			Reset();
 		}
 	}
 

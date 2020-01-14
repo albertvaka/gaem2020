@@ -2,6 +2,17 @@
 
 namespace Mates
 {
+	struct xy
+	{
+		int x = 0;
+		int y = 0;
+		xy() {}
+		xy(int _x_, int _y_)
+		{
+			x = _x_;
+			y = _y_;
+		}
+	};
 
 	const float   Pi = 3.141592653589793238462643383279502884f;
 	const float   TwoPi = Pi * 2;

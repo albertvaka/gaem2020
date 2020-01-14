@@ -5,7 +5,7 @@
 
 typedef int unsigned uint;
 
-struct DiceEngine
+struct RndEngine
 {
 
 	std::mt19937 gen;
@@ -20,7 +20,7 @@ struct DiceEngine
 
 	unsigned int seed;
 
-	DiceEngine()
+	RndEngine()
 	{
 		init();
 	}
@@ -74,9 +74,9 @@ struct DiceEngine
 	}
 };
 
-namespace Dice
+namespace Random
 {
-	extern DiceEngine action;
+	extern RndEngine action;
 
 	inline uint roll_flipcoin() { return action.roll_flipcoin(); }
 	inline uint roll_1d4() { return action.roll_1d4(); }

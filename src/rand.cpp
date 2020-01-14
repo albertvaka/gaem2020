@@ -1,8 +1,6 @@
 #include "rand.h"
 
-namespace Dice
+namespace Random
 {
-
-	DiceEngine action;
-
+	RndEngine action;
 }
