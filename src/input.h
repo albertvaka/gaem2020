@@ -4,7 +4,54 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 using namespace std;
-struct GamePad {
+
+enum class GameKeys
+{
+	UP = 0, DOWN, LEFT, RIGHT,
+	ACTION, START,
+	COUNT
+};
+
+
+struct InputState
+{
+	std::map<GameKeys, sf::Keyboard::Key> input_map;
+	bool isPressed[(int)GameKeys::COUNT];
+	bool wasPressed[(int)GameKeys::COUNT];
+
+	bool IsPressed(GameKeys key)
+	{
+		return isPressed[static_cast<int>(key)];
+	}
+
+	bool IsJustPressed(GameKeys key)
+	{
+		return !wasPressed[static_cast<int>(key)] && isPressed[static_cast<int>(key)];
+	}
+
+	void RemapInput()
+	{
+		input_map[GameKeys::UP] = sf::Keyboard::Key::W;
+		input_map[GameKeys::DOWN] = sf::Keyboard::Key::S;
+		input_map[GameKeys::LEFT] = sf::Keyboard::Key::A;
+		input_map[GameKeys::RIGHT] = sf::Keyboard::Key::D;
+		input_map[GameKeys::ACTION] = sf::Keyboard::Key::P;
+		input_map[GameKeys::START] = sf::Keyboard::Key::Enter;
+	}
+
+	void UpdateInput()
+	{
+		for (const auto& kv : input_map)
+		{
+			int key = (int)kv.first;
+			wasPressed[key] = isPressed[key];
+			isPressed[key] = sf::Keyboard::isKeyPressed(kv.second);
+		}
+	}
+};
+
+struct GamePad 
+{
 
 private:
 	GamePad() { }

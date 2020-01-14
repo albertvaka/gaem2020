@@ -12,192 +12,24 @@
 
 #include "rand.h"
 #include "mates.h"
+#include "input.h"
+#include "animation.h"
 
 sf::Texture tex_tileset;
-
 sf::Font font;
-
-enum class GameKeys
-{
-	UP = 0, DOWN, LEFT, RIGHT,
-	ACTION, START,
-	COUNT
-};
-struct InputState
-{
-	std::map<GameKeys, sf::Keyboard::Key> input_map;
-	bool isPressed[(int)GameKeys::COUNT];
-	bool wasPressed[(int)GameKeys::COUNT];
-
-	bool IsPressed(GameKeys key)
-	{
-		return isPressed[static_cast<int>(key)];
-	}
-
-	bool IsJustPressed(GameKeys key)
-	{
-		return !wasPressed[static_cast<int>(key)] && isPressed[static_cast<int>(key)];
-	}
-
-	void RemapInput()
-	{
-		input_map[GameKeys::UP] = sf::Keyboard::Key::W;
-		input_map[GameKeys::DOWN] = sf::Keyboard::Key::S;
-		input_map[GameKeys::LEFT] = sf::Keyboard::Key::A;
-		input_map[GameKeys::RIGHT] = sf::Keyboard::Key::D;
-		input_map[GameKeys::ACTION] = sf::Keyboard::Key::P;
-		input_map[GameKeys::START] = sf::Keyboard::Key::Enter;
-	}
-
-	void UpdateInput()
-	{
-		for (const auto& kv : input_map)
-		{
-			int key = (int)kv.first;
-			wasPressed[key] = isPressed[key];
-			isPressed[key] = sf::Keyboard::isKeyPressed(kv.second);
-		}
-	}
-};
 InputState input_state;
 
-const int WINDOW_WIDTH = 1920;
-const int WINDOW_HEIGHT = 1080;
-
-enum AnimationType
-{
-	NONE,
-	ANIM_EXAMPLE
-};
-
-struct AnimationData
-{
-	int frames;
-	sf::IntRect anim_frames[16];
-	int frame_timer[16];
-};
-
-AnimationData anim_lib[] =
-{
-	//NONE
-	{
-		1,
-		{
-			{0,0,0,0},
-		},
-		0
-	},
-	//ANIM_EXAMPLE
-	{   1, 
-		{ 
-			{2 * 16, 3 * 16, 16, 16},
-		}, 
-		{
-			100
-		},
-	}
-};
-
-
-struct Animation
-{
-	AnimationType anim_type;
-	int anim_timer;
-	int current_frame;
-
-	void Update(int dt)
-	{
-		anim_timer += dt;
-
-		AnimationData* anim_data = &anim_lib[(int)anim_type];
-
-		if (anim_timer > anim_data->frame_timer[current_frame])
-		{
-			anim_timer -= anim_data->frame_timer[current_frame];
-
-			current_frame++;
-			if (current_frame >= anim_data->frames)
-			{
-				current_frame = 0;
-			}
-		}
-	}
-
-	void ResetAnim()
-	{
-		anim_timer = 0;
-		current_frame = 0;
-	}
-
-	void Ensure(AnimationType type)
-	{
-		if (anim_type != type)
-		{
-			anim_type = type;
-			ResetAnim();
-		}
-	}
-
-	sf::IntRect CurrentFrame()
-	{
-		AnimationData* anim_data = &anim_lib[(int)anim_type];
-		return anim_data->anim_frames[current_frame];
-	}
-
-	static sf::IntRect AnimFrame(AnimationType type, int timer)
-	{
-		AnimationData* anim_data = &anim_lib[(int)type];
-
-		int time_total = 0;
-		for (int i = 0; i < anim_data->frames; ++i)
-		{
-			time_total += anim_data->frame_timer[i];
-		}
-
-		timer = timer % time_total;
-
-		int current_frame = 0;
-		while (timer > anim_data->frame_timer[current_frame])
-		{
-			timer -= anim_data->frame_timer[current_frame];
-			current_frame++;
-		}
-		return anim_data->anim_frames[current_frame];
-	}
-};
-
-
-enum class TileType
-{
-	NONE,
-	TILE_EXAMPLE
-};
-
-
-struct Tile
-{
-	TileType type;
-	int tp_x = -1;
-	int tp_y = -1;
-
-	void ResetTile()
-	{
-		type = TileType::NONE;
-		tp_x = -1;
-		tp_y = -1;
-	}
-};
-
-
-
-enum PlayerState
-{
-	IDLE,
-	WALKING
-};
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
 
 namespace EntS
 {
+	enum EntityState
+	{
+		MOVING,
+		COLLIDED
+	};
+
 	const int MAX_ENTITIES = 2048;
 	enum EntityType
 	{
@@ -208,11 +40,12 @@ namespace EntS
 	};
 	
 	EntityType ent_type[MAX_ENTITIES];
-	PlayerState ent_state[MAX_ENTITIES];
+	EntityState ent_state[MAX_ENTITIES];
 	int pos_x[MAX_ENTITIES];
 	int pos_y[MAX_ENTITIES];
 	int speed_x[MAX_ENTITIES];
 	int speed_y[MAX_ENTITIES];
+	int timer[MAX_ENTITIES];
 	
 	Animation anim[MAX_ENTITIES];
 
@@ -250,12 +83,15 @@ namespace EntS
 		if (type == ENTITY_EXAMPLE)
 		{
 			anim[id].Ensure(AnimationType::ANIM_EXAMPLE);
-			ent_state[id] = PlayerState::IDLE;
+			ent_state[id] = EntityState::MOVING;
 
 			float angle = Dice::rollf(360);
 
-			speed_x[id] = cosf(Mates::DegsToRads(angle)) *50;
-			speed_y[id] = sinf(Mates::DegsToRads(angle)) *50;
+			pos_x[id] = Dice::roll(WINDOW_WIDTH * 99);
+			pos_y[id] = Dice::roll(WINDOW_HEIGHT * 99);
+
+			speed_x[id] = cosf(Mates::DegsToRads(angle)) * (10 + Dice::roll(80));
+			speed_y[id] = sinf(Mates::DegsToRads(angle)) * (10 + Dice::roll(80));
 		}
 
 		anim[id].ResetAnim();
@@ -263,7 +99,7 @@ namespace EntS
 		return id;
 	}
 
-	void UpdateEntityExample(int id, int dt)
+	void MoveEntityExample(int id, int dt)
 	{
 		pos_x[id] += speed_x[id] * dt;
 		pos_y[id] += speed_y[id] * dt;
@@ -273,56 +109,84 @@ namespace EntS
 			speed_x[id] = -speed_x[id];
 			pos_x[id] = 0;
 		}
-		if (pos_x[id] > 192000 && speed_x[id] > 0)
+		if (pos_x[id] > WINDOW_WIDTH * 100 && speed_x[id] > 0)
 		{
 			speed_x[id] = -speed_x[id];
-			pos_x[id] = 192000;
+			pos_x[id] = WINDOW_WIDTH * 100;
 		}
 		if (pos_y[id] < 0 && speed_y[id] < 0)
 		{
 			speed_y[id] = -speed_y[id];
 			pos_y[id] = 0;
 		}
-		if (pos_y[id] > 102000 && speed_y[id] > 0)
+		if (pos_y[id] > WINDOW_HEIGHT * 100 && speed_y[id] > 0)
 		{
 			speed_y[id] = -speed_y[id];
-			pos_y[id] = 102000;
+			pos_y[id] = WINDOW_HEIGHT * 100;
 		}
+	}
 
+	void UpdateEntityExample(int id, int dt)
+	{
+		switch (ent_state[id])
+		{
+			case EntityState::MOVING:
+			{
+				anim[id].Ensure(AnimationType::ANIM_EXAMPLE);
+				MoveEntityExample(id, dt);
+			} break;
+			case EntityState::COLLIDED:
+			{
+				anim[id].Ensure(AnimationType::ANIM_EXAMPLE_COLLIDING);
+				timer[id] += dt;
+				if (timer[id] > 200)
+				{
+					ent_state[id] = EntityState::MOVING;
+				}
+				MoveEntityExample(id, dt);
+			} break;
+		}
 	}
 
 	bool Collision(int a, int b)
 	{
-		int COLLISION_SIZE = 16;
+		int COLLISION_SIZE = 1600;
 		//rectangle colision
-		return (pos_x[a] < pos_x[b] + COLLISION_SIZE && pos_x[a] + COLLISION_SIZE > pos_x[b] &&
+		return 
+			(pos_x[a] < pos_x[b] + COLLISION_SIZE && pos_x[a] + COLLISION_SIZE > pos_x[b] &&
 			pos_y[a] < pos_y[b] + COLLISION_SIZE && pos_y[a] + COLLISION_SIZE > pos_y[b]);
 	}
 
 	void UpdateCollisions(int dt)
 	{
-
 		//Collisions
 		for (int i = 0; i < MAX_ENTITIES; ++i)
 		{
 			if (ent_type[i] == EntityType::NONE) continue;
 
-			for (int j = 0; j < MAX_ENTITIES; j++)
+			for (int j = 0; j < MAX_ENTITIES; ++j)
 			{
 				if (ent_type[j] == EntityType::NONE) continue;
 				if (i == j) continue;
 
 				if (ent_type[i] == EntityType::ENTITY_EXAMPLE && 
 					ent_type[j] == EntityType::ENTITY_EXAMPLE &&
-					Collision(i,j))
+
+					ent_state[i] != EntityState::COLLIDED &&
+					ent_state[j] != EntityState::COLLIDED &&
+
+					Collision(i, j))
 				{
+					ent_state[i] = EntityState::COLLIDED;
+					timer[i] = 0;
 					speed_x[i] = -speed_x[i];
 					speed_y[i] = -speed_y[i];
 
+					ent_state[j] = EntityState::COLLIDED;
+					timer[j] = 0;
 					speed_x[j] = -speed_x[j];
 					speed_y[j] = -speed_y[j];
 				}
-
 			}
 		}
 	}
@@ -370,17 +234,24 @@ namespace EntS
 		{
 			int id = draw_list[i];
 
-			spr.setScale(4, 4);
+			spr.setScale(1, 1);
 			spr.setOrigin(0, 0);
 			
-			int x = pos_x[id];
-			int y = pos_y[id];
+			float x = pos_x[id]/100.0f;
+			float y = pos_y[id]/100.0f;
+			spr.setPosition(x, y);
+
+			spr.setOrigin(8, 8);
 
 			spr.setTextureRect(anim[id].CurrentFrame());
-
 			spr.setColor(sf::Color::White);
 
-			spr.setPosition(x / 100.0f, y / 100.0f);
+			if (ent_type[id] == EntityType::ENTITY_EXAMPLE &&
+				ent_state[id] == EntityState::COLLIDED)
+			{
+				float sc = timer[id]/200.f;
+				spr.setScale(1.0f + sc*0.3f, 1.0f + sc * 0.3f);
+			}
 
 			wnd.draw(spr);
 		}
@@ -405,7 +276,6 @@ void LoadGame(sf::RenderWindow& window)
 	input_state.RemapInput();
 }
 
-
 const std::string GAME_TITLE = "Selda 2079";
 
 int main()
@@ -420,10 +290,13 @@ int main()
 	sf::Clock clk_frame;
 	sf::Clock clk_general;
 
-	for (int i = 0; i < 2000; ++i)
+	sf::Clock clk_fps;
+	int fps_counter = 0;
+
+	for (int i = 0; i < 50; ++i)
+	{
 		EntS::SpawnEntity(EntS::EntityType::ENTITY_EXAMPLE, 200, 200);
-
-
+	}
 
 	while (window.isOpen()) 
 	{
@@ -447,8 +320,6 @@ int main()
 
 		EntS::UpdateEntities(dt);
 
-		//view.setCenter(cam_x, cam_y);
-
 		window.setView(view);
 
 #if _DEBUG
@@ -460,6 +331,13 @@ int main()
 		EntS::DrawEntities(sprite, window);
 
 		window.setView(window.getDefaultView());
+
+		sf::Text txt_fps;
+		txt_fps.setString(std::to_string(static_cast<int>(fps_counter / clk_fps.getElapsedTime().asSeconds())));
+		txt_fps.setPosition(10, 10);
+		txt_fps.setFont(font);
+		window.draw(txt_fps);
+		fps_counter++;
 
 		ImGui::SFML::Render(window);
 		window.display();
