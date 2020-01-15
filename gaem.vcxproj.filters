@@ -98,5 +98,8 @@
     <ClInclude Include="src\entity_example_small.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="src\collisionable.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

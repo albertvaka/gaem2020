@@ -1,11 +1,12 @@
 #pragma once
 
 #include "entity.h"
+#include "collisionable.h"
 #include "entity_example_small.h"
 #include "animation.h"
 #include "rand.h"
 
-struct EntityExample : public Entity, public EntS<EntityExample*>
+struct EntityExample : public CollisionableEntity, public EntS<EntityExample*>
 {
 	EntityExample()
 	{

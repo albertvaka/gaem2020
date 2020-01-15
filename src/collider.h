@@ -39,7 +39,7 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 
 //FIXME: this should be a lambda, but doesn't work yet
 //FIXME: this should be a lambda, but doesn't work yet
-void entityExample_collision_callback(EntityExample* a, EntityExample* b) 
+void CollisionableEntity_collision_callback(CollisionableEntity* a, CollisionableEntity* b)
 {
 	if (a->state != EntityState::COLLIDED)
 	{
@@ -61,5 +61,5 @@ void entityExample_collision_callback(EntityExample* a, EntityExample* b)
 void UpdateCollisions(int dt) 
 {
 	// If EntityExample collides with EntityExample, call entityExample_collision_callback
-	collide(EntS<EntityExample*>::getAll(), EntS<EntityExample*>::getAll(), entityExample_collision_callback);
+	collide(EntS<CollisionableEntity*>::getAll(), EntS<CollisionableEntity*>::getAll(), CollisionableEntity_collision_callback);
 }

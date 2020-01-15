@@ -148,6 +148,7 @@
     <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\collider.h" />
+    <ClInclude Include="src\collisionable.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\entity_example_small.h" />
     <ClInclude Include="src\selfregister.h" />
