@@ -11,7 +11,7 @@ void UpdateEntities(int dt)
 	//Collisions are handled in collider.h
 	UpdateCollisions(dt);
 
-	for (EntityExample* e : EntS<EntityExample*>::getAll())
+	for (EntityExample* e : EntS<EntityExample>::getAll())
 	{
 		e->Update(dt);
 		e->anim.Update(dt);
@@ -22,7 +22,7 @@ void UpdateEntities(int dt)
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& wnd)
 {
 
-	for (EntityExample* e : EntS<EntityExample*>::getAll())
+	for (EntityExample* e : EntS<EntityExample>::getAll())
 	{
 		e->Draw(spr);
 		wnd.draw(spr);

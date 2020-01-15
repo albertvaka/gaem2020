@@ -4,7 +4,7 @@
 #include "animation.h"
 #include "rand.h"
 
-struct EntityExample : public Entity, public EntS<EntityExample*>
+struct EntityExample : public Entity, public EntS<EntityExample>
 {
 	EntityExample()
 	{

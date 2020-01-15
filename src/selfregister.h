@@ -12,27 +12,27 @@ class EntS {
 public:
 	EntS()
 	{
-		getAll().push_back((T)this);
+		getAll().push_back((T*)this);
 	}
 	EntS(const EntS& other)
 	{
-		getAll().push_back((T)this);
+		getAll().push_back((T*)this);
 	}
 	void operator=(const EntS& other)
 	{
-		getAll().push_back((T)this);
+		getAll().push_back((T*)this);
 	}
 	~EntS()
 	{
-		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T)this), getAll().end());
+		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T*)this), getAll().end());
 	}
-	static std::vector<T>& getAll()
+	static std::vector<T*>& getAll()
 	{
-		static std::vector<T> instancies;
+		static std::vector<T*> instancies;
 		return instancies;
 	}
 	static void destroyAll() {
-		for (typename std::vector<T>::iterator i = getAll().begin();
+		for (typename std::vector<T*>::iterator i = getAll().begin();
 			i != getAll().end();
 			i = getAll().begin())
 		{

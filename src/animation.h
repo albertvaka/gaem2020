@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 
-enum AnimationType
+enum class AnimationType
 {
 	NONE,
 	ANIM_EXAMPLE,

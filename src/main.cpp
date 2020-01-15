@@ -53,7 +53,7 @@ int main()
 	sf::Clock clk_fps;
 	int fps_counter = 0;
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < 1000; ++i)
 	{
 		new EntityExample();
 	}

@@ -20,11 +20,19 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 
 
 template <typename T, typename U>
-void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(T*, U*)) {
-	for (auto a : setA) {
-		for (auto b : setB) {
+void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(T*, U*))
+{
+	auto sa = setA.size();
+	for (auto i = 0; i < sa; ++i)
+	{
+		T* a = setA[i];
+		auto sb = setA.size();
+		for (auto j = i + 1; j < sb; ++j)
+		{
+			U* b = setB[j];
 			if (a == b) continue;
-			if (Collision(a, b)) {
+			if (Collision(a, b))
+			{
 				callback(a, b);
 			}
 		}
@@ -32,8 +40,18 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 }
 
 //FIXME: this should be a lambda, but doesn't work yet
-void entityExample_collision_callback(EntityExample* a, EntityExample* b) {
-	if (b->state != EntityState::COLLIDED) {
+void entityExample_collision_callback(EntityExample* a, EntityExample* b)
+{
+	if (a->state != EntityState::COLLIDED)
+	{
+		a->state = EntityState::COLLIDED;
+		a->timer = 0;
+		a->speed.x = -a->speed.x;
+		a->speed.y = -a->speed.y;
+	}
+
+	if (b->state != EntityState::COLLIDED)
+	{
 		b->state = EntityState::COLLIDED;
 		b->timer = 0;
 		b->speed.x = -b->speed.x;
@@ -43,5 +61,5 @@ void entityExample_collision_callback(EntityExample* a, EntityExample* b) {
 
 void UpdateCollisions(int dt) {
 	// If EntityExample collides with EntityExample, call entityExample_collision_callback
-	collide(EntS<EntityExample*>::getAll(), EntS<EntityExample*>::getAll(), entityExample_collision_callback);
+	collide(EntS<EntityExample>::getAll(), EntS<EntityExample>::getAll(), entityExample_collision_callback);
 }
