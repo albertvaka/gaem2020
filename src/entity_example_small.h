@@ -1,13 +1,12 @@
 #pragma once
 
 #include "entity.h"
-#include "entity_example_small.h"
 #include "animation.h"
 #include "rand.h"
 
-struct EntityExample : public Entity, public EntS<EntityExample*>
+struct EntityExampleSmall : public Entity, public EntS<EntityExampleSmall*>
 {
-	EntityExample()
+	EntityExampleSmall()
 	{
 		anim.Ensure(AnimationType::ANIM_EXAMPLE);
 		state = EntityState::MOVING;
@@ -53,31 +52,27 @@ struct EntityExample : public Entity, public EntS<EntityExample*>
 	{
 		switch (state)
 		{
-			case EntityState::MOVING:
+		case EntityState::MOVING:
+		{
+			anim.Ensure(AnimationType::ANIM_EXAMPLE);
+			MoveEntityExample(dt);
+		} break;
+		case EntityState::COLLIDED:
+		{
+			anim.Ensure(AnimationType::ANIM_EXAMPLE_COLLIDING);
+			timer += dt;
+			if (timer > 200)
 			{
-				anim.Ensure(AnimationType::ANIM_EXAMPLE);
-				MoveEntityExample(dt);
-			} break;
-			case EntityState::COLLIDED:
-			{
-				anim.Ensure(AnimationType::ANIM_EXAMPLE_COLLIDING);
-				timer += dt;
-				if (timer > 200)
-				{
-					new EntityExampleSmall();
-					new EntityExampleSmall();
-					new EntityExampleSmall();
-					new EntityExampleSmall();
-					state = EntityState::MOVING;
-				}
-				MoveEntityExample(dt);
-			} break;
+				state = EntityState::MOVING;
+			}
+			MoveEntityExample(dt);
+		} break;
 		}
 	}
 
 	void Draw(sf::Sprite& spr)
 	{
-		spr.setScale(1.0f, 1.0f);
+		spr.setScale(0.5f, 0.5f);
 		spr.setOrigin(0, 0);
 
 		float x = pos.x / 100.0f;

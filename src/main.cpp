@@ -38,6 +38,18 @@ void LoadGame(sf::RenderWindow& window)
 	input_state.RemapInput();
 }
 
+void DrawImguiCosas()
+{
+	ImGui::Begin(GameData::GAME_TITLE.c_str());
+
+	if (ImGui::Button("SPAWN BOLA"))
+	{
+		new EntityExample();
+	}
+
+	ImGui::End();
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT), GameData::GAME_TITLE);
@@ -53,7 +65,7 @@ int main()
 	sf::Clock clk_fps;
 	int fps_counter = 0;
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		new EntityExample();
 	}
@@ -82,9 +94,7 @@ int main()
 
 		window.setView(view);
 
-#if _DEBUG
-		//DrawImguiCosas();
-#endif
+		DrawImguiCosas();
 
 		window.clear();
 
@@ -93,7 +103,7 @@ int main()
 		window.setView(window.getDefaultView());
 
 		sf::Text txt_fps;
-		txt_fps.setString(std::to_string(static_cast<int>(fps_counter / clk_fps.getElapsedTime().asSeconds())));
+		txt_fps.setString(std::to_string(static_cast<int>(fps_counter*1000 / std::max(1, clk_fps.getElapsedTime().asMilliseconds()))));
 		txt_fps.setPosition(10, 10);
 		txt_fps.setFont(font);
 		window.draw(txt_fps);
