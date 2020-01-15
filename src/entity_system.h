@@ -32,7 +32,7 @@ namespace EntS
 
 	bool Collision(Mates::xy a, Mates::xy b)
 	{
-		int COLLISION_SIZE = 160;
+		int COLLISION_SIZE = 1600;
 		//rectangle colision
 		return 
 			(a.x < b.x + COLLISION_SIZE && a.x + COLLISION_SIZE > b.x &&
