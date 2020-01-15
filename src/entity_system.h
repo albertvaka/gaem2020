@@ -17,6 +17,11 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
+	for (EntityExampleSmall* e : EntS<EntityExampleSmall*>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
 }
 
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& wnd)
@@ -28,4 +33,9 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& wnd)
 		wnd.draw(spr);
 	}
 
+	for (EntityExampleSmall* e : EntS<EntityExampleSmall*>::getAll())
+	{
+		e->Draw(spr);
+		wnd.draw(spr);
+	}
 }
