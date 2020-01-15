@@ -28,7 +28,7 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 		for (int j = i+1; j < setB.size(); ++j) 
 		{
 			U* b = setB[j];
-			if (a == b) continue;
+			if ((void*)a == (void*)b) continue;
 			if (Collision(a, b)) 
 			{
 				callback(a, b);
@@ -37,9 +37,7 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 	}
 }
 
-//FIXME: this should be a lambda, but doesn't work yet
-//FIXME: this should be a lambda, but doesn't work yet
-void CollisionableEntity_collision_callback(CollisionableEntity* a, CollisionableEntity* b)
+void rebota(Entity* a, Entity* b)
 {
 	if (a->state != EntityState::COLLIDED)
 	{
@@ -58,8 +56,32 @@ void CollisionableEntity_collision_callback(CollisionableEntity* a, Collisionabl
 	}
 }
 
+
+void muere(EntityExampleSmall* b) 
+{
+	//no ta echo
+}
+
+//FIXME: this should be a lambda, but doesn't work yet
+void GrandeGrande_collision(EntityExample* a, EntityExample* b)
+{
+	rebota(a, b);
+}
+
+void PequePeque_collision(EntityExampleSmall* a, EntityExampleSmall* b)
+{
+	rebota(a, b);
+}
+
+void GrandePeque_collision(EntityExample* a, EntityExampleSmall* b) 
+{
+	muere(b);
+}
+
 void UpdateCollisions(int dt) 
 {
 	// If EntityExample collides with EntityExample, call entityExample_collision_callback
-	collide(EntS<CollisionableEntity*>::getAll(), EntS<CollisionableEntity*>::getAll(), CollisionableEntity_collision_callback);
+	collide(EntS<EntityExample*>::getAll(), EntS<EntityExample*>::getAll(), GrandeGrande_collision);
+	collide(EntS<EntityExampleSmall*>::getAll(), EntS<EntityExampleSmall*>::getAll(), PequePeque_collision);
+	collide(EntS<EntityExample*>::getAll(), EntS<EntityExampleSmall*>::getAll(), GrandePeque_collision);
 }
