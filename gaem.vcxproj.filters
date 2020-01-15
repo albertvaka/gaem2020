@@ -83,14 +83,17 @@
     <ClInclude Include="src\entity_example.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\super_factorio.h">
-      <Filter>Header Files\EntitySystem</Filter>
-    </ClInclude>
     <ClInclude Include="src\entity_system.h">
       <Filter>Header Files\EntitySystem</Filter>
     </ClInclude>
     <ClInclude Include="src\entity.h">
       <Filter>Header Files\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\selfregister.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

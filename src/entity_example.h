@@ -4,14 +4,12 @@
 #include "animation.h"
 #include "rand.h"
 
-using namespace EntS;
-
-struct EntityExample : EntS::Entity
+struct EntityExample : public Entity, public EntS<EntityExample*>
 {
 	EntityExample()
 	{
 		anim.Ensure(AnimationType::ANIM_EXAMPLE);
-		state = EntS::EntityState::MOVING;
+		state = EntityState::MOVING;
 
 		float angle = Random::rollf(360);
 
@@ -94,16 +92,5 @@ struct EntityExample : EntS::Entity
 		}
 	}
 
-	void OnCollision(Entity* ent_other)
-	{
-		if (ent_other->type == EntityType::ENTITY_EXAMPLE &&
-			ent_other->state != EntityState::COLLIDED)
-		{
-			ent_other->state = EntityState::COLLIDED;
-			timer = 0;
-			speed.x = -speed.x;
-			speed.y = -speed.y;
-		}
-	}
 };
 

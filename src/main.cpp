@@ -53,10 +53,9 @@ int main()
 	sf::Clock clk_fps;
 	int fps_counter = 0;
 
-	EntS::ResetEntities();
 	for (int i = 0; i < 50; ++i)
 	{
-		EntS::SpawnEntity(EntS::EntityType::ENTITY_EXAMPLE, Mates::xy(200, 200));
+		new EntityExample();
 	}
 
 	while (window.isOpen()) 
@@ -79,7 +78,7 @@ int main()
 		input_state.UpdateInput();
 		ImGui::SFML::Update(window, clk_imgui.restart());
 
-		EntS::UpdateEntities(dt);
+		UpdateEntities(dt);
 
 		window.setView(view);
 
@@ -89,7 +88,7 @@ int main()
 
 		window.clear();
 
-		EntS::DrawEntities(sprite, window);
+		DrawEntities(sprite, window);
 
 		window.setView(window.getDefaultView());
 
