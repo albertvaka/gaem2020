@@ -19,8 +19,8 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 }
 
 
-template <typename T, typename U>
-void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(T*, U*)) 
+template <typename T, typename U, typename Z, typename Y>
+void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(Y*, Z*)) 
 {
 	for (int i = 0; i < setA.size(); ++i) 
 	{
@@ -56,21 +56,9 @@ void rebota(Entity* a, Entity* b)
 	}
 }
 
-
 void muere(EntityExampleSmall* b) 
 {
 	//no ta echo
-}
-
-//FIXME: this should be a lambda, but doesn't work yet
-void GrandeGrande_collision(EntityExample* a, EntityExample* b)
-{
-	rebota(a, b);
-}
-
-void PequePeque_collision(EntityExampleSmall* a, EntityExampleSmall* b)
-{
-	rebota(a, b);
 }
 
 void GrandePeque_collision(EntityExample* a, EntityExampleSmall* b) 
@@ -81,7 +69,7 @@ void GrandePeque_collision(EntityExample* a, EntityExampleSmall* b)
 void UpdateCollisions(int dt) 
 {
 	// If EntityExample collides with EntityExample, call entityExample_collision_callback
-	collide(EntS<EntityExample*>::getAll(), EntS<EntityExample*>::getAll(), GrandeGrande_collision);
-	collide(EntS<EntityExampleSmall*>::getAll(), EntS<EntityExampleSmall*>::getAll(), PequePeque_collision);
+	collide(EntS<EntityExample*>::getAll(), EntS<EntityExample*>::getAll(), rebota);
+	collide(EntS<EntityExampleSmall*>::getAll(), EntS<EntityExampleSmall*>::getAll(), rebota);
 	collide(EntS<EntityExample*>::getAll(), EntS<EntityExampleSmall*>::getAll(), GrandePeque_collision);
 }
