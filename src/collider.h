@@ -22,10 +22,12 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 template <typename T, typename U, typename Z, typename Y>
 void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(Y*, Z*)) 
 {
-	for (int i = 0; i < setA.size(); ++i) 
+	auto sa = setA.size();
+	for (int i = 0; i < sa; ++i) 
 	{
 		T* a = setA[i];
-		for (int j = i+1; j < setB.size(); ++j) 
+		auto sb = setB.size();
+		for (int j = i+1; j < sb; ++j) 
 		{
 			U* b = setB[j];
 			if ((void*)a == (void*)b) continue;
