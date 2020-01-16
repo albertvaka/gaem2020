@@ -9,11 +9,12 @@ enum class EntityState
 	COLLIDED
 };
 
-struct Entity : public EntS<Entity*>
+struct Entity : public EntS<Entity>
 {
 	EntityState state;
 	Mates::xy pos;
 	Mates::xy speed;
 	int timer = 0;
 	Animation anim;
+	bool alive = true;
 };

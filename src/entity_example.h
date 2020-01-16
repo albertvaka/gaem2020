@@ -6,7 +6,7 @@
 #include "animation.h"
 #include "rand.h"
 
-struct EntityExample : public CollisionableEntity, public EntS<EntityExample*>
+struct EntityExample : public CollisionableEntity, public EntS<EntityExample>
 {
 	EntityExample()
 	{

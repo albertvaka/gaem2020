@@ -46,6 +46,10 @@ void DrawImguiCosas()
 	{
 		new EntityExample();
 	}
+	if (ImGui::Button("KILL BOLA"))
+	{
+		delete EntS<EntityExample>::getAll()[0];
+	}
 
 	ImGui::End();
 }
@@ -65,7 +69,7 @@ int main()
 	sf::Clock clk_fps;
 	int fps_counter = 0;
 
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
 		new EntityExample();
 	}

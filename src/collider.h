@@ -56,20 +56,14 @@ void rebota(Entity* a, Entity* b)
 	}
 }
 
-void muere(EntityExampleSmall* b) 
-{
-	//no ta echo
-}
-
 void GrandePeque_collision(EntityExample* a, EntityExampleSmall* b) 
 {
-	muere(b);
 }
 
 void UpdateCollisions(int dt) 
 {
 	// If EntityExample collides with EntityExample, call entityExample_collision_callback
-	collide(EntS<EntityExample*>::getAll(), EntS<EntityExample*>::getAll(), rebota);
-	collide(EntS<EntityExampleSmall*>::getAll(), EntS<EntityExampleSmall*>::getAll(), rebota);
-	collide(EntS<EntityExample*>::getAll(), EntS<EntityExampleSmall*>::getAll(), GrandePeque_collision);
+	collide(EntS<EntityExample>::getAll(), EntS<EntityExample>::getAll(), rebota);
+	collide(EntS<EntityExampleSmall>::getAll(), EntS<EntityExampleSmall>::getAll(), rebota);
+	collide(EntS<EntityExample>::getAll(), EntS<EntityExampleSmall>::getAll(), GrandePeque_collision);
 }

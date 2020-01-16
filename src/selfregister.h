@@ -2,6 +2,8 @@
 
 #include <set>
 #include <cassert>
+#include <iostream>
+using namespace std;
 
 /**
  * Inheriting from this class gives you a static method getAll()
@@ -12,31 +14,31 @@ class EntS {
 public:
 	EntS()
 	{
-		getAll().push_back((T)this);
+		getAll().push_back((T*)this);
 	}
 	EntS(const EntS& other)
 	{
-		getAll().push_back((T)this);
+		getAll().push_back((T*)this);
 	}
 	void operator=(const EntS& other)
 	{
-		getAll().push_back((T)this);
+		getAll().push_back((T*)this);
+	}
+	static std::vector<T*>& getAll()
+	{
+		static std::vector<T*> instancies;
+		return instancies;
 	}
 	~EntS()
 	{
-		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T)this), getAll().end());
+		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T*)this), getAll().end());
 	}
-	static std::vector<T>& getAll()
-	{
-		static std::vector<T> instancies;
-		return instancies;
-	}
-	static void destroyAll() {
-		for (typename std::vector<T>::iterator i = getAll().begin();
-			i != getAll().end();
-			i = getAll().begin())
-		{
-			delete* i;
+	static void deleteNotAlive() {
+		for (int i = getAll().size()-1; i >= 0; i--) {
+			T* e = getAll()[i];
+			if (!e->alive) {
+				delete e;
+			}
 		}
 	}
 };
