@@ -29,7 +29,7 @@ public:
 		static std::vector<T*> instancies;
 		return instancies;
 	}
-	~EntS()
+	virtual ~EntS()
 	{
 		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T*)this), getAll().end());
 	}

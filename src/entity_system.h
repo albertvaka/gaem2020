@@ -23,8 +23,7 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
-	EntS<EntityExample>::deleteNotAlive();
-	EntS<EntityExampleSmall>::deleteNotAlive();
+	EntS<Entity>::deleteNotAlive();
 }
 
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& wnd)
