@@ -34,6 +34,12 @@ public:
 		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T*)this), getAll().end());
 	}
 	static void deleteNotAlive() {
+		for (int i = getAll().size() - 1; i >= 0; i--) {
+			T* e = getAll()[i];
+			if (e->parent && !e->parent->alive) {
+				e->parent = NULL;
+			}
+		}
 		for (int i = getAll().size()-1; i >= 0; i--) {
 			T* e = getAll()[i];
 			if (!e->alive) {

@@ -17,4 +17,5 @@ struct Entity : public EntS<Entity>
 	int timer = 0;
 	Animation anim;
 	bool alive = true;
+	Entity* parent = NULL;
 };
