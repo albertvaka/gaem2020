@@ -2,6 +2,7 @@
 
 #include "mates.h"
 #include "selfregister.h"
+#include "animation.h"
 
 enum class EntityState
 {

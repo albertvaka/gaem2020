@@ -6,21 +6,13 @@
 #include <SFML/Window/Event.hpp>
 
 #include <iostream>
-#include <queue>
-#include <random>
-#include <set>
 
-#include "animation.h"
 #include "entity_system.h"
 #include "game_data.h"
 #include "input.h"
 #include "mates.h"
-#include "rand.h"
 
-sf::Texture tex_tileset;
 sf::Font font;
-InputState input_state;
-
 sf::Texture texture;
 sf::Sprite sprite;
 
@@ -35,10 +27,10 @@ void LoadGame(sf::RenderWindow& window)
 	window.setFramerateLimit(60);
 	ImGui::SFML::Init(window);
 
-	input_state.RemapInput();
+	Input::Init(window);
 }
 
-void DrawImguiCosas()
+void DrawGui()
 {
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
 
@@ -48,72 +40,52 @@ void DrawImguiCosas()
 	}
 	if (ImGui::Button("KILL BOLA"))
 	{
-		delete EntS<EntityExample>::getAll()[0];
+		if (EntS<EntityExample>::getAll().size()) {
+			delete EntS<EntityExample>::getAll()[0];
+		}
 	}
 
 	ImGui::End();
 }
-
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT), GameData::GAME_TITLE);
 	LoadGame(window);
 
-	sf::View view(sf::FloatRect(0, 0, GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT));
-	window.setView(view);
-
-	sf::Clock clk_imgui;
-	sf::Clock clk_frame;
-	sf::Clock clk_general;
-
-	sf::Clock clk_fps;
 	int fps_counter = 0;
+	sf::Clock dtClock;
+	sf::Clock fpsClock;
 
-	for (int i = 0; i < 3; ++i)
+	sf::Text txt_fps;
+	txt_fps.setPosition(10, 10);
+	txt_fps.setFont(font);
+
+	for (int i = 0; i < 100; ++i)
 	{
 		new EntityExample();
 	}
 
 	while (window.isOpen()) 
 	{
-		int time_general = clk_general.getElapsedTime().asMilliseconds();
-		int dt = clk_frame.getElapsedTime().asMilliseconds();
-		clk_frame.restart();
+		sf::Time time = dtClock.restart();
 
-		sf::Event event;
-		while (window.pollEvent(event)) 
-		{
-			ImGui::SFML::ProcessEvent(event);
+		Input::Update(time);
 
-			if (event.type == sf::Event::Closed) 
-			{
-				window.close();
-			}
-		}
-
-		input_state.UpdateInput();
-		ImGui::SFML::Update(window, clk_imgui.restart());
-
-		UpdateEntities(dt);
-
-		window.setView(view);
-
-		DrawImguiCosas();
-
-		window.clear();
+		UpdateEntities(time.asMilliseconds());
 
 		DrawEntities(sprite, window);
 
-		window.setView(window.getDefaultView());
-
-		sf::Text txt_fps;
-		txt_fps.setString(std::to_string(static_cast<int>(fps_counter*1000 / std::max(1, clk_fps.getElapsedTime().asMilliseconds()))));
-		txt_fps.setPosition(10, 10);
-		txt_fps.setFont(font);
-		window.draw(txt_fps);
-		fps_counter++;
-
+		Camera::StartGuiDraw();
+		DrawGui();
 		ImGui::SFML::Render(window);
+		fps_counter++;
+		if (fpsClock.getElapsedTime().asSeconds() > 0.5f) {
+			txt_fps.setString(std::to_string(static_cast<int>(fps_counter / fpsClock.restart().asSeconds())));
+			fps_counter = 0;
+		}
+		window.draw(txt_fps);
+		Camera::EndGuiDraw();
+
 		window.display();
 	}
 

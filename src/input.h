@@ -1,56 +1,49 @@
 #pragma once
 
+#pragma warning(disable : 26812)
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-using namespace std;
+#include "bounds.h"
 
-enum class GameKeys
+
+// Static stuff here: 
+//
+// - Keyboard
+// - Mouse
+// - GamePad
+// - Camera
+// - Window
+//
+
+enum GameKeys
 {
 	UP = 0, DOWN, LEFT, RIGHT,
 	ACTION, START,
+	PLUS, MINUS,
 	COUNT
 };
+extern sf::Keyboard::Key key_map[GameKeys::COUNT];
 
-
-struct InputState
+inline void RemapInput()
 {
-	std::map<GameKeys, sf::Keyboard::Key> input_map;
-	bool isPressed[(int)GameKeys::COUNT];
-	bool wasPressed[(int)GameKeys::COUNT];
+	key_map[GameKeys::UP] = sf::Keyboard::Key::W;
+	key_map[GameKeys::DOWN] = sf::Keyboard::Key::S;
+	key_map[GameKeys::LEFT] = sf::Keyboard::Key::A;
+	key_map[GameKeys::RIGHT] = sf::Keyboard::Key::D;
+	key_map[GameKeys::ACTION] = sf::Keyboard::Key::P;
+	key_map[GameKeys::START] = sf::Keyboard::Key::Enter;
+	key_map[GameKeys::PLUS] = sf::Keyboard::Add;
+	key_map[GameKeys::MINUS] = sf::Keyboard::Subtract;
+}
 
-	bool IsPressed(GameKeys key)
-	{
-		return isPressed[static_cast<int>(key)];
-	}
 
-	bool IsJustPressed(GameKeys key)
-	{
-		return !wasPressed[static_cast<int>(key)] && isPressed[static_cast<int>(key)];
-	}
 
-	void RemapInput()
-	{
-		input_map[GameKeys::UP] = sf::Keyboard::Key::W;
-		input_map[GameKeys::DOWN] = sf::Keyboard::Key::S;
-		input_map[GameKeys::LEFT] = sf::Keyboard::Key::A;
-		input_map[GameKeys::RIGHT] = sf::Keyboard::Key::D;
-		input_map[GameKeys::ACTION] = sf::Keyboard::Key::P;
-		input_map[GameKeys::START] = sf::Keyboard::Key::Enter;
-	}
+enum KeyStates { JUST_RELEASED, RELEASED, JUST_PRESSED, PRESSED };
 
-	void UpdateInput()
-	{
-		for (const auto& kv : input_map)
-		{
-			int key = (int)kv.first;
-			wasPressed[key] = isPressed[key];
-			isPressed[key] = sf::Keyboard::isKeyPressed(kv.second);
-		}
-	}
-};
 
-struct GamePad 
+struct GamePad
 {
 
 private:
@@ -58,30 +51,10 @@ private:
 
 	const static int JoystickCountMax = 4;
 
-	enum KeyStates { JUST_RELEASED, RELEASED, JUST_PRESSED, PRESSED };
-
 	static KeyStates button_states[JoystickCountMax][sf::Joystick::ButtonCount];
 	static int player_to_joystick[JoystickCountMax];
 
-	static KeyStates calculateJustPressed(bool pressed, KeyStates state) {
-		if (pressed) {
-			if (state == JUST_PRESSED || state == PRESSED) {
-				state = PRESSED;
-			}
-			else {
-				state = JUST_PRESSED;
-			}
-		}
-		else {
-			if (state == JUST_RELEASED || state == RELEASED) {
-				state = RELEASED;
-			}
-			else {
-				state = JUST_RELEASED;
-			}
-		}
-		return state;
-	}
+	static KeyStates calculateJustPressed(bool pressed, KeyStates state);
 
 public:
 	enum Button {
@@ -136,8 +109,7 @@ public:
 			return sf::Vector2f(abs(a) > dead_area ? a : 0, abs(b) > dead_area ? b : 0);
 		}
 	private:
-		AnalogStick(sf::Joystick::Axis mx, sf::Joystick::Axis my) : x(mx), y(my)
-		{ }
+		AnalogStick(sf::Joystick::Axis mx, sf::Joystick::Axis my) : x(mx), y(my) { }
 		sf::Joystick::Axis x, y;
 	};
 
@@ -145,84 +117,143 @@ public:
 	static bool IsButtonJustPressed(int player, GamePad::Button b) { return (button_states[player][b] == JUST_PRESSED); }
 	static bool IsButtonReleased(int player, GamePad::Button b) { return (button_states[player][b] == RELEASED || button_states[player][b] == JUST_RELEASED); }
 	static bool IsButtonJustReleased(int player, GamePad::Button b) { return (button_states[player][b] == JUST_RELEASED); }
-
-	static void UpdateInputState__MandoSteam(int joy, int player)
-	{
-		//TODO: Fix this
-		for (int i = 0; i < sf::Joystick::ButtonCount; i++)
-		{
-			bool pressed = (sf::Joystick::isButtonPressed(joy, i));
-			button_states[player][i] = calculateJustPressed(pressed, button_states[player][i]);
-		}
-		{
-			bool pressed = (Trigger::Left.get(player) > 50);
-			Trigger::Left.state[player] = calculateJustPressed(pressed, Trigger::Left.state[player]);
-		}
-		{
-			bool pressed = (Trigger::Right.get(player) > 50);
-			Trigger::Right.state[player] = calculateJustPressed(pressed, Trigger::Right.state[player]);
-		}
-	}
-
-	static void UpdateInputState__XboxNormal(int joy, int player)
-	{
-		for (int i = 0; i < sf::Joystick::ButtonCount; i++)
-		{
-			bool pressed = (sf::Joystick::isButtonPressed(joy, i));
-			button_states[player][i] = calculateJustPressed(pressed, button_states[player][i]);
-		}
-		{
-			bool pressed = (Trigger::Left.get(player) > 50);
-			Trigger::Left.state[player] = calculateJustPressed(pressed, Trigger::Left.state[player]);
-		}
-		{
-			bool pressed = (Trigger::Right.get(player) > 50);
-			Trigger::Right.state[player] = calculateJustPressed(pressed, Trigger::Right.state[player]);
-		}
-	}
-
-	static void UpdateInputState()
-	{
-		int player = 0;
-		for (int joystick = 0; joystick < JoystickCountMax; ++joystick)
-		{
-			if (!sf::Joystick::isConnected(joystick))
-			{
-				continue;
-			}
-			player_to_joystick[player] = joystick;
-
-
-			sf::Joystick::Identification id_joy = sf::Joystick::getIdentification(joystick);
-
-			const int ID_MANDO_STEAM = 999999;
-			switch (id_joy.productId)
-			{
-			case ID_MANDO_STEAM:
-			{
-				UpdateInputState__MandoSteam(joystick, player);
-			} break;
-
-			default:
-			{
-				UpdateInputState__XboxNormal(joystick, player);
-			} break;
-			}
-
-			player++;
-
-		}
-
-		while (player < JoystickCountMax)
-		{
-			player_to_joystick[player] = -1;
-			for (int i = 0; i < sf::Joystick::ButtonCount; i++)
-			{
-				button_states[player][i] = calculateJustPressed(false, button_states[player][i]);
-			}
-			player++;
-		}
-
-	}
-
+	
+	static void _UpdateInputState__MandoSteam(int joy, int player);
+	static void _UpdateInputState__XboxNormal(int joy, int player);
+	static void _UpdateInputState();
 };
+
+
+//WINDOW MANAGEMENT
+//=================
+
+namespace Window {
+	void SetWindowCaption(const std::string& s);
+	bool WindowHasFocus();
+	void CloseWindow();
+	void SetWindowSize(sf::Vector2u size, bool centerCamera = true);
+	sf::Vector2u GetWindowSize();
+	Bounds GetWindowBounds();
+	bool IsMouseInsideWindow();
+}
+
+
+//KEYBOARD ACCESS
+//===============
+
+struct Keyboard {
+
+	static KeyStates key_states[int(GameKeys::COUNT)];
+	
+	static bool IsKeyPressed(GameKeys k) {
+		return (key_states[k] == PRESSED || key_states[k] == JUST_PRESSED);
+	}
+
+	static bool IsKeyJustPressed(GameKeys k) {
+		return (key_states[k] == JUST_PRESSED);
+	}
+
+	static bool IsKeyReleased(GameKeys k) {
+		return (key_states[k] == RELEASED || key_states[k] == JUST_RELEASED);
+	}
+
+	static bool IsKeyJustReleased(GameKeys k) {
+		return (key_states[k] == JUST_RELEASED);
+	}
+
+	static void _UpdateInputState();
+};
+
+//CAMERA MANAGEMENT
+//=================
+namespace Camera {
+
+	void SetCameraCenter(const vec& center);
+	vec GetCameraCenter();
+	Bounds GetCameraBounds();
+	void ClampCameraTo(const Bounds& b);
+	void ResetCamera();
+
+	void SetZoom(float z);
+	float GetZoom();
+
+	void StartGuiDraw();
+	void EndGuiDraw();
+
+	//Useful for debug pourposes
+	inline void MoveCameraWithArrows(float velocity, float dt) {
+		vec c = GetCameraCenter();
+		float zoom = GetZoom();
+		if (Keyboard::IsKeyPressed(GameKeys::RIGHT)) {
+			c.x += velocity * dt * 10 / zoom;
+		}
+		if (Keyboard::IsKeyPressed(GameKeys::LEFT)) {
+			c.x -= velocity * dt * 10 / zoom;
+		}
+		if (Keyboard::IsKeyPressed(GameKeys::DOWN)) {
+			c.y += velocity * dt * 10 / zoom;
+		}
+		if (Keyboard::IsKeyPressed(GameKeys::UP)) {
+			c.y -= velocity * dt * 10 / zoom;
+		}
+		SetCameraCenter(c);
+	}
+	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt) {
+		float zoom = GetZoom();
+		if (Keyboard::IsKeyPressed(GameKeys::PLUS)) {
+			zoom += zoomVel * dt;
+		}
+		if (Keyboard::IsKeyPressed(GameKeys::MINUS)) {
+			zoom -= zoomVel * dt;
+		}
+		SetZoom(zoom);
+	}
+
+}
+
+
+
+//MOUSE ACCESS
+//============
+struct Mouse
+{
+	static KeyStates button_states[sf::Mouse::ButtonCount];
+
+	static void _UpdateInputState();
+
+	static bool IsPressed(sf::Mouse::Button b = sf::Mouse::Left) {
+		if (!Window::WindowHasFocus()) return false;
+		if (!Window::IsMouseInsideWindow()) return false;
+		return (button_states[b] == PRESSED || button_states[b] == JUST_PRESSED);
+	}
+
+	static bool IsJustPressed(sf::Mouse::Button b = sf::Mouse::Left) {
+		if (!Window::WindowHasFocus()) return false;
+		if (!Window::IsMouseInsideWindow()) return false;
+		return (button_states[b] == JUST_PRESSED);
+	}
+
+	static bool IsReleased(sf::Mouse::Button b = sf::Mouse::Left) {
+		if (!Window::WindowHasFocus()) return false;
+		if (!Window::IsMouseInsideWindow()) return false;
+		return (button_states[b] == RELEASED || button_states[b] == JUST_RELEASED);
+	}
+
+	static bool IsJustReleased(sf::Mouse::Button b = sf::Mouse::Left) {
+		if (!Window::WindowHasFocus()) return false;
+		if (!Window::IsMouseInsideWindow()) return false;
+		return (button_states[b] == JUST_RELEASED);
+	}
+
+
+	static sf::Vector2i GetPositionInWindow();
+
+	static vec GetPositionInWorld();
+};
+
+namespace Input {
+
+	void Init(sf::RenderWindow& renderwindow);
+	void Update(sf::Time dt);
+
+}

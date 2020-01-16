@@ -17,8 +17,8 @@ struct EntityExampleSmall : public CollisionableEntity, public EntS<EntityExampl
 		pos.x = Random::roll(GameData::WINDOW_WIDTH * 99);
 		pos.y = Random::roll(GameData::WINDOW_HEIGHT * 99);
 
-		speed.x = cosf(Mates::DegsToRads(angle)) * (10 + Random::roll(80));
-		speed.y = sinf(Mates::DegsToRads(angle)) * (10 + Random::roll(80));
+		speed.x = cosf(DegsToRads(angle)) * (10 + Random::roll(80));
+		speed.y = sinf(DegsToRads(angle)) * (10 + Random::roll(80));
 	}
 
 	void MoveEntityExample(int dt)
