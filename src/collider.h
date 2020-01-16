@@ -56,8 +56,9 @@ void rebota(Entity* a, Entity* b)
 	}
 }
 
-void GrandePeque_collision(EntityExample* a, EntityExampleSmall* b) 
+void GrandePeque_collision(EntityExample* grande, EntityExampleSmall* peque) 
 {
+	peque->alive = false;
 }
 
 void UpdateCollisions(int dt) 

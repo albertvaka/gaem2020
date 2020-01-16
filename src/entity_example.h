@@ -69,7 +69,7 @@ struct EntityExample : public CollisionableEntity, public EntS<EntityExample>
 					new EntityExampleSmall();
 					new EntityExampleSmall();
 					new EntityExampleSmall();
-					state = EntityState::MOVING;
+					alive = false;
 				}
 				MoveEntityExample(dt);
 			} break;
