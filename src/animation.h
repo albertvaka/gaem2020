@@ -54,6 +54,10 @@ struct Animation
 	int anim_timer;
 	int current_frame;
 
+	Animation() {
+		Reset();
+	}
+
 	void Update(int dt)
 	{
 		anim_timer += dt;
