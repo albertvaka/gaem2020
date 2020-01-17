@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma warning(disable : 26812)
-
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
