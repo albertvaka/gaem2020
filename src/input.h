@@ -21,7 +21,7 @@ enum GameKeys
 {
 	UP = 0, DOWN, LEFT, RIGHT,
 	ACTION, START,
-	PLUS, MINUS,
+	DEBUG_ZOOM_IN, DEBUG_ZOOM_OUT,
 	COUNT
 };
 extern sf::Keyboard::Key key_map[GameKeys::COUNT];
@@ -34,8 +34,8 @@ inline void RemapInput()
 	key_map[GameKeys::RIGHT] = sf::Keyboard::Key::D;
 	key_map[GameKeys::ACTION] = sf::Keyboard::Key::P;
 	key_map[GameKeys::START] = sf::Keyboard::Key::Enter;
-	key_map[GameKeys::PLUS] = sf::Keyboard::Add;
-	key_map[GameKeys::MINUS] = sf::Keyboard::Subtract;
+	key_map[GameKeys::DEBUG_ZOOM_IN] = sf::Keyboard::Add;
+	key_map[GameKeys::DEBUG_ZOOM_OUT] = sf::Keyboard::Subtract;
 }
 
 
@@ -200,10 +200,10 @@ namespace Camera {
 	}
 	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt) {
 		float zoom = GetZoom();
-		if (Keyboard::IsKeyPressed(GameKeys::PLUS)) {
+		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_IN)) {
 			zoom += zoomVel * dt;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::MINUS)) {
+		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_OUT)) {
 			zoom -= zoomVel * dt;
 		}
 		SetZoom(zoom);
