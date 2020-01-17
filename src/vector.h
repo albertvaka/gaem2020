@@ -362,7 +362,8 @@ inline bool isSecondInFOVOfFirst(vec posFirst,
 //-----------------------------------------------------------------------------
 
 template <class T>
-std::ostream& operator<<(std::ostream& os, sf::Vector2<T>& rhs) {
+std::ostream& operator<<(std::ostream& os, sf::Vector2<T>& rhs) 
+{
     os << rhs.x << ',' << rhs.y;
     return os;
 }
