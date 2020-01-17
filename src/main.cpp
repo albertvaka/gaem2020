@@ -79,7 +79,8 @@ int main()
 		DrawGui();
 		ImGui::SFML::Render(window);
 		fps_counter++;
-		if (fpsClock.getElapsedTime().asSeconds() > 0.5f) {
+		if (fpsClock.getElapsedTime().asSeconds() > 0.5f) 
+		{
 			txt_fps.setString(std::to_string(static_cast<int>(fps_counter / fpsClock.restart().asSeconds())));
 			fps_counter = 0;
 		}

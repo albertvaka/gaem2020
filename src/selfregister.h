@@ -10,7 +10,8 @@ using namespace std;
  * that returns a set with all the current instances of the class.
  */
 template <typename T>
-class EntS {
+class EntS 
+{
 public:
 	EntS()
 	{
@@ -33,16 +34,21 @@ public:
 	{
 		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T*)this), getAll().end());
 	}
-	static void deleteNotAlive() {
-		for (int i = getAll().size() - 1; i >= 0; i--) {
+	static void deleteNotAlive() 
+	{
+		for (int i = getAll().size() - 1; i >= 0; i--) 
+		{
 			T* e = getAll()[i];
-			if (e->parent && !e->parent->alive) {
+			if (e->parent && !e->parent->alive) 
+			{
 				e->parent = NULL;
 			}
 		}
-		for (int i = getAll().size()-1; i >= 0; i--) {
+		for (int i = getAll().size()-1; i >= 0; i--) 
+		{
 			T* e = getAll()[i];
-			if (!e->alive) {
+			if (!e->alive) 
+			{
 				delete e;
 			}
 		}

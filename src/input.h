@@ -68,8 +68,10 @@ public:
 		Start = 7
 	};
 
-	struct Trigger {
-		struct TriggerBase {
+	struct Trigger 
+	{
+		struct TriggerBase 
+		{
 			friend struct GamePad;
 			bool IsPressed(int player) { return (state[player] == PRESSED || state[player] == JUST_PRESSED); }
 			bool IsJustPressed(int player) { return (state[player] == JUST_PRESSED); }
@@ -78,16 +80,20 @@ public:
 		private:
 			KeyStates state[JoystickCountMax];
 		};
-		struct LeftTrigger : public TriggerBase {
-			float get(int player) const { //Pos between 0 and 100
+		struct LeftTrigger : public TriggerBase 
+		{
+			float get(int player) const 
+			{ //Pos between 0 and 100
 				int joystick = player_to_joystick[player];
 				if (joystick < 0) return 0;
 				float a = sf::Joystick::getAxisPosition(joystick, sf::Joystick::Axis::Z);
 				return a > 0.1 ? a : 0;
 			}
 		};
-		struct RightTrigger : public TriggerBase {
-			float get(int player) const { //Pos between 0 and 100
+		struct RightTrigger : public TriggerBase 
+		{
+			float get(int player) const 
+			{ //Pos between 0 and 100
 				int joystick = player_to_joystick[player];
 				if (joystick < 0) return 0;
 				float a = -sf::Joystick::getAxisPosition(joystick, sf::Joystick::Axis::Z);
@@ -98,10 +104,12 @@ public:
 		static RightTrigger Right;
 	};
 
-	struct AnalogStick {
+	struct AnalogStick 
+	{
 		const static AnalogStick Left;
 		const static AnalogStick Right;
-		sf::Vector2f get(int player, float dead_area = 0) const { //Pos between -100 and 100
+		sf::Vector2f get(int player, float dead_area = 0) const 
+		{ //Pos between -100 and 100
 			int joystick = player_to_joystick[player];
 			if (joystick < 0) return sf::Vector2f();
 			float a = sf::Joystick::getAxisPosition(joystick, x);
@@ -127,7 +135,8 @@ public:
 //WINDOW MANAGEMENT
 //=================
 
-namespace Window {
+namespace Window 
+{
 	void SetWindowCaption(const std::string& s);
 	bool WindowHasFocus();
 	void CloseWindow();
@@ -141,7 +150,8 @@ namespace Window {
 //KEYBOARD ACCESS
 //===============
 
-struct Keyboard {
+struct Keyboard 
+{
 
 	static KeyStates key_states[int(GameKeys::COUNT)];
 	
@@ -166,7 +176,8 @@ struct Keyboard {
 
 //CAMERA MANAGEMENT
 //=================
-namespace Camera {
+namespace Camera 
+{
 
 	void SetCameraCenter(const vec& center);
 	vec GetCameraCenter();
@@ -184,26 +195,33 @@ namespace Camera {
 	inline void MoveCameraWithArrows(float velocity, float dt) {
 		vec c = GetCameraCenter();
 		float zoom = GetZoom();
-		if (Keyboard::IsKeyPressed(GameKeys::RIGHT)) {
+		if (Keyboard::IsKeyPressed(GameKeys::RIGHT)) 
+		{
 			c.x += velocity * dt * 10 / zoom;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::LEFT)) {
+		if (Keyboard::IsKeyPressed(GameKeys::LEFT)) 
+		{
 			c.x -= velocity * dt * 10 / zoom;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::DOWN)) {
+		if (Keyboard::IsKeyPressed(GameKeys::DOWN)) 
+		{
 			c.y += velocity * dt * 10 / zoom;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::UP)) {
+		if (Keyboard::IsKeyPressed(GameKeys::UP)) 
+		{
 			c.y -= velocity * dt * 10 / zoom;
 		}
 		SetCameraCenter(c);
 	}
-	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt) {
+	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt) 
+	{
 		float zoom = GetZoom();
-		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_IN)) {
+		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_IN)) 
+		{
 			zoom += zoomVel * dt;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_OUT)) {
+		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_OUT)) 
+		{
 			zoom -= zoomVel * dt;
 		}
 		SetZoom(zoom);
@@ -221,25 +239,29 @@ struct Mouse
 
 	static void _UpdateInputState();
 
-	static bool IsPressed(sf::Mouse::Button b = sf::Mouse::Left) {
+	static bool IsPressed(sf::Mouse::Button b = sf::Mouse::Left) 
+	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == PRESSED || button_states[b] == JUST_PRESSED);
 	}
 
-	static bool IsJustPressed(sf::Mouse::Button b = sf::Mouse::Left) {
+	static bool IsJustPressed(sf::Mouse::Button b = sf::Mouse::Left) 
+	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == JUST_PRESSED);
 	}
 
-	static bool IsReleased(sf::Mouse::Button b = sf::Mouse::Left) {
+	static bool IsReleased(sf::Mouse::Button b = sf::Mouse::Left) 
+	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == RELEASED || button_states[b] == JUST_RELEASED);
 	}
 
-	static bool IsJustReleased(sf::Mouse::Button b = sf::Mouse::Left) {
+	static bool IsJustReleased(sf::Mouse::Button b = sf::Mouse::Left) 
+	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == JUST_RELEASED);
@@ -251,7 +273,8 @@ struct Mouse
 	static vec GetPositionInWorld();
 };
 
-namespace Input {
+namespace Input 
+{
 
 	void Init(sf::RenderWindow& renderwindow);
 	void Update(sf::Time dt);

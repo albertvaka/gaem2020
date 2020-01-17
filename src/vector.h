@@ -18,7 +18,8 @@ struct vec : public sf::Vector2f
   vec(sf::Vector2i v):sf::Vector2f(v.x,v.y){}
   vec(sf::Vector2f v):sf::Vector2f(v.x,v.y){}
 
-  bool Equals(float px, float py) {
+  bool Equals(float px, float py) 
+  {
       return x == px && y == py;
   }
   //sets x and y to zero
