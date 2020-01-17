@@ -14,8 +14,8 @@ struct vec : public sf::Vector2f
 {
   vec():sf::Vector2f(0.0,0.0){}
   vec(float a, float b):sf::Vector2f(a,b){}
-  vec(sf::Vector2u v):sf::Vector2f(v.x,v.y){}
-  vec(sf::Vector2i v):sf::Vector2f(v.x,v.y){}
+  vec(sf::Vector2u v):sf::Vector2f(float(v.x),float(v.y)){}
+  vec(sf::Vector2i v):sf::Vector2f(float(v.x),float(v.y)){}
   vec(sf::Vector2f v):sf::Vector2f(v.x,v.y){}
 
   bool Equals(float px, float py) 

@@ -32,19 +32,19 @@ const double  MinDouble = (std::numeric_limits<double>::min)();
 const float   MaxFloat = (std::numeric_limits<float>::max)();
 const float   MinFloat = (std::numeric_limits<float>::min)();
 
-const float   Pi = 3.141592653589793238462643383279502884;
+const float   Pi = 3.141592653589793238462643383279502884f;
 const float   TwoPi = Pi * 2;
 const float   HalfPi = Pi / 2;
 const float   QuarterPi = Pi / 4;
 
 inline float DegsToRads(float degs)
 {
-    return TwoPi * (degs / 360.0);
+    return TwoPi * (degs / 360.0f);
 }
 
 inline float RadsToDegs(float rads)
 {
-    return (rads * 360.0) / TwoPi;
+    return (rads * 360.0f) / TwoPi;
 }
 
 //returns true if the parameter is equal to zero
@@ -83,7 +83,7 @@ inline int   RandInt(int min, int max)
 }
 
 //returns a random float between zero and 1
-inline float RandFloat() { return ((rand()) / (RAND_MAX + 1.0)); }
+inline float RandFloat() { return ((rand()) / (RAND_MAX + 1.0f)); }
 
 inline float RandInRange(float x, float y)
 {
@@ -143,7 +143,7 @@ inline float RandGaussian(float mean = 0.0, float standard_deviation = 1.0)
 
 inline float Sigmoid(float input, float response = 1.0)
 {
-    return (1.0 / (1.0 + exp(-input / response)));
+    return (1.0f / (1.0f + exp(-input / response)));
 }
 
 
