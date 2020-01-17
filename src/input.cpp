@@ -317,9 +317,14 @@ namespace Input{
     void Update(sf::Time deltaTime) {
         ImGui::SFML::Update(*Window::window, deltaTime);
         _ProcessWindowEvents();
-        Keyboard::_UpdateInputState();
+        ImGuiIO& io = ImGui::GetIO();
+        if (!io.WantCaptureKeyboard) {
+            Keyboard::_UpdateInputState();
+        }
+        if (!io.WantCaptureMouse) {
+            Mouse::_UpdateInputState();
+        }
         GamePad::_UpdateInputState();
-        Mouse::_UpdateInputState();
     }
     void Init(sf::RenderWindow & renderwindow) {
 
