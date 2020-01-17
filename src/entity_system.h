@@ -29,6 +29,12 @@ void UpdateEntities(int dt)
 	Camera::ChangeZoomWithPlusAndMinus(0.5f, dt / 1000.f);
 //#endif
 
+	if (Mouse::IsJustPressed()) {
+		Entity* a = new EntityExample();
+		a->pos.x = Mouse::GetPositionInWorld().x*100;
+		a->pos.y = Mouse::GetPositionInWorld().y * 100;
+	}
+
 	EntS<Entity>::deleteNotAlive();
 }
 
