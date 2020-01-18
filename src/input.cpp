@@ -18,47 +18,47 @@ sf::Keyboard::Key key_map[GameKeys::COUNT];
 
 
 
-void _ProcessWindowEvents();
+static void _ProcessWindowEvents();
 
-namespace Window 
+namespace Window
 {
 
     sf::RenderWindow* window;
     bool focus = true;
 
-    void SetWindowCaption(const std::string& s) 
+    void SetWindowCaption(const std::string& s)
 	{
         window->setTitle(s);
     }
 
-    bool WindowHasFocus() 
+    bool WindowHasFocus()
 	{
         return focus;
     }
 
-    void CloseWindow() 
+    void CloseWindow()
 	{
         window->close();
     }
 
-    void SetWindowSize(sf::Vector2u size, bool centerCamera) 
+    void SetWindowSize(sf::Vector2u size, bool centerCamera)
 	{
         window->setSize(size);
         _ProcessWindowEvents();
         if (centerCamera) Camera::SetCameraCenter(size / 2);
     }
 
-    sf::Vector2u GetWindowSize() 
+    sf::Vector2u GetWindowSize()
 	{
         return window->getSize();
     }
 
-    Bounds GetWindowBounds() 
+    Bounds GetWindowBounds()
 	{
         return Bounds(0.f, 0.f, (float)window->getSize().x, (float)window->getSize().y);
     }
 
-    bool IsMouseInsideWindow() 
+    bool IsMouseInsideWindow()
 	{
         sf::Vector2i vec = sf::Mouse::getPosition(*window);
         if (vec.x < 0 || vec.x >(int)window->getSize().x) return false;
@@ -67,25 +67,25 @@ namespace Window
     }
 }
 
-namespace Camera 
+namespace Camera
 {
     sf::View gameView;
     float zoom;
 
 
-    void SetCameraCenter(const vec& center) 
+    void SetCameraCenter(const vec& center)
 	{
         gameView.setCenter(center);
         Window::window->setView(gameView);
         _ProcessWindowEvents();
     }
 
-    vec GetCameraCenter() 
+    vec GetCameraCenter()
 	{
         return gameView.getCenter();
     }
 
-    Bounds GetCameraBounds() 
+    Bounds GetCameraBounds()
 	{
         sf::Vector2f viewSize = gameView.getSize();
         vec viewOrigin = gameView.getCenter() - (viewSize / 2.f);
@@ -93,7 +93,7 @@ namespace Camera
     }
 
 
-    void ClampCameraTo(const Bounds& limit) 
+    void ClampCameraTo(const Bounds& limit)
 	{
         vec c = GetCameraCenter();
 
@@ -111,7 +111,7 @@ namespace Camera
         SetCameraCenter(c);
     }
 
-    void ResetCamera() 
+    void ResetCamera()
 	{
         gameView.setSize(sf::Vector2f(Window::window->getSize()));
         gameView.setCenter(vec(Window::window->getSize()) / 2);
@@ -123,7 +123,7 @@ namespace Camera
         _ProcessWindowEvents();
     }
 
-    void SetZoom(float z) 
+    void SetZoom(float z)
 	{
         gameView.zoom(zoom);
         zoom = z;
@@ -132,42 +132,42 @@ namespace Camera
         _ProcessWindowEvents();
     }
 
-    float GetZoom() 
+    float GetZoom()
 	{
         return zoom;
     }
 
-    void StartGuiDraw() 
+    void StartGuiDraw()
 	{
         Window::window->setView(Window::window->getDefaultView());
     }
 
-    void EndGuiDraw() 
+    void EndGuiDraw()
 	{
         Window::window->setView(gameView);
     }
 }
 
-KeyStates GamePad::calculateJustPressed(bool pressed, KeyStates state) 
+KeyStates GamePad::calculateJustPressed(bool pressed, KeyStates state)
 {
-    if (pressed) 
+    if (pressed)
 	{
-        if (state == JUST_PRESSED || state == PRESSED) 
+        if (state == JUST_PRESSED || state == PRESSED)
 		{
             state = PRESSED;
         }
-        else 
+        else
 		{
             state = JUST_PRESSED;
         }
     }
-    else 
+    else
 	{
-        if (state == JUST_RELEASED || state == RELEASED) 
+        if (state == JUST_RELEASED || state == RELEASED)
 		{
             state = RELEASED;
         }
-        else 
+        else
 		{
             state = JUST_RELEASED;
         }
@@ -211,28 +211,28 @@ void GamePad::_UpdateInputState__XboxNormal(int joy, int player)
 }
 
 
-void Mouse::_UpdateInputState() 
+void Mouse::_UpdateInputState()
 {
-    for (int i = 0; i < sf::Mouse::ButtonCount; i++) 
+    for (int i = 0; i < sf::Mouse::ButtonCount; i++)
 	{
-        if (sf::Mouse::isButtonPressed((sf::Mouse::Button)i)) 
+        if (sf::Mouse::isButtonPressed((sf::Mouse::Button)i))
 		{
-            if (button_states[i] == JUST_PRESSED || button_states[i] == PRESSED) 
+            if (button_states[i] == JUST_PRESSED || button_states[i] == PRESSED)
 			{
                 button_states[i] = PRESSED;
             }
-            else 
+            else
 			{
                 button_states[i] = JUST_PRESSED;
             }
         }
-        else 
+        else
 		{
-            if (button_states[i] == JUST_RELEASED || button_states[i] == RELEASED) 
+            if (button_states[i] == JUST_RELEASED || button_states[i] == RELEASED)
 			{
                 button_states[i] = RELEASED;
             }
-            else 
+            else
 			{
                 button_states[i] = JUST_RELEASED;
             }
@@ -242,12 +242,12 @@ void Mouse::_UpdateInputState()
 }
 
 
-sf::Vector2i Mouse::GetPositionInWindow() 
+sf::Vector2i Mouse::GetPositionInWindow()
 {
     return sf::Mouse::getPosition(*Window::window); //window arg is needed for relative coords
 }
 
-vec Mouse::GetPositionInWorld() 
+vec Mouse::GetPositionInWorld()
 {
     vec displacement = Camera::gameView.getCenter() - (Camera::gameView.getSize() / 2.f);
     return vec(GetPositionInWindow()) + displacement;
@@ -296,28 +296,28 @@ void GamePad::_UpdateInputState()
 
 }
 
-void Keyboard::_UpdateInputState() 
+void Keyboard::_UpdateInputState()
 {
-    for (int i = 0; i < int(GameKeys::COUNT); i++) 
+    for (int i = 0; i < int(GameKeys::COUNT); i++)
 	{
-        if (sf::Keyboard::isKeyPressed(key_map[i]) && Window::WindowHasFocus()) 
+        if (sf::Keyboard::isKeyPressed(key_map[i]) && Window::WindowHasFocus())
 		{
-            if (key_states[i] == JUST_PRESSED || key_states[i] == PRESSED) 
+            if (key_states[i] == JUST_PRESSED || key_states[i] == PRESSED)
 			{
                 key_states[i] = PRESSED;
             }
-            else 
+            else
 			{
                 key_states[i] = JUST_PRESSED;
             }
         }
-        else 
+        else
 		{
-            if (key_states[i] == JUST_RELEASED || key_states[i] == RELEASED) 
+            if (key_states[i] == JUST_RELEASED || key_states[i] == RELEASED)
 			{
                 key_states[i] = RELEASED;
             }
-            else 
+            else
 			{
                 key_states[i] = JUST_RELEASED;
             }
@@ -330,7 +330,7 @@ static void _ProcessWindowEvents()
 {
 
     sf::Event sfmlevent;
-    while (Window::window->pollEvent(sfmlevent)) 
+    while (Window::window->pollEvent(sfmlevent))
 	{
         ImGui::SFML::ProcessEvent(sfmlevent);
         switch (sfmlevent.type) {
@@ -359,7 +359,7 @@ static void _ProcessWindowEvents()
 }
 namespace Input
 {
-    void Update(sf::Time deltaTime) 
+    void Update(sf::Time deltaTime)
 	{
         ImGui::SFML::Update(*Window::window, deltaTime);
         _ProcessWindowEvents();
@@ -372,7 +372,7 @@ namespace Input
         }
         GamePad::_UpdateInputState();
     }
-    void Init(sf::RenderWindow & renderwindow) 
+    void Init(sf::RenderWindow & renderwindow)
 	{
 
         Window::window = &renderwindow;
