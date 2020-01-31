@@ -107,5 +107,8 @@
     <ClInclude Include="src\bounds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\persona.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
