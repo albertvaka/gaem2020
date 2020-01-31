@@ -152,6 +152,7 @@
     <ClInclude Include="src\collisionable.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\entity_example_small.h" />
+    <ClInclude Include="src\persona.h" />
     <ClInclude Include="src\selfregister.h" />
     <ClInclude Include="src\entity_system.h" />
     <ClInclude Include="src\game_data.h" />
