@@ -7,7 +7,17 @@ enum AnimationType
 {
 	NONE,
 	ANIM_EXAMPLE,
-	ANIM_EXAMPLE_COLLIDING
+	ANIM_EXAMPLE_COLLIDING,
+
+	PLAYER_IDLE_DOWN,
+	PLAYER_IDLE_LEFT,
+	PLAYER_IDLE_UP,
+	PLAYER_IDLE_RIGHT,
+
+	PLAYER_WALKING_DOWN,
+	PLAYER_WALKING_UP,
+	PLAYER_WALKING_LEFT,
+	PLAYER_WALKING_RIGHT
 };
 
 struct AnimationData
@@ -44,7 +54,82 @@ AnimationData anim_lib[] =
 		{
 			100
 		},
-	}
+	},
+
+	//PLAYER_IDLE_DOWN
+	{   1,
+		{
+			{0 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
+	//PLAYER_IDLE_LEFT
+	{   1,
+		{
+			{3 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
+	//PLAYER_IDLE_UP
+	{   1,
+		{
+			{1 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
+	//PLAYER_IDLE_RIGHT
+	{   1,
+		{
+			{2 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
+
+
+	//PLAYER_WALKING_DOWN
+	{   1,
+		{
+			{0 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
+	//PLAYER_WALKING_LEFT
+	{   1,
+		{
+			{3 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
+	//PLAYER_WALKING_UP
+	{   1,
+		{
+			{1 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
+	//PLAYER_WALKING_RIGHT
+	{   1,
+		{
+			{2 * 16, 0 * 16, 16, 16},
+		},
+		{
+			100
+		},
+	},
 };
 
 

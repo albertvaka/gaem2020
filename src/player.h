@@ -14,7 +14,7 @@ struct Player : public Entity, public EntS<Player>
 		static int player_count;
 		player = player_count++;
 
-		anim.Ensure(AnimationType::ANIM_EXAMPLE);
+		anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
 		state = EntityState::MOVING;
 
 		pos.x = Random::roll(GameData::WINDOW_WIDTH * 99);
@@ -26,24 +26,40 @@ struct Player : public Entity, public EntS<Player>
 	void Move(int dt)
 	{
 		float threshold = 50;
-		auto anal = GamePad::AnalogStick::Left.get(player);
-		if (anal.x > threshold || Keyboard::IsKeyPressed(GameKeys::RIGHT)) {
-			speed.x = 50;
-		} else if (anal.x < -threshold || Keyboard::IsKeyPressed(GameKeys::LEFT)) {
-			speed.x = -50;
-		} else {
-			speed.x = 0;
-		}
-		if (anal.y > threshold || Keyboard::IsKeyPressed(GameKeys::UP)) {
+		sf::Vector2f anal = GamePad::AnalogStick::Left.get(player);
+
+		if (anal.y > threshold || Keyboard::IsKeyPressed(GameKeys::UP))
+		{
+			dir = EntityDirection::UP;
 			speed.y = 50;
-		} else if (anal.y < -threshold || Keyboard::IsKeyPressed(GameKeys::DOWN)) {
+		}
+		else if (anal.y < -threshold || Keyboard::IsKeyPressed(GameKeys::DOWN))
+		{
+			dir = EntityDirection::DOWN;
 			speed.y = -50;
-		} else {
+		}
+		else
+		{
 			speed.y = 0;
 		}
+
+		if (anal.x > threshold || Keyboard::IsKeyPressed(GameKeys::RIGHT)) 
+		{
+			dir = EntityDirection::RIGHT;
+			speed.x = 50;
+		} 
+		else if (anal.x < -threshold || Keyboard::IsKeyPressed(GameKeys::LEFT)) 
+		{
+			dir = EntityDirection::RIGHT;
+			speed.x = -50;
+		} 
+		else 
+		{
+			speed.x = 0;
+		}
+
 		pos.x += speed.x * dt;
 		pos.y += speed.y * dt;
-
 	}
 
 
@@ -52,9 +68,46 @@ struct Player : public Entity, public EntS<Player>
 		Move(dt);
 		switch (state)
 		{
+			case EntityState::IDLE:
+			{
+
+				if (dir == EntityDirection::UP)
+				{
+					anim.Ensure(AnimationType::PLAYER_IDLE_UP);
+				}
+				if (dir == EntityDirection::DOWN)
+				{
+					anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
+				}
+				if (dir == EntityDirection::LEFT)
+				{
+					anim.Ensure(AnimationType::PLAYER_IDLE_LEFT);
+				}
+				if (dir == EntityDirection::RIGHT)
+				{
+					anim.Ensure(AnimationType::PLAYER_IDLE_RIGHT);
+				}
+
+			} break;
+
 			case EntityState::MOVING:
 			{
-				anim.Ensure(AnimationType::ANIM_EXAMPLE);
+				if (dir == EntityDirection::UP)
+				{
+					anim.Ensure(AnimationType::PLAYER_WALKING_UP);
+				}
+				if (dir == EntityDirection::DOWN)
+				{
+					anim.Ensure(AnimationType::PLAYER_WALKING_DOWN);
+				}
+				if (dir == EntityDirection::LEFT)
+				{
+					anim.Ensure(AnimationType::PLAYER_WALKING_LEFT);
+				}
+				if (dir == EntityDirection::RIGHT)
+				{
+					anim.Ensure(AnimationType::PLAYER_WALKING_RIGHT);
+				}
 			} break;
 		}
 	}

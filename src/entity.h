@@ -6,7 +6,16 @@
 
 enum class EntityState
 {
+	IDLE,
 	MOVING,
+};
+
+enum class EntityDirection
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
 };
 
 struct Entity : public EntS<Entity>
@@ -18,4 +27,5 @@ struct Entity : public EntS<Entity>
 	Animation anim;
 	bool alive = true;
 	Entity* parent = NULL;
+	EntityDirection dir;
 };
