@@ -26,36 +26,47 @@ struct Player : public Entity, public EntS<Player>
 	void Move(int dt)
 	{
 		float threshold = 50;
-		sf::Vector2f anal = GamePad::AnalogStick::Left.get(player);
-
-		if (anal.y > threshold || Keyboard::IsKeyPressed(GameKeys::UP))
+		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, 30));
+		if (Keyboard::IsKeyPressed(GameKeys::UP)) 
 		{
-			dir = EntityDirection::UP;
-			speed.y = 50;
+			anal.y = -100;
 		}
-		else if (anal.y < -threshold || Keyboard::IsKeyPressed(GameKeys::DOWN))
+		else if (Keyboard::IsKeyPressed(GameKeys::DOWN))
 		{
+			anal.y = 100;
+		}
+		if (Keyboard::IsKeyPressed(GameKeys::RIGHT)) 
+		{
+			anal.x = 100;
+
+	    } else if (Keyboard::IsKeyPressed(GameKeys::LEFT))
+		{
+			anal.x = -100;
+		}
+
+		speed = anal * 0.2;
+		
+		if (anal.x > 70)
+		{
+			state = EntityState::MOVING;
+			dir = EntityDirection::RIGHT;
+		}
+		else if (anal.x < -70)
+		{
+			state = EntityState::MOVING;
+			dir = EntityDirection::LEFT;
+		} else if (anal.y > 70)
+		{
+			state = EntityState::MOVING;
 			dir = EntityDirection::DOWN;
-			speed.y = -50;
 		}
-		else
+		else if (anal.y < -70)
 		{
-			speed.y = 0;
+			state = EntityState::MOVING;
+			dir = EntityDirection::UP;
 		}
-
-		if (anal.x > threshold || Keyboard::IsKeyPressed(GameKeys::RIGHT)) 
-		{
-			dir = EntityDirection::RIGHT;
-			speed.x = 50;
-		} 
-		else if (anal.x < -threshold || Keyboard::IsKeyPressed(GameKeys::LEFT)) 
-		{
-			dir = EntityDirection::RIGHT;
-			speed.x = -50;
-		} 
-		else 
-		{
-			speed.x = 0;
+		else {
+			state = EntityState::IDLE;
 		}
 
 		pos.x += speed.x * dt;
@@ -114,7 +125,6 @@ struct Player : public Entity, public EntS<Player>
 
 	void Draw(sf::Sprite& spr)
 	{
-		spr.setScale(1.0f, 1.0f);
 		spr.setOrigin(0, 0);
 
 		float x = pos.x / 100.0f;

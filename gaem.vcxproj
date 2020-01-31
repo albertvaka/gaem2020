@@ -150,6 +150,7 @@
     <ClInclude Include="src\bounds.h" />
     <ClInclude Include="src\collider.h" />
     <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\mesa.h" />
     <ClInclude Include="src\persona.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\selfregister.h" />

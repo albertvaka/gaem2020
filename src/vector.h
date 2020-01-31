@@ -40,6 +40,13 @@ struct vec : public sf::Vector2f
 
   inline float    Cross(const vec& v2) const;
 
+  std::string ToString() const {
+      std::stringstream stream;
+      stream << std::fixed << std::setprecision(2) << x << "," << y;
+      return stream.str();
+  }
+
+
   //returns positive if v2 is clockwise of this vector,
   //negative if anticlockwise (assuming the Y axis is pointing down,
   //X axis to right like a Window app)

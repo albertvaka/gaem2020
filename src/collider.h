@@ -9,8 +9,8 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 {
 	int COLLISION_SIZE = 1600;
 
-	Mates::xy a = entity_a->pos;
-	Mates::xy b = entity_b->pos;
+	vec a = entity_a->pos;
+	vec b = entity_b->pos;
 
 	//rectangle colision
 	return

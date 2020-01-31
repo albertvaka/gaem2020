@@ -104,5 +104,8 @@
     <ClInclude Include="src\player.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="src\mesa.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

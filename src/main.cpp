@@ -26,6 +26,7 @@ void LoadGame(sf::RenderWindow& window)
 
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(16, 16, 16, 16));
+	sprite.setScale(4, 4);
 	
 	window.setFramerateLimit(60);
 	ImGui::SFML::Init(window);
@@ -37,7 +38,7 @@ void DrawGui()
 {
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
 
-	ImGui::Text((std::to_string(EntS<Player>::getAll()[0]->pos.x) + "," + std::to_string(EntS<Player>::getAll()[0]->pos.y)).c_str());
+	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
 	if (ImGui::Button("SPAWN PERSONA"))
 	{
 		new Persona();

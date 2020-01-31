@@ -21,8 +21,8 @@ enum class EntityDirection
 struct Entity : public EntS<Entity>
 {
 	EntityState state;
-	Mates::xy pos;
-	Mates::xy speed;
+	vec pos;
+	vec speed;
 	int timer = 0;
 	Animation anim;
 	bool alive = true;
