@@ -7,7 +7,6 @@
 enum class EntityState
 {
 	MOVING,
-	COLLIDED
 };
 
 struct Entity : public EntS<Entity>

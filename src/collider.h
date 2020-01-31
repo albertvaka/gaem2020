@@ -1,9 +1,9 @@
 #pragma once
 
 #include "selfregister.h"
-#include "entity.h"
+#include "player.h"
+#include "persona.h"
 #include <functional>
-#include "entity_example.h"
 
 bool Collision(Entity* entity_a, Entity* entity_b)
 {
@@ -39,34 +39,9 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 	}
 }
 
-void rebota(Entity* a, Entity* b)
-{
-	if (a->state != EntityState::COLLIDED)
-	{
-		a->state = EntityState::COLLIDED;
-		a->timer = 0;
-		a->speed.x = -a->speed.x;
-		a->speed.y = -a->speed.y;
-	}
-
-	if (b->state != EntityState::COLLIDED) 
-	{
-		b->state = EntityState::COLLIDED;
-		b->timer = 0;
-		b->speed.x = -b->speed.x;
-		b->speed.y = -b->speed.y;
-	}
-}
-
-void GrandePeque_collision(EntityExample* grande, EntityExampleSmall* peque) 
-{
-	peque->alive = false;
-}
 
 void UpdateCollisions(int dt) 
 {
-	// If EntityExample collides with EntityExample, call entityExample_collision_callback
-	collide(EntS<EntityExample>::getAll(), EntS<EntityExample>::getAll(), rebota);
-	collide(EntS<EntityExampleSmall>::getAll(), EntS<EntityExampleSmall>::getAll(), rebota);
-	collide(EntS<EntityExample>::getAll(), EntS<EntityExampleSmall>::getAll(), GrandePeque_collision);
+	// If A collides with B, call collision_callback
+	//collide(EntS<EntityExample>::getAll(), EntS<EntityExampleSmall>::getAll(), collision_callback);
 }

@@ -11,6 +11,8 @@
 #include "game_data.h"
 #include "input.h"
 #include "mates.h"
+#include "player.h"
+#include "persona.h"
 
 sf::Font font;
 sf::Texture texture;
@@ -34,15 +36,9 @@ void DrawGui()
 {
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
 
-	if (ImGui::Button("SPAWN BOLA"))
+	if (ImGui::Button("SPAWN PERSONA"))
 	{
-		new EntityExample();
-	}
-	if (ImGui::Button("KILL BOLA"))
-	{
-		if (EntS<EntityExample>::getAll().size()) {
-			delete EntS<EntityExample>::getAll()[0];
-		}
+		new Persona();
 	}
 
 	ImGui::End();
@@ -60,9 +56,9 @@ int main()
 	txt_fps.setPosition(10, 10);
 	txt_fps.setFont(font);
 
-	for (int i = 0; i < 100; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
-		new EntityExample();
+		new Player();
 	}
 
 	while (window.isOpen()) 
