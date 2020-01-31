@@ -17,8 +17,8 @@ struct Player : public Entity, public EntS<Player>
 		anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
 		state = EntityState::MOVING;
 
-		pos.x = Random::roll(GameData::WINDOW_WIDTH * 99);
-		pos.y = Random::roll(GameData::WINDOW_HEIGHT * 99);
+		pos.x = 50;
+		pos.y = 50;
 		speed.x = 0;
 		speed.y = 0;
 	}

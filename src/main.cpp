@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+#include <string>
 #include "entity_system.h"
 #include "game_data.h"
 #include "input.h"
@@ -36,6 +37,7 @@ void DrawGui()
 {
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
 
+	ImGui::Text((std::to_string(EntS<Player>::getAll()[0]->pos.x) + "," + std::to_string(EntS<Player>::getAll()[0]->pos.y)).c_str());
 	if (ImGui::Button("SPAWN PERSONA"))
 	{
 		new Persona();

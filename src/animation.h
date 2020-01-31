@@ -40,7 +40,7 @@ AnimationData anim_lib[] =
 	//ANIM_EXAMPLE
 	{   1,
 		{
-			{2 * 16, 3 * 16, 16, 16},
+			{2 * 16, 2 * 16, 16, 16},
 		},
 		{
 			100
