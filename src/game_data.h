@@ -5,7 +5,7 @@
 
 namespace GameData
 {
-	const int WINDOW_WIDTH = 1920;
+	const int WINDOW_WIDTH = 1472;
 	const int WINDOW_HEIGHT = 1000;
 	const std::string GAME_TITLE = "GGJ 2020";
 }

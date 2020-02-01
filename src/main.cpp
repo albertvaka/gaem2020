@@ -25,23 +25,23 @@ sf::Clock mainClock;
 
 const int TILE_SIZE = 16;
 
-std::vector< std::string > mapita_inicial = { // (23 * 17 tiles)
+std::vector< std::string > mapita_inicial = { // (23 * 16 tiles)
 "XXXXXXXXXXXSXXXXXXXXXXX",
-"XX0      XDDBXXXXXXXXXX",
-"XX XXXXX XAXBX       XX",
-"X  X   X XAXBX XXXXX XX",
-"X  XFGFX XACCX X   X XX",
-"XX X   X       XFGFX XX",
-"XX XX XX       X   X XX",
-"XX       XXXXX XX XX XX",
-"XX XXXXX X   X       XX",
-"XX X   X XFGFX XXXXX XX",
-"XX XFGFX X   X X   X XX",
-"XX X   X XX XX XFGFX  X",
-"XX XX XX X   X X   X  X",
-"XX             XX XX XX",
-"XXXXXXXXXXBBBX       XX",
-"ZCCCCCCCCCCCCXXXXXXXXXX",
+"XX0      XDDBX       XX",
+"XX XXXXX XAXBX XXXXX XX",
+"X  X   X XAXBX X   X XX",
+"X  XFGFX XACCX XFGFX XX",
+"XX X   X       X   X XX",
+"XX XX XX       XX XX XX",
+"XX       XXXXX       XX",
+"XX XXXXX X   X XXXXX XX",
+"XX X   X XFGFX X   X XX",
+"XX XFGFX X   X XFGFX XX",
+"XX X   X XX XX X   X  X",
+"XX XX XX       XX XX  X",
+"XX                   XX",
+"XXXXXXXXXXBBBXXXXXXXXXX",
+"XXXXXXXXXXBBBXXXXXXXXXX",
 };
 
 enum class TileType
@@ -227,7 +227,7 @@ int main()
 		UpdateEntities(time.asMilliseconds());
 
 
-		window.clear(sf::Color(100, 100, 200));
+		window.clear(sf::Color(64, 64, 64));
 
 
 		for (int i = 0; i < mapita.size(); ++i)
