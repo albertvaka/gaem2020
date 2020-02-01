@@ -27,7 +27,7 @@ enum AnimationType
 	DOCTOR_IDLE_RIGHT,
 	DOCTOR_IDLE_LEFT,
 	BELT_RIGHT,
-	NO,
+	BUTTON_A_PRESS,
 	NADA,
 	POKEMON,
 };
@@ -227,14 +227,15 @@ AnimationData anim_lib[] =
 			200,200,200,200,
 		},
 	},
-	//NO
+	//BUTTON_A_PRESS
 	{
-		1,
+		2,
 		{
-			{1,1,1,1},
+			{0,112,8,8},
+			{8,112,8,8},
 		},
 		{
-			1,
+			500,250,
 		},
 	},
 	//NADA
