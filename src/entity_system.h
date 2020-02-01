@@ -48,14 +48,15 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 	for (Entity* e : EntS<Entity>::getAll())
 	{
 		e->Draw(spr, window);
-<<<<<<< HEAD
-=======
+	}
+
+	for (Cadaver* e : EntS<Cadaver>::getAll())
+	{
+		e->Draw(spr, window);
 	}
 
 	for (Extremity* e : EntS<Extremity>::getAll())
 	{
 		e->Draw(spr, window);
->>>>>>> deprecated map (before born)
 	}
-
 }

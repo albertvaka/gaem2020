@@ -38,10 +38,7 @@ std::vector< std::string > mapita = { // (30 * 15 tiles)
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 
-<<<<<<< HEAD
 std::vector< std::vector<bool> > passable;
-=======
->>>>>>> deprecated map (before born)
 
 void LoadGame(sf::RenderWindow& window)
 {
@@ -89,7 +86,7 @@ void DrawGui()
 	if (ImGui::Button("SPAWN CADAVER"))
 	{
 
-		new Cadaver(700, 700);
+		new Cadaver(200,200);
 	}
 	if (ImGui::Button("SPAWN PLAYER"))
 	{

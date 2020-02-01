@@ -67,27 +67,7 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	{
 	}
 
-<<<<<<< HEAD
-	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window) {
-		DrawRightLeg(spr);
-		window.draw(spr);
 
-		DrawLeftLeg(spr);
-		window.draw(spr);
-
-		DrawRightArm(spr);
-		window.draw(spr);
-
-		DrawLeftArm(spr);
-		window.draw(spr);
-
-		DrawHead(spr);
-		window.draw(spr);
-
-		DrawBody(spr);
-		window.draw(spr);
-	}
-=======
 	void Draw(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
 		if (rightLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE)
@@ -99,7 +79,6 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		{
 			DrawLeftLeg(spr, wnd);
 		}
->>>>>>> deprecated map (before born)
 
 		if (rightArm.colorType != ExtremityData::BodyColorType::NONE_TYPE)
 		{
