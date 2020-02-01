@@ -18,10 +18,12 @@ struct Mesa : public Entity, EntS<Mesa>
 		canLet = false;
 		isEmpty = true;
 
-
+		anim.Ensure(AnimationType::);
 	}
 
+	void Update(int dt) {
 
+	}
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
 		if (canLet || (currentPlayer >= 0 && !isEmpty)) 
