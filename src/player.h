@@ -31,7 +31,8 @@ struct Player : public Entity, public EntS<Player>
 		if (Keyboard::IsKeyPressed(GameKeys::ACTION)) { }
 
 		//Player 0 can move with keyboard
-		if (player == 0) {
+		if (player == 0) 
+		{
 			if (Keyboard::IsKeyPressed(GameKeys::UP))
 			{
 				anal.y = -100;
