@@ -1,12 +1,9 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
-
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
-
 #include <iostream>
-
 #include <string>
 #include "entity_system.h"
 #include "game_data.h"
@@ -14,10 +11,32 @@
 #include "mates.h"
 #include "player.h"
 #include "persona.h"
+#include "pared.h"
 
 sf::Font font;
 sf::Texture texture;
 sf::Sprite sprite;
+
+std::vector< std::string > mapita = { // (30 * 15 tiles)
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+"X          X                 X",
+"X     0    X                 X",
+"X          X                 X",
+"X          X                 X",
+"XXXXXXXXXXXX                 X",
+"X                            X",
+"X                            X",
+"X                            X",
+"X                            X",
+"X                            X",
+"X                            X",
+"X                            X",
+"X                            X",
+"X                            X",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+};
+
+
 
 void LoadGame(sf::RenderWindow& window)
 {
@@ -32,6 +51,23 @@ void LoadGame(sf::RenderWindow& window)
 	ImGui::SFML::Init(window);
 
 	Input::Init(window);
+
+	vec pos(0, 0);
+	for (auto row : mapita) {
+		for (char c : row) {
+			switch (c) {
+				case '0': new Player(0, pos); break;
+				case '1': new Player(1, pos); break;
+				case '2': new Player(2, pos); break;
+				case '3': new Player(3, pos); break;
+				case 'X': new Pared(pos); break;
+			}
+			pos.x += 6400;
+		}
+		pos.y += 6400;
+		pos.x = 0;
+
+	}
 }
 
 void DrawGui()
@@ -41,7 +77,8 @@ void DrawGui()
 	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
 	if (ImGui::Button("SPAWN PERSONA"))
 	{
-		new Persona();
+
+		new Persona(350, 350);
 	}
 
 	ImGui::End();
@@ -59,13 +96,8 @@ int main()
 	txt_fps.setPosition(10, 10);
 	txt_fps.setFont(font);
 
-	for (int i = 0; i < 2; ++i)
-	{
-		new Player();
-	}
-	
-
 	new Persona(300, 300);
+
 	while (window.isOpen()) 
 	{
 		sf::Time time = dtClock.restart();

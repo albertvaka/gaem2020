@@ -7,6 +7,8 @@
 #include "entity.h"
 #include "collider.h"
 
+#include "player.h"
+#include "pared.h"
 #include "persona.h"
 
 void UpdateEntities(int dt)
@@ -37,9 +39,15 @@ void UpdateEntities(int dt)
 
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 {
-	window.clear();
+	window.clear(sf::Color(100,100,200));
 
 	for (Player* e : EntS<Player>::getAll())
+	{
+		e->Draw(spr);
+		window.draw(spr);
+	}
+
+	for (Pared* e : EntS<Pared>::getAll())
 	{
 		e->Draw(spr);
 		window.draw(spr);

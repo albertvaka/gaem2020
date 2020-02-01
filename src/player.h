@@ -9,16 +9,14 @@ struct Player : public Entity, public EntS<Player>
 {
 
 	int player;
-	Player()
+	Player(int id, vec position)
 	{
-		static int player_count;
-		player = player_count++;
+		player = id;
 
 		anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
 		state = EntityState::MOVING;
 
-		pos.x = 50;
-		pos.y = 50;
+		pos = position;
 		speed.x = 0;
 		speed.y = 0;
 	}
@@ -27,24 +25,33 @@ struct Player : public Entity, public EntS<Player>
 	{
 		float threshold = 50;
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, 30));
-		if (Keyboard::IsKeyPressed(GameKeys::UP)) 
-		{
-			anal.y = -100;
-		}
-		else if (Keyboard::IsKeyPressed(GameKeys::DOWN))
-		{
-			anal.y = 100;
-		}
-		if (Keyboard::IsKeyPressed(GameKeys::RIGHT)) 
-		{
-			anal.x = 100;
 
-	    } else if (Keyboard::IsKeyPressed(GameKeys::LEFT))
-		{
-			anal.x = -100;
-		} else if (Keyboard::IsKeyPressed(GameKeys::ACTION))
+		//TODO
+		if (Keyboard::IsKeyPressed(GameKeys::ACTION)) { }
 
-		speed = anal * 0.2;
+		//Player 0 can move with keyboard
+		if (player == 0) {
+			if (Keyboard::IsKeyPressed(GameKeys::UP))
+			{
+				anal.y = -100;
+			}
+			else if (Keyboard::IsKeyPressed(GameKeys::DOWN))
+			{
+				anal.y = 100;
+			}
+			if (Keyboard::IsKeyPressed(GameKeys::RIGHT))
+			{
+				anal.x = 100;
+
+			}
+			else if (Keyboard::IsKeyPressed(GameKeys::LEFT))
+			{
+				anal.x = -100;
+			}
+		}
+
+
+		speed = anal * 0.3f;
 		
 		if (anal.x > 70)
 		{
@@ -131,7 +138,7 @@ struct Player : public Entity, public EntS<Player>
 		float y = pos.y / 100.0f;
 		spr.setPosition(x, y);
 
-		spr.setOrigin(8, 8);
+		//spr.setOrigin(8, 8);
 
 		spr.setTextureRect(anim.CurrentFrame());
 		spr.setColor(sf::Color::White);

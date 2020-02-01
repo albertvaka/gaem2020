@@ -101,16 +101,16 @@
     <ClInclude Include="src\player.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\mesa.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\extremity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\extremity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\persona.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pared.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
