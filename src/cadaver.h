@@ -106,7 +106,6 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void DrawRightLeg(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setScale(4, 4);
 		spr.setPosition(rightLeg.x, rightLeg.y);
 		spr.setTextureRect(extremitySprPos.find(rightLeg.colorType)->second);
 		wnd.draw(spr);
@@ -114,7 +113,6 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void DrawLeftLeg(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setScale(4, 4);
 		spr.setPosition(leftLeg.x, leftLeg.y);
 		spr.setTextureRect(extremitySprPos.find(leftLeg.colorType)->second);
 		wnd.draw(spr);
@@ -122,7 +120,6 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	
 	void DrawRightArm(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setScale(4, 4);
 		spr.setPosition(rightArm.x, rightArm.y);
 		spr.setTextureRect(extremitySprPos.find(rightArm.colorType)->second);
 		wnd.draw(spr);
@@ -130,7 +127,6 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	
 	void DrawLeftArm(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setScale(4, 4);
 		spr.setPosition(leftArm.x, leftArm.y);
 		spr.setTextureRect(extremitySprPos.find(leftArm.colorType)->second);
 		wnd.draw(spr);
@@ -138,7 +134,6 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	
 	void DrawHead(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setScale(4, 4);
 		spr.setPosition(head.x, head.y);
 		spr.setTextureRect(extremitySprPos.find(head.colorType)->second);
 		wnd.draw(spr);
@@ -146,7 +141,6 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void DrawBody(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setScale(4, 4);
 		spr.setPosition(body.x, body.y);
 		spr.setTextureRect(extremitySprPos.find(body.colorType)->second);
 		wnd.draw(spr);
@@ -159,7 +153,7 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		shape.setOutlineColor(sf::Color::White);
 		shape.setOutlineThickness(1);
 		shape.setPosition(pos.x, pos.y);
-		shape.setSize(sf::Vector2f(8 * 4, 8 * 4));
+		shape.setSize(sf::Vector2f(8, 8));
 
 		wnd.draw(shape);
 	}
