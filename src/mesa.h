@@ -19,6 +19,7 @@ struct Mesa : public Entity, EntS<Mesa>
 		isEmpty = true;
 
 		anim.Ensure(AnimationType::POKEMON);
+
 	}
 
 	void Update(int dt)

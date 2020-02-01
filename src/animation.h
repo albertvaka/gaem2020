@@ -9,7 +9,10 @@ struct Animation
 	int anim_timer;
 	int current_frame;
 
-	Animation() {
+	bool loopable = true;
+
+	Animation() 
+	{
 		Reset();
 	}
 
@@ -19,6 +22,11 @@ struct Animation
 
 		AnimationData* anim_data = &anim_lib[(int)anim_type];
 
+		if (current_frame >= anim_data->frames && !loopable)
+		{
+			return;
+		}
+
 		if (anim_timer > anim_data->timer[current_frame])
 		{
 			anim_timer -= anim_data->timer[current_frame];
@@ -27,6 +35,7 @@ struct Animation
 			if (current_frame >= anim_data->frames)
 			{
 				current_frame = 0;
+				anim_timer = anim_timer % anim_data->timer[0];
 			}
 		}
 	}
