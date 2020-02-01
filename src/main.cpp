@@ -90,7 +90,7 @@ void DrawGui()
 	if (ImGui::Button("SPAWN CADAVER"))
 	{
 
-		new Cadaver(200,200);
+		new Cadaver(100,100);
 	}
 	if (ImGui::Button("SPAWN PLAYER"))
 	{

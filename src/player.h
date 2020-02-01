@@ -50,9 +50,7 @@ struct Player : public Entity, public EntS<Player>
 			else if (extremity == NULL && cadaver != NULL)
 			{
 				isCarrying = true;
-				cadaver->isCarried = true;
-				cadaver->pos.x = pos.x;
-				cadaver->pos.y = pos.y;
+				cadaver->carryCadaver(pos.x, pos.y);
 			}
 		}
 		else if (Keyboard::IsKeyPressed(GameKeys::ACTION) && isCarrying)
@@ -64,6 +62,14 @@ struct Player : public Entity, public EntS<Player>
 			if (cadaver != NULL) {
 				cadaver->isCarried = false;
 				cadaver = NULL;
+			}
+		}
+		else if (isCarrying)
+		{
+			if (extremity != NULL) {
+
+			if (cadaver != NULL) {
+				cadaver->carryCadaver(pos.x, pos.y);
 			}
 		}
 
