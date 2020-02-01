@@ -18,9 +18,10 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	bool isCarried = false;
 	bool isCarriable = false;
+	bool isLet = false;
 
 
-	int playerCarrying;
+	int currentPlayer;
 	Cadaver(vec pos) : Cadaver(pos.x, pos.y) { }
 
 	Cadaver(int x, int y) {
@@ -57,7 +58,18 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		pos.x = x + 5;
 		pos.y = y + 3;
 
-		playerCarrying = player;
+		currentPlayer = player;
+	}
+
+	void putCadaverOnTable(vec position)
+	{
+		isCarried = false;
+		isLet = true;
+
+		pos.x = position.x + 4;
+		pos.y = position.y + 4;
+
+		currentPlayer = -1;
 	}
 
 	void Update(int dt) 
@@ -67,6 +79,9 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void Move(int dt)
 	{
+
+		auto oldPos = pos;
+
 		SetSpeedWithCinta();
 		sf::Vector2f oldpos = pos;
 		pos += speed * dt;
@@ -95,7 +110,7 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	}
 
 	
-	void Draw(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
 		if (rightLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE)
 		{
@@ -131,49 +146,49 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	}
 
 
-	void DrawRightLeg(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawRightLeg(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(rightLeg.colorType)->second);
 		wnd.draw(spr);
 	}
 
-	void DrawLeftLeg(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawLeftLeg(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(leftLeg.colorType)->second);
 		wnd.draw(spr);
 	}
 	
-	void DrawRightArm(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawRightArm(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(rightArm.colorType)->second);
 		wnd.draw(spr);
 	}
 	
-	void DrawLeftArm(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawLeftArm(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(leftArm.colorType)->second);
 		wnd.draw(spr);
 	}
 	
-	void DrawHead(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawHead(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(head.colorType)->second);
 		wnd.draw(spr);
 	}
 
-	void DrawBody(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawBody(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(body.colorType)->second);
 		wnd.draw(spr);
 	}
 
-	void DrawCarriable(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawCarriable(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		sf::RectangleShape shape;
 		shape.setFillColor(sf::Color::Transparent);

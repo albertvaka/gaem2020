@@ -3,6 +3,7 @@
 #include "selfregister.h"
 #include "player.h"
 #include "cadaver.h"
+#include "mesa.h"
 #include "cinta.h"
 #include "spawner.h"
 #include <functional>
@@ -55,6 +56,18 @@ void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 	}
 }
 
+void collision_player_mesa(Player* player, Mesa* mesa) {
+	if (player->isCarrying && player->cadaver != NULL)
+	{
+		mesa->canLet = true;
+		mesa->cadaver = player->cadaver;
+		mesa->currentPlayer = player->player;
+		player->mesa = mesa;
+
+
+	}
+}
+
 void collision_entity_cinta(Entity* ent, Cinta* cinta) {
 
 	if (ent->prevCintaDirection == cinta->dir || ent->prevCintaDirection == EntityDirection::NONE) {
@@ -77,6 +90,7 @@ void UpdateCollisions(int dt)
 		if (!player->isCarrying) {
 			player->extremity = NULL;
 			player->cadaver = NULL;
+			player->mesa = NULL;
 		}
 	}
 
@@ -90,9 +104,16 @@ void UpdateCollisions(int dt)
 		cadaver->isCarriable = false;
 	}
 
+	for (Mesa * mesa : EntS<Mesa>::getAll())
+	{
+		mesa->canLet = false;
+		mesa->currentPlayer = -1;
+	}
+
 	// If A collides with B, call collision_callback
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
+	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
 	collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);

@@ -99,7 +99,7 @@ struct Extremity : public Entity, EntS<Extremity>
 	}
 
 
-	void Draw(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(data.colorType)->second);
@@ -108,7 +108,7 @@ struct Extremity : public Entity, EntS<Extremity>
 		DrawCarriable(spr, wnd);
 	}
 
-	void DrawCarriable(sf::Sprite& spr, sf::RenderWindow& wnd)
+	void DrawCarriable(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		sf::RectangleShape shape;
 		shape.setFillColor(sf::Color::White);

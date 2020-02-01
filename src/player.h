@@ -8,6 +8,7 @@
 #include "input.h"
 
 #include "cadaver.h"
+#include "mesa.h"
 
 struct Player : public Entity, public EntS<Player>
 {
@@ -15,13 +16,14 @@ struct Player : public Entity, public EntS<Player>
 	AnimationType animForPlayer(AnimationType anim) {
 		int animint = int(anim);
 		int diff = int(AnimationType::DOCTOR_WALKING_DOWN) - int(AnimationType::PLAYER_WALKING_DOWN);
-		return AnimationType(animint+diff*player);
+		return AnimationType(animint + diff * player);
 	}
 
 	int player;
 	bool isCarrying;
 	Extremity* extremity;
 	Cadaver* cadaver;
+	Mesa* mesa;
 
 	Player(int id, vec position)
 	{
@@ -40,6 +42,30 @@ struct Player : public Entity, public EntS<Player>
 	{
 		float deadZone = 20;
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, deadZone));
+
+
+		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& !isCarrying && mesa != NULL)
+		{
+			if (mesa->cadaver != NULL)
+			{
+				mesa->cadaver = false;
+				mesa->isEmpty = true;
+				cadaver->carryCadaver(pos.x, pos.y, player);
+
+			}
+		}
+		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& isCarrying && mesa != NULL)
+		{
+			if (cadaver != NULL) {
+				isCarrying = false;
+				cadaver->putCadaverOnTable(mesa->pos);
+
+				mesa->isEmpty = false;
+				cadaver = NULL;
+			}
+		}
 
 		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
 
@@ -70,7 +96,6 @@ struct Player : public Entity, public EntS<Player>
 				cadaver = NULL;
 			}
 		}
-		
 
 		//Player 0 can move with keyboard
 		if (player == 0)

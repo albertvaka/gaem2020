@@ -104,9 +104,6 @@
     <ClInclude Include="src\extremity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\mesa.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\pared.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
@@ -117,6 +114,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\spawner.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesa.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>

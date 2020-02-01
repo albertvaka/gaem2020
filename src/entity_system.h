@@ -42,6 +42,13 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 	}
 
+	for (Mesa* e : EntS<Mesa>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
+
+
 
 
 
@@ -50,7 +57,7 @@ void UpdateEntities(int dt)
 
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 {
-	window.clear(sf::Color(100,100,200));
+
 
 
 	EntS<Entity>::sort([](Entity* a, Entity* b) {
@@ -62,15 +69,6 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
-	for (Cadaver* e : EntS<Cadaver>::getAll())
-	{
-		e->Draw(spr, window);
-	}
-
-	for (Extremity* e : EntS<Extremity>::getAll())
-	{
-		e->Draw(spr, window);
-	}
 }
 void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 {
