@@ -22,8 +22,10 @@ sf::Font font;
 sf::Texture texture;
 sf::Sprite sprite;
 
-std::vector< std::string > mapita = { // (23 * 17 tiles)
 
+const int TILE_SIZE = 16;
+
+std::vector< std::string > mapita_inicial = { // (23 * 17 tiles)
 "XXXXXXXXXXXSXXXXXXXXXXX",
 "XXXXXXXXXXDDBXXEEEEEXXX",
 "XX0      XAXBXXE   EXXX",
@@ -41,10 +43,29 @@ std::vector< std::string > mapita = { // (23 * 17 tiles)
 "XX             XX XX XX",
 "XXXXXXXXXXXBX        XX",
 "CCCCCCCCCCCCXXXXXXXXXXX",
-
 };
 
+enum TileType
+{
+	WALL,
+	FLOOR
+};
+
+std::vector< std::vector<TileType> > mapita;
+
 std::vector< std::vector<bool> > passable;
+
+TileType TileFromChar(char c)
+{
+	switch (c)
+	{
+		case 'X':
+		{
+			return TileType::WALL;
+		} break;
+	}
+	return TileType::FLOOR;
+}
 
 void LoadGame(sf::RenderWindow& window)
 {
@@ -61,13 +82,18 @@ void LoadGame(sf::RenderWindow& window)
 	Camera::SetZoom(4.f);
 	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / 8, GameData::WINDOW_HEIGHT/8));
 
-	passable.resize(mapita[0].size(), std::vector<bool>(mapita.size()));
+	passable.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
+	mapita.resize(mapita_inicial[0].size(), std::vector<TileType>(mapita_inicial.size()));
+
 
 	int x = 0, y = 0;
-	for (auto row : mapita) {
-		for (char c : row) {
+	for (auto row : mapita_inicial) 
+	{
+		for (char c : row) 
+		{
 			vec pos(16 * x, 16 * y);
-			switch (c) {
+			switch (c) 
+			{
 				case '0': new Player(0, pos); break;
 				case '1': new Player(1, pos); break;
 				case '2': new Player(2, pos); break;
@@ -84,12 +110,14 @@ void LoadGame(sf::RenderWindow& window)
 					break;
 				
 			}
+
 			passable[x][y] = (c != 'X' && c != 'G' && c!= 'F');
+
+			mapita[x][y] = TileFromChar(c);
 			x += 1;
 		}
 		y += 1;
 		x = 0;
-
 	}
 
 	loadExtremityMap();
@@ -109,6 +137,19 @@ void DrawGui()
 
 	ImGui::End();
 }
+
+sf::IntRect TileTex(TileType type)
+{
+	if (type == TileType::FLOOR)
+	{
+		return sf::IntRect(64, 48, 16, 16);
+	}
+	if (type == TileType::WALL)
+	{
+		return sf::IntRect(64+16, 48, 16, 16);
+	}
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT), GameData::GAME_TITLE);
@@ -134,6 +175,23 @@ int main()
 		//#endif
 
 		UpdateEntities(time.asMilliseconds());
+
+
+		window.clear(sf::Color(100, 100, 200));
+
+
+		for (int i = 0; i < mapita.size(); ++i)
+		{
+			for (int j = 0; j < mapita[i].size(); ++j)
+			{
+				sprite.setPosition(i*TILE_SIZE, j*TILE_SIZE);
+
+				sprite.setTextureRect(TileTex(mapita[i][j]));
+
+				window.draw(sprite);
+				
+			}
+		}
 
 		DrawEntities(sprite, window);
 		//DrawEntities(texture, window);

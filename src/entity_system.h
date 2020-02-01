@@ -51,7 +51,7 @@ void UpdateEntities(int dt)
 
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 {
-	window.clear(sf::Color(100,100,200));
+
 
 
 	EntS<Entity>::sort([](Entity* a, Entity* b) {
