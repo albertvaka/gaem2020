@@ -38,6 +38,14 @@ enum AnimationType
 	PLAGUEDOC_WALKING_RIGHT,
 	PLAGUEDOC_WALKING_UP,
 	PLAGUE_DOC_WALKING_DOWN,
+	COOLGUY_IDLE_DOWN,
+	COOLGUY_IDLE_UP,
+	COOLGUY_IDLE_LEFT,
+	COOLGUY_IDLE_RIGHT,
+	COOLGUY_WALKING_DOWN,
+	COOLGUY_WALKING_UP,
+	COOLGUY_WALKING_LEFT,
+	COOLGUY_WALKING_RIGHT,
 };
 
 AnimationData anim_lib[] =
@@ -365,6 +373,96 @@ AnimationData anim_lib[] =
 		},
 		{
 			100,100,100,100,
+		},
+	},
+	//COOLGUY_IDLE_DOWN
+	{
+		1,
+		{
+			{195,1,10,15},
+		},
+		{
+			100,
+		},
+	},
+	//COOLGUY_IDLE_UP
+	{
+		1,
+		{
+			{211,1,10,15},
+		},
+		{
+			100,
+		},
+	},
+	//COOLGUY_IDLE_LEFT
+	{
+		1,
+		{
+			{243,1,9,15},
+		},
+		{
+			100,
+		},
+	},
+	//COOLGUY_IDLE_RIGHT
+	{
+		1,
+		{
+			{228,1,9,15},
+		},
+		{
+			100,
+		},
+	},
+	//COOLGUY_WALKING_DOWN
+	{
+		4,
+		{
+			{195,18,9,14},
+			{195,1,10,15},
+			{196,34,9,14},
+			{195,1,10,15},
+		},
+		{
+			100,100,100,0,
+		},
+	},
+	//COOLGUY_WALKING_UP
+	{
+		4,
+		{
+			{211,18,9,14},
+			{211,1,10,15},
+			{212,34,9,14},
+			{211,1,10,15},
+		},
+		{
+			100,100,100,100,
+		},
+	},
+	//COOLGUY_WALKING_LEFT
+	{
+		3,
+		{
+			{243,18,9,14},
+			{242,33,10,15},
+			{243,1,9,15},
+		},
+		{
+			100,100,100,
+		},
+	},
+	//COOLGUY_WALKING_RIGHT
+	{
+		3,
+		{
+			{228,18,9,14},
+			{228,33,10,15},
+			{228,1,9,15},
+		},
+		{
+			100,100,100,
 		},
 	},
 };
