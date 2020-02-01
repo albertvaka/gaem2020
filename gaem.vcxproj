@@ -141,7 +141,6 @@
     <ClCompile Include="src\rand.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\extremity.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui_sfml\imconfig-SFML.h" />
@@ -153,6 +152,7 @@
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\extremity.h" />
     <ClInclude Include="src\mesa.h" />
+    <ClInclude Include="src\pared.h" />
     <ClInclude Include="src\persona.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\selfregister.h" />

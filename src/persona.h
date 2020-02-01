@@ -16,7 +16,6 @@ struct Persona : public Entity, EntS<Persona>
 	Extremity head;
 	Extremity body;
 
-	Persona() { }
 	Persona(int x, int y) {
 
 		pos.x = x;
