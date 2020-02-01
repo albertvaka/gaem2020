@@ -40,8 +40,8 @@ std::vector< std::string > mapita_inicial = { // (23 * 17 tiles)
 "XX X   X XX XX XFGFX  X",
 "XX XX XX X   X X   X  X",
 "XX             XX XX XX",
-"XXXXXXXXXXXBX        XX",
-"CCCCCCCCCCCCXXXXXXXXXXX",
+"XXXXXXXXXXBBBX       XX",
+"ZCCCCCCCCCCCCXXXXXXXXXX",
 };
 
 enum class TileType
@@ -70,10 +70,12 @@ TileType TileFromChar(char c)
 		{
 			return TileType::BELT_UP;
 		} break;
+		case 'S':
 		case 'B':
 		{
 			return TileType::BELT_DOWN;
 		} break;
+		case 'Z':
 		case 'C':
 		{
 			return TileType::BELT_LEFT;
@@ -157,6 +159,7 @@ void DrawGui()
 			s->spawn();
 		}
 	}
+	ImGui::Text(std::to_string(EntS<Cadaver>::getAll().size()).c_str());
 
 	ImGui::End();
 }
