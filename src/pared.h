@@ -18,9 +18,13 @@ struct Pared : public Entity, public EntS<Pared>
 		float x = pos.x / 100.0f;
 		float y = pos.y / 100.0f;
 		spr.setPosition(x, y);
+<<<<<<< HEAD
 		spr.setTextureRect(sf::IntRect(100, 100, 16, 16));
 		
 		window.draw(spr);
+=======
+		spr.setTextureRect(sf::IntRect(112, 112, 16, 16));
+>>>>>>> deprecated map (before born)
 	}
 
 

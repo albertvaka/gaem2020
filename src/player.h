@@ -6,13 +6,22 @@
 
 
 #include "input.h"
+
+#include "cadaver.h"
+
 struct Player : public Entity, public EntS<Player>
 {
 
 	int player;
+	bool isCarrying;
+	Extremity* extremity;
+	Cadaver* cadaver;
+
 	Player(int id, vec position)
 	{
 		player = id;
+
+		isCarrying = false;
 
 		anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
 		state = EntityState::MOVING;
@@ -28,7 +37,35 @@ struct Player : public Entity, public EntS<Player>
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, 30));
 
 		//TODO
-		if (Keyboard::IsKeyPressed(GameKeys::ACTION)) { }
+		if (Keyboard::IsKeyPressed(GameKeys::ACTION) && !isCarrying) 
+		{
+			if (extremity != NULL && cadaver == NULL)
+			{
+				isCarrying = true;
+				extremity->isCarried = true;
+				extremity->pos.x = pos.x;
+				extremity->pos.y = pos.y;
+
+			}
+			else if (extremity == NULL && cadaver != NULL)
+			{
+				isCarrying = true;
+				cadaver->isCarried = true;
+				cadaver->pos.x = pos.x;
+				cadaver->pos.y = pos.y;
+			}
+		}
+		else if (Keyboard::IsKeyPressed(GameKeys::ACTION) && isCarrying)
+		{
+			if (extremity != NULL) {
+				extremity->isCarried = false;
+				extremity = NULL;
+			}
+			if (cadaver != NULL) {
+				cadaver->isCarried = false;
+				cadaver = NULL;
+			}
+		}
 
 		//Player 0 can move with keyboard
 		if (player == 0) 
@@ -242,6 +279,5 @@ struct Player : public Entity, public EntS<Player>
 
 		bounds().Draw(window);
 	}
-
 };
 

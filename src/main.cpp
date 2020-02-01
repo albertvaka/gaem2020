@@ -1,3 +1,5 @@
+#include <map>
+
 #include "imgui.h"
 #include "imgui-SFML.h"
 #include <SFML/Graphics.hpp>
@@ -36,7 +38,10 @@ std::vector< std::string > mapita = { // (30 * 15 tiles)
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 
+<<<<<<< HEAD
 std::vector< std::vector<bool> > passable;
+=======
+>>>>>>> deprecated map (before born)
 
 void LoadGame(sf::RenderWindow& window)
 {
@@ -72,6 +77,8 @@ void LoadGame(sf::RenderWindow& window)
 		x = 0;
 
 	}
+
+	loadExtremityMap();
 }
 
 void DrawGui()
@@ -82,7 +89,7 @@ void DrawGui()
 	if (ImGui::Button("SPAWN CADAVER"))
 	{
 
-		new Cadaver(350, 350);
+		new Cadaver(700, 700);
 	}
 	if (ImGui::Button("SPAWN PLAYER"))
 	{
@@ -104,8 +111,6 @@ int main()
 	sf::Text txt_fps;
 	txt_fps.setPosition(10, 10);
 	txt_fps.setFont(font);
-
-	new Cadaver(300, 300);
 
 	while (window.isOpen()) 
 	{
