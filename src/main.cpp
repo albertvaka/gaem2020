@@ -23,23 +23,24 @@ sf::Texture texture;
 sf::Sprite sprite;
 
 std::vector< std::string > mapita = { // (23 * 17 tiles)
+
 "XXXXXXXXXXXSXXXXXXXXXXX",
-"XXXXXXXXXXAAAXXBBBBBXXX",
-"XX0      XAXAXXB  1BXXX",
-"XX XXCXX XAXAX       XX",
-"XB X C X XAAAX XXXXX XX",
-"XB X D X XX XX CC  X XX",
-"XX X   X BB    X D   XX",
-"XX XX XX    BB X   X XX",
-"XX       XX XX XXXXX XX",
-"XX XXXXX X  CC       XX",
-"XX X   X X D X XXXXX XX",
-"XX   D X X   X X   X XX",
-"XX X  CC XXXXX X D X BB",
-"XX XXXXX XBBBX CC  X BB",
+"XXXXXXXXXXDDBXXEEEEEXXX",
+"XX0      XAXBXXE   EXXX",
+"XX XXXXX XAXBX       XX",
+"XE X   X XACCX XXXXX XX",
+"XE XFGFX XX XX X   X XX",
+"XX X   X EE    XFGFX XX",
+"XX XX XX    EE X   X XX",
+"XX       XXXXX XX XX XX",
+"XX XXXXX X   X       XX",
+"XX X   X XFGFX XXXXX XX",
+"XX XFGFX X   X X   X XX",
+"XX X   X XX XX XFGFX EE",
+"XX XX XX X   X X   X EE",
 "XX             XX XX XX",
-"XXXXXXXXXXXAX        XX",
-"AAAAAAAAAAAAXXXXXXXXXXX",
+"XXXXXXXXXXXBX        XX",
+"CCCCCCCCCCCCXXXXXXXXXXX",
 
 };
 
@@ -72,10 +73,18 @@ void LoadGame(sf::RenderWindow& window)
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
 				case 'X': new Pared(pos); break;
-				case 'B': new Pared(pos); break;
-				case 'S': new Spawner(pos); break;
+				case 'A': new Cinta(pos, EntityDirection::UP); break;
+				case 'B': new Cinta(pos, EntityDirection::DOWN); break;
+				case 'C': new Cinta(pos, EntityDirection::LEFT); break;
+				case 'D': new Cinta(pos, EntityDirection::RIGHT); break;
+				case 'G': new Mesa(pos); break;
+				case 'S': 
+					new Spawner(pos); 
+					new Cinta(pos, EntityDirection::DOWN); 
+					break;
+				
 			}
-			passable[x][y] = (c < 'A');
+			passable[x][y] = (c != 'X' && c != 'G' && c!= 'F');
 			x += 1;
 		}
 		y += 1;
@@ -84,7 +93,6 @@ void LoadGame(sf::RenderWindow& window)
 	}
 
 	loadExtremityMap();
-	loadMesas();
 }
 
 void DrawGui()
@@ -94,15 +102,10 @@ void DrawGui()
 	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
 	if (ImGui::Button("SPAWN CADAVER"))
 	{
-
-		new Cadaver(100,100);
+		for (Spawner* s : EntS<Spawner>::getAll()) {
+			s->spawn();
+		}
 	}
-	if (ImGui::Button("SPAWN PLAYER"))
-	{
-		static int count = 4;
-		new Player(count++, vec::Rand(16, 16, GameData::WINDOW_WIDTH - 16, GameData::WINDOW_HEIGHT - 16));
-	}
-	ImGui::Text(std::to_string(Camera::GetCameraCenter().x).c_str());
 
 	ImGui::End();
 }

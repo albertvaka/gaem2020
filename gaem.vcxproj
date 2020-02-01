@@ -152,6 +152,7 @@
     <ClInclude Include="src\collider.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\extremity.h" />
+    <ClInclude Include="src\mesa.h" />
     <ClInclude Include="src\pared.h" />
     <ClInclude Include="src\cadaver.h" />
     <ClInclude Include="src\player.h" />

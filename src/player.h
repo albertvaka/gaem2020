@@ -8,6 +8,7 @@
 #include "input.h"
 
 #include "cadaver.h"
+#include "mesa.h"
 
 struct Player : public Entity, public EntS<Player>
 {
@@ -37,14 +38,37 @@ struct Player : public Entity, public EntS<Player>
 		speed.x = 0;
 		speed.y = 0;
 	}
-
-	void Move(int dt)
+	void SetSpeedWithPlayerInput()
 	{
 		float deadZone = 20;
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, deadZone));
 
-		//TODO
+
+		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& !isCarrying && mesa != NULL)
+		{
+			if (mesa->cadaver != NULL)
+			{
+				mesa->cadaver = false;
+				mesa->isEmpty = true;
+				cadaver->carryCadaver(pos.x, pos.y, player);
+
+			}
+		}
+		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& isCarrying && mesa != NULL)
+		{
+			if (cadaver != NULL) {
+				isCarrying = false;
+				cadaver->putCadaverOnTable(mesa->pos);
+
+				mesa->isEmpty = false;
+				cadaver = NULL;
+			}
+		}
+
 		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
+
 		{
 			if (extremity != NULL)
 			{
@@ -73,29 +97,8 @@ struct Player : public Entity, public EntS<Player>
 			}
 		}
 
-		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
-			&& !isCarrying && mesa != NULL)
-		{
-			if (mesa->cadaver != NULL)
-			{
-				mesa->cadaver = false;
-			}
-		}	
-		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
-			&& isCarrying && mesa != NULL)
-		{
-			if (cadaver != NULL) {
-				isCarrying = false;
-				cadaver->putCadaverOnTable(mesa->pos.x, mesa->pos.y);
-
-				mesa->isEmpty = false;
-				cadaver = NULL;
-			}
-		}
-		
-
 		//Player 0 can move with keyboard
-		if (player == 0) 
+		if (player == 0)
 		{
 			if (Keyboard::IsKeyPressed(GameKeys::UP))
 			{
@@ -127,6 +130,7 @@ struct Player : public Entity, public EntS<Player>
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::LEFT;
+
 		} else if (anal.y > deadZone)
 		{
 			state = EntityState::MOVING;
@@ -137,13 +141,23 @@ struct Player : public Entity, public EntS<Player>
 			state = EntityState::MOVING;
 			dir = EntityDirection::UP;
 		}
-		else 
+		else
 		{
 			state = EntityState::IDLE;
 		}
+	}
+	void Move(int dt)
+	{
+		
 
 		auto oldPos = pos;
+
+		SetSpeedWithPlayerInput();
+		SetSpeedWithCinta();
+		
+
 		bool moved = tryMove(dt/4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);
+
 
 		if (moved) 
 		{

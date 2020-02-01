@@ -4,6 +4,7 @@
 #include "player.h"
 #include "cadaver.h"
 #include "mesa.h"
+#include "cinta.h"
 #include <functional>
 
 bool Collision(Entity* entity_a, Entity* entity_b)
@@ -60,9 +61,30 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 	{
 		mesa->canLet = true;
 		mesa->cadaver = player->cadaver;
+		mesa->currentPlayer = player->player;
 		player->mesa = mesa;
 		
+
 	}
+}
+
+void collision_entity_cinta(Entity* player, Cinta* cinta) {
+	switch (cinta->dir)
+	{
+	case EntityDirection::UP:
+		player->inCinta[static_cast<int>(EntityDirection::UP)] = true;
+		break;
+	case EntityDirection::DOWN:
+		player->inCinta[static_cast<int>(EntityDirection::DOWN)] = true;
+		break;
+	case EntityDirection::LEFT:
+		player->inCinta[static_cast<int>(EntityDirection::LEFT)] = true;
+		break;
+	case EntityDirection::RIGHT:
+		player->inCinta[static_cast<int>(EntityDirection::RIGHT)] = true;
+		break;
+	}
+
 }
 
 void UpdateCollisions(int dt) 
@@ -73,6 +95,7 @@ void UpdateCollisions(int dt)
 		if (!player->isCarrying) {
 			player->extremity = NULL;
 			player->cadaver = NULL;
+			player->mesa = NULL;
 		}
 	}
 
@@ -89,11 +112,15 @@ void UpdateCollisions(int dt)
 	for (Mesa * mesa : EntS<Mesa>::getAll())
 	{
 		mesa->canLet = false;
+		mesa->currentPlayer = -1;
 	}
 
 	// If A collides with B, call collision_callback
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
 	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
+	collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+
 
 }
