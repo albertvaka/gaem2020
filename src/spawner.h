@@ -32,7 +32,7 @@ struct Spawner : public Entity, public EntS<Spawner>
 
 };
 
-struct Despawner : public Entity, public EntS<Spawner>
+struct Despawner : public Entity, public EntS<Despawner>
 {
 	Despawner(vec position) {
 		pos = position;

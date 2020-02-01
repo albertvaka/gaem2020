@@ -83,8 +83,8 @@ void collision_cadaver_spawner(Cadaver* ent, Spawner* spawner) {
 
 }
 
-void collision_cadaver_despawner(Entity* e, Entity* e2) {
-	e2->alive = false;
+void collision_cadaver_despawner(Cadaver* e, Despawner* _) {
+	e->alive = false;
 }
 
 void UpdateCollisions(int dt) 
