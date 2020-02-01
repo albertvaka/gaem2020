@@ -62,9 +62,23 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void Update(int dt) 
 	{
+		Move(dt);
 	}
 
+	void Move(int dt)
+	{
 
+
+		auto oldPos = pos;
+
+		SetSpeedWithCinta();
+		pos += speed * dt;
+		speed.x = 0;
+		speed.y = 0;
+
+	}
+
+	
 	void Draw(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
 		if (rightLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE)

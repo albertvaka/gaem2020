@@ -55,7 +55,7 @@ void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 	}
 }
 
-void collision_player_cinta(Player* player, Cinta* cinta) {
+void collision_entity_cinta(Entity* player, Cinta* cinta) {
 	switch (cinta->dir)
 	{
 	case EntityDirection::UP:
@@ -98,7 +98,8 @@ void UpdateCollisions(int dt)
 	// If A collides with B, call collision_callback
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
-	collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_player_cinta);
+	collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 
 
 }

@@ -43,10 +43,10 @@ struct Entity : public EntS<Entity>
 	void SetSpeedWithCinta()
 	{
 		sf::Vector2f newSpeed(0.f, 0.f);
-		speed.x += inCinta[static_cast<int>(EntityDirection::RIGHT)] * 0.1f;
-		speed.x -= inCinta[static_cast<int>(EntityDirection::LEFT)] * 0.1f;
-		speed.y -= inCinta[static_cast<int>(EntityDirection::UP)] * 0.1f;
-		speed.y += inCinta[static_cast<int>(EntityDirection::DOWN)] * 0.1f;
+		speed.x += inCinta[static_cast<int>(EntityDirection::RIGHT)] * 0.01f;
+		speed.x -= inCinta[static_cast<int>(EntityDirection::LEFT)] * 0.01f;
+		speed.y -= inCinta[static_cast<int>(EntityDirection::UP)] * 0.01f;
+		speed.y += inCinta[static_cast<int>(EntityDirection::DOWN)] * 0.01f;
 		//speed = newSpeed;
 		for (int i = 0; i < 4; i++) inCinta[i] = 0;
 	}
