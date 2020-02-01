@@ -26,6 +26,9 @@ enum AnimationType
 	DOCTOR_IDLE_UP,
 	DOCTOR_IDLE_RIGHT,
 	DOCTOR_IDLE_LEFT,
+	BELT_RIGHT,
+	NO,
+	NADA,
 };
 
 AnimationData anim_lib[] =
@@ -206,6 +209,39 @@ AnimationData anim_lib[] =
 		},
 		{
 			100,
+		},
+	},
+	//BELT_RIGHT
+	{
+		4,
+		{
+			{0,48,16,16},
+			{16,48,16,16},
+			{32,48,16,16},
+			{48,48,16,16},
+		},
+		{
+			200,200,200,200,
+		},
+	},
+	//NO
+	{
+		1,
+		{
+			{1,1,1,1},
+		},
+		{
+			1,
+		},
+	},
+	//NADA
+	{
+		1,
+		{
+			{1,1,1,1},
+		},
+		{
+			1,
 		},
 	},
 };
