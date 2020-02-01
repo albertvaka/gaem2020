@@ -30,6 +30,14 @@ enum AnimationType
 	BUTTON_A_PRESS,
 	NADA,
 	POKEMON,
+	PLAGUEDOC_IDLE_DOWN,
+	PLAGUEDOC_IDLE_UP,
+	PLAGUEDOC_IDLE_LEFT,
+	PLAGUEDOC_IDLE_RIGHT,
+	PLAGUEDOC_WALKING_LEFT,
+	PLAGUEDOC_WALKING_RIGHT,
+	PLAGUEDOC_WALKING_UP,
+	PLAGUE_DOC_WALKING_DOWN,
 };
 
 AnimationData anim_lib[] =
@@ -267,6 +275,96 @@ AnimationData anim_lib[] =
 		},
 		{
 			100,100,100,100,100,100,100,100,100,100,100,100,
+		},
+	},
+	//PLAGUEDOC_IDLE_DOWN
+	{
+		1,
+		{
+			{131,1,10,15},
+		},
+		{
+			100,
+		},
+	},
+	//PLAGUEDOC_IDLE_UP
+	{
+		1,
+		{
+			{147,1,10,15},
+		},
+		{
+			100,
+		},
+	},
+	//PLAGUEDOC_IDLE_LEFT
+	{
+		1,
+		{
+			{179,1,11,15},
+		},
+		{
+			100,
+		},
+	},
+	//PLAGUEDOC_IDLE_RIGHT
+	{
+		1,
+		{
+			{163,1,11,15},
+		},
+		{
+			100,
+		},
+	},
+	//PLAGUEDOC_WALKING_LEFT
+	{
+		3,
+		{
+			{179,1,11,15},
+			{179,17,11,15},
+			{178,33,11,15},
+		},
+		{
+			100,100,100,
+		},
+	},
+	//PLAGUEDOC_WALKING_RIGHT
+	{
+		3,
+		{
+			{163,1,11,15},
+			{163,17,11,15},
+			{164,33,11,15},
+		},
+		{
+			100,100,100,
+		},
+	},
+	//PLAGUEDOC_WALKING_UP
+	{
+		4,
+		{
+			{147,18,10,14},
+			{147,1,10,15},
+			{147,34,10,14},
+			{147,1,10,15},
+		},
+		{
+			100,100,100,100,
+		},
+	},
+	//PLAGUE_DOC_WALKING_DOWN
+	{
+		4,
+		{
+			{131,18,10,14},
+			{131,1,10,15},
+			{131,34,10,14},
+			{131,1,10,15},
+		},
+		{
+			100,100,100,100,
 		},
 	},
 };
