@@ -8,7 +8,6 @@
 #include "collider.h"
 
 #include "player.h"
-#include "pared.h"
 #include "cadaver.h"
 #include "cinta.h"
 #include "spawner.h"

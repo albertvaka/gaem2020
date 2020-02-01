@@ -31,3 +31,11 @@ struct Spawner : public Entity, public EntS<Spawner>
 	}
 
 };
+
+struct Despawner : public Entity, public EntS<Spawner>
+{
+	Despawner(vec position) {
+		pos = position;
+	}
+
+};

@@ -322,7 +322,6 @@ struct Player : public Entity, public EntS<Player>
 		spr.setPosition(pos.x + 1.5f, pos.y - 4.f);
 		
 		spr.setTextureRect(anim.CurrentFrame());
-		spr.setColor(sf::Color::White);
 
 		window.draw(spr);
 		spr.setScale(a);
