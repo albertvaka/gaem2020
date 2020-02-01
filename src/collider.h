@@ -2,7 +2,7 @@
 
 #include "selfregister.h"
 #include "player.h"
-#include "persona.h"
+#include "cadaver.h"
 #include <functional>
 
 bool Collision(Entity* entity_a, Entity* entity_b)

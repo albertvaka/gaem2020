@@ -10,7 +10,7 @@
 #include "input.h"
 #include "mates.h"
 #include "player.h"
-#include "persona.h"
+#include "cadaver.h"
 #include "pared.h"
 
 sf::Font font;
@@ -75,10 +75,10 @@ void DrawGui()
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
 
 	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
-	if (ImGui::Button("SPAWN PERSONA"))
+	if (ImGui::Button("SPAWN CADAVER"))
 	{
 
-		new Persona(350, 350);
+		new Cadaver(350, 350);
 	}
 
 	ImGui::End();
@@ -96,7 +96,7 @@ int main()
 	txt_fps.setPosition(10, 10);
 	txt_fps.setFont(font);
 
-	new Persona(300, 300);
+	new Cadaver(300, 300);
 
 	while (window.isOpen()) 
 	{
