@@ -1,7 +1,12 @@
 #pragma once
+
+#define _USE_MATH_DEFINES
+
 #include <random>
 #include <functional>
 #include <algorithm>
+
+#include <math.h>
 
 typedef int unsigned uint;
 
@@ -104,4 +109,16 @@ namespace Random
 	{
 		action.shuffle(values);
 	}
+
+	inline void CircularRoll(float radius, float& x, float& y)
+	{
+		float r = rollf(0.0f, radius);
+		float ang = rollf(0.0f, 360.0f);
+
+		float rads = ang * M_PI / 180.0f;
+
+		x = r * std::cos(rads);
+		y = r * std::sin(rads);
+	}
+
 }
