@@ -99,15 +99,10 @@ void DrawGui()
 	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
 	if (ImGui::Button("SPAWN CADAVER"))
 	{
-
-		new Cadaver(100,100);
+		for (Spawner* s : EntS<Spawner>::getAll()) {
+			s->spawn();
+		}
 	}
-	if (ImGui::Button("SPAWN PLAYER"))
-	{
-		static int count = 4;
-		new Player(count++, vec::Rand(16, 16, GameData::WINDOW_WIDTH - 16, GameData::WINDOW_HEIGHT - 16));
-	}
-	ImGui::Text(std::to_string(Camera::GetCameraCenter().x).c_str());
 
 	ImGui::End();
 }
