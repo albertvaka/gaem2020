@@ -340,7 +340,7 @@ struct Player : public Entity, public EntS<Player>
 		if (isCadaverCarriable && !isCarrying)
 		{
 			spr.setTextureRect(actionButton.CurrentFrame());
-			spr.setPosition(pos.x + 16, pos.y);
+			spr.setPosition(pos.x + 13, pos.y - 10);
 			window.draw(spr);
 		}
 		else
