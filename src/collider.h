@@ -5,6 +5,7 @@
 #include "cadaver.h"
 #include "mesa.h"
 #include "cinta.h"
+#include "spawner.h"
 #include <functional>
 
 bool Collision(Entity* entity_a, Entity* entity_b)
@@ -20,7 +21,6 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 		(a.x < b.x + COLLISION_SIZE && a.x + COLLISION_SIZE > b.x &&
 			a.y < b.y + COLLISION_SIZE && a.y + COLLISION_SIZE > b.y);
 }
-
 
 template <typename T, typename U, typename Z, typename Y>
 void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(Y*, Z*)) 
@@ -76,6 +76,12 @@ void collision_entity_cinta(Entity* ent, Cinta* cinta) {
 
 }
 
+void collision_cadaver_spawner(Cadaver* ent, Spawner* spawner) {
+
+	spawner->empty = false;
+
+}
+
 void UpdateCollisions(int dt) 
 {
 
@@ -110,6 +116,7 @@ void UpdateCollisions(int dt)
 	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
 	collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);
 
 
 }

@@ -18,9 +18,12 @@ struct Mesa : public Entity, EntS<Mesa>
 		canLet = false;
 		isEmpty = true;
 
-
+		anim.Ensure(AnimationType::POKEMON);
 	}
 
+	void Update(int dt)
+	{
+	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
@@ -35,6 +38,10 @@ struct Mesa : public Entity, EntS<Mesa>
 
 			wnd.draw(shape);
 		}
+
+		spr.setTextureRect(anim.CurrentFrame());
+		spr.setPosition(pos.x - 6, pos.y -16);
+		wnd.draw(spr);
 	}
 
 };

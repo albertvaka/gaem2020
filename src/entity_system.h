@@ -42,6 +42,12 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 	}
 
+	for (Mesa* e : EntS<Mesa>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
+
 
 
 
