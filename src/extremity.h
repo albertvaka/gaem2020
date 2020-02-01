@@ -95,7 +95,6 @@ struct Extremity : public Entity, EntS<Extremity>
 
 	void Draw(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setScale(4, 4);
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(data.colorType)->second);
 		wnd.draw(spr);
