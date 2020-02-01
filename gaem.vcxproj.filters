@@ -104,13 +104,13 @@
     <ClInclude Include="src\extremity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\persona.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\mesa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pared.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cadaver.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>

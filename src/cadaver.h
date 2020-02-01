@@ -7,7 +7,7 @@
 
 
 
-struct Persona : public Entity, EntS<Persona>
+struct Cadaver : public Entity, EntS<Cadaver>
 { 
 	Extremity rightLeg;
 	Extremity leftLeg;
@@ -16,7 +16,7 @@ struct Persona : public Entity, EntS<Persona>
 	Extremity head;
 	Extremity body;
 
-	Persona(int x, int y) {
+	Cadaver(int x, int y) {
 
 		pos.x = x;
 		pos.y = y;

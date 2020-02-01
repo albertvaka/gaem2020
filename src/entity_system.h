@@ -9,7 +9,7 @@
 
 #include "player.h"
 #include "pared.h"
-#include "persona.h"
+#include "cadaver.h"
 
 void UpdateEntities(int dt)
 {
@@ -22,7 +22,7 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
-	for (Persona* e : EntS<Persona>::getAll())
+	for (Cadaver* e : EntS<Cadaver>::getAll())
 	{
 		e->Update(dt);
 		//e->anim.Update(dt);
@@ -53,7 +53,7 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		window.draw(spr);
 	}
 
-	for (Persona* e : EntS<Persona>::getAll())
+	for (Cadaver* e : EntS<Cadaver>::getAll())
 	{
 		e->DrawRightLeg(spr);
 		window.draw(spr);
