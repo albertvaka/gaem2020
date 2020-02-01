@@ -24,8 +24,8 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		pos.x = x;
 		pos.y = y;
 		
-		int color = Random::roll(1, ExtremityData::BodyColor::SIZE_COLOR - 1);
-		int type = color * (ExtremityData::BodyColor::SIZE_COLOR - 2);
+		int color = Random::roll(0, ExtremityData::BodyColor::SIZE_COLOR - 2);
+		int type = color * (ExtremityData::BodyColor::SIZE_COLOR - 1);
 
 		rightLeg.x = pos.x;
 		rightLeg.y = pos.y;
@@ -51,15 +51,15 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		body.y = pos.y;
 		body.colorType = (ExtremityData::BodyColorType) (type + 6);
 
-		int noExtremity = Random::roll(1, 5);
+		int noExtremity = Random::roll(0, 4);
 
 		switch (noExtremity)
 		{
-		case 1: rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 2: leftLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 3: rightArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 4: leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 5: head.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+		case 0: rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+		case 1: leftLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+		case 2: rightArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+		case 3: leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+		case 4: head.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
 		}
 	}
 
@@ -94,6 +94,8 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		{
 			DrawHead(spr, wnd);
 		}
+
+		DrawBody(spr, wnd);
 
 		if (isCarriable)
 		{
@@ -146,7 +148,7 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	{
 		spr.setScale(4, 4);
 		spr.setPosition(body.x, body.y);
-		spr.setTextureRect(extremitySprPos.find(rightLeg.colorType)->second);
+		spr.setTextureRect(extremitySprPos.find(body.colorType)->second);
 		wnd.draw(spr);
 	}
 
