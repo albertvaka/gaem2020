@@ -90,7 +90,7 @@ struct Player : public Entity, public EntS<Player>
 		}
 
 
-		speed = anal * 0.003f;
+		speed = anal * 0.0015f;
 		
 		if (anal.x > 70)
 		{
@@ -139,7 +139,7 @@ struct Player : public Entity, public EntS<Player>
 
 		vec newPos = pos + speed * dt;
 		
-		int dd = 8 * 4 * 0.8;
+		float dd = 8 * 0.8;
 
 		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
 		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
@@ -200,8 +200,8 @@ struct Player : public Entity, public EntS<Player>
 	{
 		return 
 		{ 
-			int(((pos.x / 4.f) + 8) / 16), 
-			int(((pos.y / 4.f) + 8) / 16) 
+			int((pos.x + 8) / 16), 
+			int((pos.y + 8) / 16) 
 		};
 	}
 
@@ -256,7 +256,7 @@ struct Player : public Entity, public EntS<Player>
 
 	Bounds bounds() {
 
-		return Bounds(pos.x, pos.y, 16 * 4, 16*4);
+		return Bounds(pos.x, pos.y, 16, 16);
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
@@ -264,8 +264,8 @@ struct Player : public Entity, public EntS<Player>
 		spr.setOrigin(0, 0);
 
 		auto a = spr.getScale();
-		spr.setScale(5, 5);
-		spr.setPosition(pos.x-8, pos.y - 18);
+		spr.setScale(1.25, 1.25);
+		spr.setPosition(pos.x + 1.5f, pos.y - 3.f);
 		
 		//spr.setOrigin(8, 8);
 

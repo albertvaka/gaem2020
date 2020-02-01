@@ -49,19 +49,20 @@ void LoadGame(sf::RenderWindow& window)
 
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(16, 16, 16, 16));
-	sprite.setScale(4, 4);
 	
 	window.setFramerateLimit(60);
 	ImGui::SFML::Init(window);
 
 	Input::Init(window);
+	Camera::SetZoom(4.f);
+	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / 8, GameData::WINDOW_HEIGHT/8));
 
 	passable.resize(mapita[0].size(), std::vector<bool>(mapita.size()));
 
 	int x = 0, y = 0;
 	for (auto row : mapita) {
 		for (char c : row) {
-			vec pos(64 * x, 64 * y);
+			vec pos(16 * x, 16 * y);
 			switch (c) {
 				case '0': new Player(0, pos); break;
 				case '1': new Player(1, pos); break;
@@ -94,8 +95,9 @@ void DrawGui()
 	if (ImGui::Button("SPAWN PLAYER"))
 	{
 		static int count = 4;
-		new Player(count++, vec::Rand(1600, 1600, GameData::WINDOW_WIDTH * 98, GameData::WINDOW_HEIGHT*98));
+		new Player(count++, vec::Rand(16, 16, GameData::WINDOW_WIDTH - 16, GameData::WINDOW_HEIGHT - 16));
 	}
+	ImGui::Text(std::to_string(Camera::GetCameraCenter().x).c_str());
 
 	ImGui::End();
 }
@@ -118,10 +120,16 @@ int main()
 
 		Input::Update(time);
 
+		//#if _DEBUG
+		//Camera::MoveCameraWithArrows(50, time.asSeconds());
+		//Camera::ChangeZoomWithPlusAndMinus(0.5f, time.asSeconds());
+		//#endif
+
 		UpdateEntities(time.asMilliseconds());
 
 		DrawEntities(sprite, window);
 		//DrawEntities(texture, window);
+
 		Camera::StartGuiDraw();
 		DrawGui();
 		ImGui::SFML::Render(window);

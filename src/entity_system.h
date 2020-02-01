@@ -28,10 +28,7 @@ void UpdateEntities(int dt)
 		//e->anim.Update(dt);
 	}
 
-//#if _DEBUG
-	//Camera::MoveCameraWithArrows(50, dt / 1000.f);
-	Camera::ChangeZoomWithPlusAndMinus(0.5f, dt / 1000.f);
-//#endif
+
 
 	EntS<Entity>::deleteNotAlive();
 }
