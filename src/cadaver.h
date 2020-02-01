@@ -8,7 +8,7 @@
 #include "taca.h"
 
 
-struct Cadaver : public Entity, EntS<Cadaver>
+struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 { 
 	ExtremityData rightLeg;
 	ExtremityData leftLeg;
@@ -52,6 +52,14 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		}
 	}
 
+	vec positionPlz() {
+		return pos;
+	}
+
+	vec sizePlz() override {
+		return vec(16, 16);
+	}
+
 	void carryCadaver(int x, int y, int player)
 	{
 		isCarried = true;
@@ -75,24 +83,22 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void Update(int dt) 
 	{
-		Move(dt);
-		counterBloodTimeLeft -=dt* Random::roll(0, 3);
-		if (counterBloodTimeLeft < 0) 
+		counterBloodTimeLeft -= dt * Random::roll(0, 3);
+		if (counterBloodTimeLeft < 0)
 		{
-			new Taca(pos);
+			new Taca(pos, currCintaDirection);
 			counterBloodTimeLeft = 100;
 		}
+		Move(dt);
+
 	}
 
 	void Move(int dt)
 	{
 
-		auto oldPos = pos;
-
-		SetSpeedWithCinta();
+		SetSpeedWithCinta(speed);
 		sf::Vector2f oldpos = pos;
 		pos += speed * dt;
-
 		
 		speed.x = 0;
 		speed.y = 0;

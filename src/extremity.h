@@ -65,7 +65,7 @@ struct ExtremityData
 	int x, y;
 };
 
-struct Extremity : public Entity, EntS<Extremity> 
+struct Extremity : public SortedDrawable, EntS<Extremity> 
 {
 
 	ExtremityData data;

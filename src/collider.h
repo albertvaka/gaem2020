@@ -22,6 +22,20 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 			a.y < b.y + COLLISION_SIZE && a.y + COLLISION_SIZE > b.y);
 }
 
+bool Collision(Cintable* entity_a, Cinta* entity_b)
+{
+
+	float COLLISION_SIZE = 1;
+
+	vec a = entity_a->positionPlz();
+	vec b = entity_b->pos;
+
+	//rectangle colision
+	return
+		(a.x < b.x + 16 && a.x + entity_a->sizePlz().x > b.x &&
+			a.y < b.y + 16 && a.y + entity_a->sizePlz().y > b.y);
+}
+
 template <typename T, typename U, typename Z, typename Y>
 void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(Y*, Z*)) 
 {
@@ -69,7 +83,7 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 	}
 }
 
-void collision_entity_cinta(Entity* ent, Cinta* cinta) {
+void collision_entity_cinta(Cintable *ent, Cinta* cinta) {
 
 	if (ent->prevCintaDirection == cinta->dir || ent->prevCintaDirection == EntityDirection::NONE) {
 		ent->currCintaDirection = cinta->dir;
@@ -121,8 +135,7 @@ void UpdateCollisions(int dt)
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
 	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
-	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
-	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
 

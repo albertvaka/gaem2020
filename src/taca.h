@@ -3,15 +3,29 @@
 #include "rand.h"
 
 
-struct Taca : public Entity, public EntS<Taca>
+struct Taca : public Cintable, public EntS<Taca>
 {
+
+	vec positionPlz() override {
+		return pos;
+	}
+
+	vec sizePlz() override {
+		return vec(16,16);
+	}
+
+	bool alive;
+	vec pos;
+	vec speed;
 	sf::Color m_color = sf::Color(200,0,0);
 	sf::Vector2f m_offset;
-	float counter = 100;
-	Taca(vec position) {
+	float counter;
+	Taca(vec position, EntityDirection dir) {
+		currCintaDirection = dir;
+		counter = 7500 + Random::roll(5000);
 		pos = position;
-		m_offset.x = Random::roll(0, 3);
-		m_offset.y = Random::roll(0, 3);
+		m_offset.x = Random::roll(0, 16);
+		m_offset.y = Random::roll(0, 16);
 		m_color.r += Random::roll(0, 50);
 		m_color.g += Random::roll(0, 50);
 		m_color.b += Random::roll(0, 50);
@@ -29,9 +43,15 @@ struct Taca : public Entity, public EntS<Taca>
 
 	void Update(float dt)
 	{
+		SetSpeedWithCinta(speed);
 		counter -= dt;
-		if (counter < 0) alive = false;
+		if (counter < 0) {
+			alive = false;
+		}
+		pos += speed * dt;
+		speed.Zero();
 	}
+
 	void Draw(sf::VertexArray &vertexArray)
 	{
 		

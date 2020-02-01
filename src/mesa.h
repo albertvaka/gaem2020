@@ -2,7 +2,7 @@
 
 #include "entity.h"
 
-struct Mesa : public Entity, EntS<Mesa>
+struct Mesa : public SortedDrawable, EntS<Mesa>
 {
 
 	bool canLet;

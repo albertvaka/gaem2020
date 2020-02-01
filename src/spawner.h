@@ -19,14 +19,16 @@ struct Spawner : public Entity, public EntS<Spawner>
 	{
 		timer += dt;
 		if (timer > INTERVAL) {
-			timer -= INTERVAL;
-			spawn();
+			if (empty) {
+				timer -= INTERVAL;
+				spawn();
+			}
 		}
+		empty = true;
 	}
 
 	void spawn() {
-		if(empty) new Cadaver(pos);
-		empty = true;
+		new Cadaver(pos);
 		
 	}
 
