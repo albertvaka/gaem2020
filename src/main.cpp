@@ -27,19 +27,18 @@ const int TILE_SIZE = 16;
 
 std::vector< std::string > mapita_inicial = { // (23 * 17 tiles)
 "XXXXXXXXXXXSXXXXXXXXXXX",
-"XXXXXXXXXXDDBXXEEEEEXXX",
-"XX0      XAXBXXE   EXXX",
+"XX0      XDDBXXXXXXXXXX",
 "XX XXXXX XAXBX       XX",
-"XE X   X XACCX XXXXX XX",
-"XE XFGFX XX XX X   X XX",
-"XX X   X EE    XFGFX XX",
-"XX XX XX    EE X   X XX",
+"X  X   X XAXBX XXXXX XX",
+"X  XFGFX XACCX X   X XX",
+"XX X   X       XFGFX XX",
+"XX XX XX       X   X XX",
 "XX       XXXXX XX XX XX",
 "XX XXXXX X   X       XX",
 "XX X   X XFGFX XXXXX XX",
 "XX XFGFX X   X X   X XX",
-"XX X   X XX XX XFGFX EE",
-"XX XX XX X   X X   X EE",
+"XX X   X XX XX XFGFX  X",
+"XX XX XX X   X X   X  X",
 "XX             XX XX XX",
 "XXXXXXXXXXXBX        XX",
 "CCCCCCCCCCCCXXXXXXXXXXX",
@@ -111,8 +110,8 @@ void LoadGame(sf::RenderWindow& window)
 				
 			}
 
-			passable[x][y] = (c != 'X' && c != 'G' && c!= 'F');
-
+			//passable[x][y] = (c != 'X' && c != 'G' && c!= 'F');
+			passable[x][y] = (c != 'X' && c != 'G' && c != 'F' && c !='A' &&  c != 'B' &&  c != 'C' &&  c != 'D');
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
 		}

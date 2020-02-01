@@ -114,7 +114,7 @@ void UpdateCollisions(int dt)
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
 	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
-	collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);
 
