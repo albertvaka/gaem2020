@@ -17,35 +17,6 @@ struct Cinta : public Entity, public EntS<Cinta>
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
-		switch (dir) {
-		case EntityDirection::UP:
-			spr.setOrigin(16, 0);
-			spr.setRotation(-90);
-			break;
-		case EntityDirection::DOWN:
-			spr.setOrigin(0, 16);
-			spr.setRotation(90);
-			break;
-		case EntityDirection::LEFT:
-			spr.setOrigin(16, 16);
-			spr.setRotation(180);
-			break;
-		case EntityDirection::RIGHT:
-			spr.setOrigin(0, 0);
-			break;
-
-		}
-		
-		spr.setPosition(pos.x, pos.y);
-
-
-		spr.setTextureRect(anim.CurrentFrame());
-		spr.setColor(sf::Color::White);
-
-		window.draw(spr);
-
-		spr.setRotation(0);
-		spr.setOrigin(0,0);
 
 	}
 
