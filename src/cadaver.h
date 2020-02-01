@@ -139,10 +139,10 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 		DrawBody(spr, wnd);
 
-		if (isCarriable)
+	/*	if (isCarriable)
 		{
 			DrawCarriable(spr, wnd);
-		}
+		}*/
 	}
 
 

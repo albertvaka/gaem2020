@@ -52,6 +52,7 @@ void collision_player_extremity(Player* player, Extremity* extremity) {
 void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 	if (!player->isCarrying && !cadaver->isCarried) {
 		player->cadaver = cadaver;
+		player->isCadaverCarriable = true;
 		cadaver->isCarriable = true;
 	}
 }
@@ -95,6 +96,8 @@ void UpdateCollisions(int dt)
 			player->extremity = NULL;
 			player->cadaver = NULL;
 			player->mesa = NULL;
+
+			player->isCadaverCarriable = false;
 		}
 	}
 

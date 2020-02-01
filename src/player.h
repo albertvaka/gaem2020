@@ -18,9 +18,12 @@ struct Player : public Entity, public EntS<Player>
 		int diff = int(AnimationType::DOCTOR_WALKING_DOWN) - int(AnimationType::PLAYER_WALKING_DOWN);
 		return AnimationType(animint + diff * player);
 	}
+	
+	Animation actionButton;
 
 	int player;
 	bool isCarrying;
+	bool isCadaverCarriable;
 	Extremity* extremity;
 	Cadaver* cadaver;
 	Mesa* mesa;
@@ -32,6 +35,8 @@ struct Player : public Entity, public EntS<Player>
 		isCarrying = false;
 
 		anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_DOWN));
+		actionButton.Ensure(AnimationType::BUTTON_A_PRESS);
+
 		state = EntityState::MOVING;
 
 		pos = position;
@@ -332,6 +337,17 @@ struct Player : public Entity, public EntS<Player>
 		window.draw(spr);
 		spr.setScale(a);
 
+		if (isCadaverCarriable && !isCarrying)
+		{
+			spr.setTextureRect(actionButton.CurrentFrame());
+			spr.setPosition(pos.x + 16, pos.y);
+			window.draw(spr);
+		}
+		else
+		{
+			actionButton.Reset();
+		}
+
 	}
 
 
@@ -345,6 +361,8 @@ struct Player : public Entity, public EntS<Player>
 		sf::Vector2u posStartInSpritesheet(rect.left,rect.top);
 		sf::Vector2u sizeSprite(rect.width,rect.height);
 		sf::Vector2u scale(5, 5);
+
+	
 		
 		vertexArray.append(sf::Vertex(sf::Vector2f(x, y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y)));
 		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y)));
