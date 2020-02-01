@@ -12,6 +12,7 @@
 struct Bounds : public sf::Rect<float>
 {
     explicit Bounds() : sf::Rect<float>(0,0,0,0) { }
+    explicit Bounds(sf::Rect<float> r) : sf::Rect<float>(r.left, r.top, r.width, r.height) { }
     explicit Bounds(const vec& v) : sf::Rect<float>(0,0,v.x,v.y) { }
     explicit Bounds(float x, float y, float w, float h) : sf::Rect<float>(x,y,w,h) { }
 
@@ -100,6 +101,13 @@ struct Bounds : public sf::Rect<float>
     //void ExpandToInclude(vec point);
 
 };
+
+inline bool Collide(Bounds a, Bounds b) {
+
+     return
+            (a.left < b.left + b.width && a.left + a.width > b.left &&
+                a.top < b.top + b.height && a.top + a.height > b.top);
+}
 
 inline std::ostream& operator<<(std::ostream& os, const Bounds& rhs)
 {

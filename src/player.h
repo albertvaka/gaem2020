@@ -77,25 +77,13 @@ struct Player : public Entity, public EntS<Player>
 			state = EntityState::IDLE;
 		}
 
-		vec newPos= pos + speed * dt;
-		Mates::xy tilePos = PosToTile(pos);
-		Mates::xy tileNewPos = PosToTile(newPos);
-
-		vec oldPos = pos;
-		bool moved = false;
-		if (passable[tilePos.x][tileNewPos.y]) {
-			pos.y = newPos.y;
-			moved = true;
-		}
-		if (passable[tileNewPos.x][tilePos.y]) {
-			pos.x = newPos.x;
-			moved = true;
-		}
+		auto oldPos = pos;
+		bool moved = tryMove(dt);
 
 		if (moved) {
 			for (Player* p : EntS<Player>::getAll()) {
 				if (p == this) continue;
-				if (Distance(p->pos, this->pos) < 1600.f) {
+				if (Collide(p->bounds(),this->bounds())) {
 					pos = oldPos;
 					break;
 				}
@@ -103,6 +91,58 @@ struct Player : public Entity, public EntS<Player>
 		}
 	}
 
+	bool tryMove(int dt) 
+	{
+		bool moved = false;
+
+		vec newPos = pos + speed * dt;
+		Mates::xy tilePos = PosToTile(pos);
+
+		// Right
+		if (speed.x > 0) {
+			vec testPos = newPos + vec(100 * 8 * 4, 0);
+			Mates::xy tileNewPos = PosToTile(testPos);
+
+			if (passable[tileNewPos.x][tilePos.y]) {
+				pos.x = newPos.x;
+				moved = true;
+			}
+		}
+		else if (speed.x < 0) { //Left
+			vec testPos = newPos - vec(100*8*4, 0);
+			Mates::xy tileNewPos = PosToTile(testPos);
+
+			if (passable[tileNewPos.x][tilePos.y]) {
+				pos.x = newPos.x;
+				moved = true;
+			}
+		}
+
+
+		// Down
+		if (speed.y > 0) {
+			vec testPos = newPos + vec(100 * 8 * 4, 0);
+			Mates::xy tileNewPos = PosToTile(testPos);
+
+			if (passable[tilePos.x][tileNewPos.y]) {
+				pos.y = newPos.y;
+				moved = true;
+			}
+		}
+		else if (speed.y < 0) { //Up
+			vec testPos = newPos - vec(100 * 8 * 4, 0);
+			Mates::xy tileNewPos = PosToTile(testPos);
+
+			if (passable[tilePos.x][tileNewPos.y]) {
+				pos.y = newPos.y;
+				moved = true;
+			}
+		}
+
+		
+		return moved;
+
+	}
 	static Mates::xy PosToTile(vec pos) {
 		return { int(((pos.x / 400.f) + 8) / 16), int(((pos.y / 400.f) + 8) / 16) };
 	}
@@ -156,20 +196,30 @@ struct Player : public Entity, public EntS<Player>
 		}
 	}
 
+	Bounds bounds() {
+
+		return Bounds(pos.x / 100.f, pos.y/100.f, 16 * 4, 16*4);
+	}
+
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 		spr.setOrigin(0, 0);
 
+		auto a = spr.getScale();
+		spr.setScale(5, 5);
 		float x = pos.x / 100.0f;
 		float y = pos.y / 100.0f;
-		spr.setPosition(x, y);
-
+		spr.setPosition(x-8, y - 18);
+		
 		//spr.setOrigin(8, 8);
 
 		spr.setTextureRect(anim.CurrentFrame());
 		spr.setColor(sf::Color::White);
 
 		window.draw(spr);
+		spr.setScale(a);
+
+		bounds().Draw(window);
 	}
 
 };

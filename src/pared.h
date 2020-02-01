@@ -12,11 +12,6 @@ struct Pared : public Entity, public EntS<Pared>
 		pos = position;
 	}
 
-	void Update(int dt) {
-	
-	}
-
-
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 		spr.setOrigin(0, 0);

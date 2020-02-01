@@ -35,9 +35,8 @@ public:
 	{
 		getAll().erase(std::remove(getAll().begin(), getAll().end(), (T*)this), getAll().end());
 	}
-	static std::vector<T*>& sort(std::function<bool(T*,T*)> sortBy) {
+	static void sort(std::function<bool(T*,T*)> sortBy) {
 		std::sort(getAll().begin(), getAll().end(), sortBy);
-		return getAll();
 	}
 	static void deleteNotAlive() 
 	{
