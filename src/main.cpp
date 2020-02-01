@@ -90,6 +90,11 @@ namespace Editor
 		//RefreshFrameSelected();
 	}
 
+	void DeleteLastFrame()
+	{
+		anim->data->frames--;
+	}
+
 	void SelectFrame(int f)
 	{
 		frame_current = f;
@@ -188,10 +193,22 @@ void EditorSection_Selector()
 			}
 		}
 
-		if (ImGui::Button("ADD FRAME"))
+		if (ImGui::Button("ADD"))
 		{
 			Editor::AddNewFrame();
 		}
+
+		if (frames > 1)
+		{
+			ImGui::SameLine();
+
+			if (ImGui::Button("DELETE"))
+			{
+				Editor::DeleteLastFrame();
+			}
+		}
+
+		
 	}
 
 	//Show all frames
@@ -273,13 +290,13 @@ void EditorStuff()
 	ImGui::Image(spr_preview, sf::Vector2f(64, 64));
 
 	ImGui::Separator();
+
+	
+
 	ImGui::Text("animations.");
 	ImGui::NewLine();
 
 	EditorSection_AnimationSelector();
-
-	//static char buff[128];
-	//ImGui::InputText("le text", &buff[0], 128);
 
 	ImGui::Separator();
 	ImGui::Text("cosas.");
@@ -360,6 +377,16 @@ void EditorStuff()
 		file.open("anim_data.h", ios::out | ios::trunc);
 
 		file << "#pragma once\n";
+
+		file << "#include <SFML/Graphics.hpp>\n";
+
+		file << "struct AnimationData\n";
+		file << "{\n";
+		file << "\tint frames;\n";
+		file << "\tsf::IntRect rect[16];\n";
+		file << "\tint timer[16];\n";
+		file << "};";
+		
 
 		file << "\n";
 
@@ -621,7 +648,6 @@ int main()
 		EditorStuff();
 
 		//Editor::anim->name = std::string(Editor::buff_animation_name);
-
 
 		/*
 		sf::Text txt_fps;
