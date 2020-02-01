@@ -18,6 +18,14 @@ enum AnimationType
 	PLAYER_IDLE_UP,
 	PLAYER_IDLE_RIGHT,
 	PLAYER_IDLE_LEFT,
+	DOCTOR_WALKING_DOWN,
+	DOCTOR_WALKING_UP,
+	DOCTOR_WALKING_RIGHT,
+	DOCTOR_WALKING_LEFT,
+	DOCTOR_IDLE_DOWN,
+	DOCTOR_IDLE_UP,
+	DOCTOR_IDLE_RIGHT,
+	DOCTOR_IDLE_LEFT,
 };
 
 AnimationData anim_lib[] =
@@ -107,6 +115,94 @@ AnimationData anim_lib[] =
 		1,
 		{
 			{52,1,9,15},
+		},
+		{
+			100,
+		},
+	},
+	//DOCTOR_WALKING_DOWN
+	{
+		4,
+		{
+			{67,17,10,15},
+			{67,0,10,16},
+			{68,33,9,15},
+			{67,0,10,16},
+		},
+		{
+			100,100,100,100,
+		},
+	},
+	//DOCTOR_WALKING_UP
+	{
+		4,
+		{
+			{83,17,9,15},
+			{83,0,10,16},
+			{83,0,10,16},
+			{83,0,10,16},
+		},
+		{
+			100,100,100,100,
+		},
+	},
+	//DOCTOR_WALKING_RIGHT
+	{
+		3,
+		{
+			{100,17,9,15},
+			{100,33,10,15},
+			{100,0,9,16},
+		},
+		{
+			100,100,100,
+		},
+	},
+	//DOCTOR_WALKING_LEFT
+	{
+		1,
+		{
+			{1,1,1,1},
+		},
+		{
+			1,
+		},
+	},
+	//DOCTOR_IDLE_DOWN
+	{
+		1,
+		{
+			{67,0,10,16},
+		},
+		{
+			100,
+		},
+	},
+	//DOCTOR_IDLE_UP
+	{
+		1,
+		{
+			{83,0,10,16},
+		},
+		{
+			1,
+		},
+	},
+	//DOCTOR_IDLE_RIGHT
+	{
+		1,
+		{
+			{100,0,9,16},
+		},
+		{
+			100,
+		},
+	},
+	//DOCTOR_IDLE_LEFT
+	{
+		1,
+		{
+			{1,1,1,1},
 		},
 		{
 			100,
