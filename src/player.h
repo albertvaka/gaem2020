@@ -43,7 +43,7 @@ struct Player : public Entity, public EntS<Player>
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, deadZone));
 
 		//TODO
-		if (Keyboard::IsKeyJustPressed(GameKeys::ACTION) && !isCarrying) 
+		if (Keyboard::IsKeyJustPressed(GameKeys::ACTION) || GamePad::IsButtonJustPressed(player, GamePad::Button::A) && !isCarrying) 
 		{
 			if (extremity != NULL)
 			{
@@ -58,7 +58,7 @@ struct Player : public Entity, public EntS<Player>
 				cadaver->carryCadaver(pos.x, pos.y, player);
 			}
 		}
-		else if (Keyboard::IsKeyJustPressed(GameKeys::ACTION) && isCarrying)
+		else if (Keyboard::IsKeyJustPressed(GameKeys::ACTION) || GamePad::IsButtonJustPressed(player, GamePad::Button::A) && isCarrying)
 		{
 			if (extremity != NULL) {
 				isCarrying = false;
