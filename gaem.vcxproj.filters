@@ -116,6 +116,9 @@
     <ClInclude Include="src\anim_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\spawner.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\cinta.h">

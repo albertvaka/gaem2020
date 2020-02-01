@@ -14,13 +14,15 @@
 #include "player.h"
 #include "cadaver.h"
 #include "pared.h"
+#include "spawner.h"
+
 
 sf::Font font;
 sf::Texture texture;
 sf::Sprite sprite;
 
 std::vector< std::string > mapita = { // (23 * 17 tiles)
-"XXXXXXXXXXXAXXXXXXXXXXX",
+"XXXXXXXXXXXSXXXXXXXXXXX",
 "XXXXXXXXXXAAAXXBBBBBXXX",
 "XX0      XAXAXXB  1BXXX",
 "XX XXCXX XAXAX       XX",
@@ -70,6 +72,7 @@ void LoadGame(sf::RenderWindow& window)
 				case '3': new Player(3, pos); break;
 				case 'X': new Pared(pos); break;
 				case 'B': new Pared(pos); break;
+				case 'S': new Spawner(pos); break;
 			}
 			passable[x][y] = (c < 'A');
 			x += 1;
