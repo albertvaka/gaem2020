@@ -64,6 +64,7 @@ int main()
 		new Player();
 	}
 
+	new Persona(300, 300);
 	while (window.isOpen()) 
 	{
 		sf::Time time = dtClock.restart();

@@ -1,45 +1,69 @@
 #pragma once
 
-#include "entity.h"
-#include "animation.h"
 #include "rand.h"
 
+#include "extremity.h"
+#include "entity.h"
 
-struct Persona : public Entity, public EntS<Persona>
+
+
+struct Persona : public Entity, EntS<Persona>
 { 
-	enum BodyColor {
-		NONE = 0,
-		WHITE,
-		BLACK,
-		YELLOW,
-		GREEN,
-		BLUE,
-		RED,
-		SIZE
-	};
+	Extremity rightLeg;
+	Extremity leftLeg;
+	Extremity rightArm;
+	Extremity leftArm;
+	Extremity head;
+	Extremity body;
 
-	int rightLeg;
-	int leftLeg;
-	int rightArm;
-	int leftArm;
-	int head;
-	int body;
+	Persona() { }
+	Persona(int x, int y) {
 
-	int anim;
+		pos.x = x;
+		pos.y = y;
+		
+		int color = Random::roll(1, Extremity::BodyColor::SIZE - 1);
 
+		rightLeg.pos.x = pos.x + 3;
+		rightLeg.pos.y = pos.y + 3;
+		rightLeg.color = color;
+		rightLeg.anim = 0;
 
-	Persona() {
+		leftLeg.pos.x = pos.x - 3;
+		leftLeg.pos.y = pos.y + 3;
+		leftLeg.color = color;
+		leftLeg.anim = 0;
 
-		int color = Random::roll(0, BodyColor::SIZE - 1);
+		rightArm.pos.x = pos.x + 3;
+		rightArm.pos.y = pos.y + 1;
+		rightArm.color = color;
+		rightArm.anim = 0;
 
-		rightLeg = color;
-		leftLeg = color;
-		rightArm = color;
-		leftArm = color;
-		head = color;
-		body = color;
+		leftArm.pos.x = pos.x - 3;
+		leftArm.pos.y = pos.y + 1;
+		leftArm.color = color;
+		leftArm.anim = 0;
 
+		head.pos.x = pos.x;
+		head.pos.y = pos.y - 3;
+		head.color = color;
+		head.anim = 0;
 
+		body.pos.x = pos.x;
+		body.pos.y = pos.y - 3;
+		body.color = color;
+		body.anim = 0;
+
+		int noExtremity = Random::roll(1, 5);
+
+		switch (noExtremity)
+		{
+		case 1: rightLeg.color = 0; break;
+		case 2: leftLeg.color = 0; break;
+		case 3: rightArm.color = 0; break;
+		case 4: leftArm.color = 0; break;
+		case 5: head.color = 0; break;
+		}
 	}
 
 	void Update(int dt) { }
@@ -47,34 +71,48 @@ struct Persona : public Entity, public EntS<Persona>
 
 	void DrawRightLeg(sf::Sprite& spr) 
 	{
-		spr.setTextureRect(sf::IntRect(1 * anim * 8, rightLeg * 8, 8, 8));
+		spr.setScale(4, 4);
+		spr.setPosition(rightLeg.pos.x, rightLeg.pos.y);
+		if(rightLeg.color != 0)
+			spr.setTextureRect(sf::IntRect((0 + rightLeg.anim) * 8, (rightLeg.color - 1) * 8, 8, 8));
 	}
 
 	void DrawLeftLeg(sf::Sprite& spr)
 	{
-		spr.setTextureRect(sf::IntRect(2 * anim * 8, leftLeg * 8, 8, 8));
+		spr.setScale(4, 4);
+		spr.setPosition(leftLeg.pos.x, leftLeg.pos.y);
+		if (leftLeg.color != 0)
+			spr.setTextureRect(sf::IntRect((2 + leftLeg.anim) * 8, (leftLeg.color - 1) * 8, 8, 8));
 	}
 	
 	void DrawRightArm(sf::Sprite& spr)
 	{
-		spr.setTextureRect(sf::IntRect(3 * anim * 8, rightArm * 8, 8, 8));
+		spr.setScale(4, 4);
+		spr.setPosition(rightArm.pos.x, rightArm.pos.y);
+		if (rightArm.color != 0)
+			spr.setTextureRect(sf::IntRect((4 + rightArm.anim) * 8, (rightArm.color - 1) * 8, 8, 8));
 	}
 	
 	void DrawLeftArm(sf::Sprite& spr)
 	{
-		spr.setTextureRect(sf::IntRect(4 * anim * 8, leftArm * 8, 8, 8));
+		spr.setScale(4, 4);
+		spr.setPosition(leftArm.pos.x, leftArm.pos.y);
+		if (leftArm.color != 0)
+			spr.setTextureRect(sf::IntRect((6 + leftArm.anim) * 8, (leftArm.color - 1) * 8, 8, 8));
 	}
 	
 	void DrawHead(sf::Sprite& spr)
 	{
-		spr.setTextureRect(sf::IntRect(5 * anim * 8, head * 8, 8, 8));
+		spr.setScale(4, 4);
+		spr.setPosition(head.pos.x, head.pos.y);
+		if (head.color != 0)
+			spr.setTextureRect(sf::IntRect((8 + head.anim) * 8, (head.color - 1) * 8, 8, 8));
 	}
 
 	void DrawBody(sf::Sprite& spr)
 	{
-		spr.setTextureRect(sf::IntRect(6 * anim * 8, body * 8, 8, 8));
+		spr.setScale(4, 4);
+		spr.setPosition(body.pos.x, body.pos.y);
+		spr.setTextureRect(sf::IntRect((10 + body.anim) * 8, (body.color - 1) * 8, 8, 8));
 	}
-
-
-
 };
