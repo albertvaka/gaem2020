@@ -33,7 +33,6 @@ void UpdateEntities(int dt)
 	Camera::ChangeZoomWithPlusAndMinus(0.5f, dt / 1000.f);
 //#endif
 
-
 	EntS<Entity>::deleteNotAlive();
 }
 
@@ -41,37 +40,14 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 {
 	window.clear(sf::Color(100,100,200));
 
-	for (Player* e : EntS<Player>::getAll())
+
+	EntS<Entity>::sort([](Entity* a, Entity* b) {
+		return a->pos.y < b->pos.y;
+	});
+
+	for (Entity* e : EntS<Entity>::getAll())
 	{
-		e->Draw(spr);
-		window.draw(spr);
+		e->Draw(spr, window);
 	}
 
-	for (Pared* e : EntS<Pared>::getAll())
-	{
-		e->Draw(spr);
-		window.draw(spr);
-	}
-
-	for (Cadaver* e : EntS<Cadaver>::getAll())
-	{
-		e->DrawRightLeg(spr);
-		window.draw(spr);
-
-		e->DrawLeftLeg(spr);
-		window.draw(spr);
-
-		e->DrawRightArm(spr);
-		window.draw(spr);
-
-		e->DrawLeftArm(spr);
-		window.draw(spr);
-
-		e->DrawHead(spr);
-		window.draw(spr);
-
-		e->DrawBody(spr);
-		window.draw(spr);
-
-	}
 }

@@ -76,10 +76,28 @@ struct Player : public Entity, public EntS<Player>
 			state = EntityState::IDLE;
 		}
 
-		pos.x += speed.x * dt;
-		pos.y += speed.y * dt;
+		vec newPos= pos + speed * dt;
+		Mates::xy tilePos = PosToTile(pos);
+		Mates::xy tileNewPos = PosToTile(newPos);
+
+		std::cout << tilePos.x << "," << tilePos.y << std::endl;
+		std::cout << tileNewPos.x << "," << tileNewPos.y << std::endl << std::endl;
+
+		if (passable[tilePos.x][tileNewPos.y]) {
+			pos.y = newPos.y;
+		}
+		if (passable[tileNewPos.x][tilePos.y]) {
+			pos.x = newPos.x;
+		}
+
+		for (Player* p : EntS<Player>::getAll()) {
+			if (p == this) continue;
+		}
 	}
 
+	static Mates::xy PosToTile(vec pos) {
+		return { int(((pos.x / 400.f) + 8) / 16), int(((pos.y / 400.f) + 8) / 16) };
+	}
 
 	void Update(int dt)
 	{
@@ -130,7 +148,7 @@ struct Player : public Entity, public EntS<Player>
 		}
 	}
 
-	void Draw(sf::Sprite& spr)
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 		spr.setOrigin(0, 0);
 
@@ -143,12 +161,7 @@ struct Player : public Entity, public EntS<Player>
 		spr.setTextureRect(anim.CurrentFrame());
 		spr.setColor(sf::Color::White);
 
-		//if (ent_type[id] == EntityType::ENTITY_EXAMPLE &&
-			//	ent_state[id] == EntityState::COLLIDED)
-		{
-			//float sc = timer[id]/200.f;
-			//spr.setScale(1.0f + sc*0.2f, 1.0f + sc * 0.2f);
-		}
+		window.draw(spr);
 	}
 
 };

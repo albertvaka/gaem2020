@@ -28,4 +28,10 @@ struct Entity : public EntS<Entity>
 	bool alive = true;
 	Entity* parent = NULL;
 	EntityDirection dir;
+
+	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window)
+	{
+
+	}
+
 };

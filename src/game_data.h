@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 namespace GameData
 {
@@ -9,4 +10,4 @@ namespace GameData
 	const std::string GAME_TITLE = "GGJ 2020";
 }
 
-extern std::vector< bool > passable;
+extern std::vector< std::vector< bool > > passable;

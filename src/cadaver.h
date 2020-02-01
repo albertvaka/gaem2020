@@ -67,6 +67,25 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void Update(int dt) { }
 
+	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window) {
+		DrawRightLeg(spr);
+		window.draw(spr);
+
+		DrawLeftLeg(spr);
+		window.draw(spr);
+
+		DrawRightArm(spr);
+		window.draw(spr);
+
+		DrawLeftArm(spr);
+		window.draw(spr);
+
+		DrawHead(spr);
+		window.draw(spr);
+
+		DrawBody(spr);
+		window.draw(spr);
+	}
 
 	void DrawRightLeg(sf::Sprite& spr) 
 	{

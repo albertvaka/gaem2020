@@ -108,6 +108,9 @@ public:
 		const static AnalogStick Right;
 		sf::Vector2f get(int player, float dead_area = 0) const 
 		{ //Pos between -100 and 100
+			if (player > GamePad::JoystickCountMax) {
+				return sf::Vector2f(); 
+			}
 			int joystick = player_to_joystick[player];
 			if (joystick < 0) return sf::Vector2f();
 			float a = sf::Joystick::getAxisPosition(joystick, x);

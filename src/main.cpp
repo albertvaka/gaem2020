@@ -22,15 +22,15 @@ std::vector< std::string > mapita = { // (30 * 15 tiles)
 "X          X                 X",
 "X     0    X                 X",
 "X          X                 X",
-"X          X                 X",
-"XXXXXXXXXXXX                 X",
+"X                    X       X",
+"XXXXX                X       X",
+"X                    X       X",
+"X                    X       X",
+"X                            X",
+"X     XXXX                   X",
 "X                            X",
 "X                            X",
-"X                            X",
-"X                            X",
-"X                            X",
-"X                            X",
-"X                            X",
+"X                     X      X",
 "X                            X",
 "X                            X",
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -52,9 +52,9 @@ void LoadGame(sf::RenderWindow& window)
 
 	Input::Init(window);
 
-	passable.resize(mapita.size(), std::vector<bool>(mapita[0].size()));
+	passable.resize(mapita[0].size(), std::vector<bool>(mapita.size()));
 
-	int x, y;
+	int x = 0, y = 0;
 	for (auto row : mapita) {
 		for (char c : row) {
 			vec pos(6400 * x, 6400 * y);
@@ -63,10 +63,9 @@ void LoadGame(sf::RenderWindow& window)
 				case '1': new Player(1, pos); break;
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
+				case 'X': new Pared(pos); break;
 			}
-			if (c > 'A') {
-				passable[x][y] = false;
-			}
+			passable[x][y] = (c < 'A');
 			x += 1;
 		}
 		y += 1;
@@ -84,6 +83,11 @@ void DrawGui()
 	{
 
 		new Cadaver(350, 350);
+	}
+	if (ImGui::Button("SPAWN PLAYER"))
+	{
+		static int count = 4;
+		new Player(count++, vec::Rand(0, 0, GameData::WINDOW_WIDTH*100, GameData::WINDOW_HEIGHT*100));
 	}
 
 	ImGui::End();

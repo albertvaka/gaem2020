@@ -9,6 +9,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "mates.h"
+#include "rand.h"
 
 struct vec : public sf::Vector2f
 {
@@ -18,6 +19,10 @@ struct vec : public sf::Vector2f
   vec(sf::Vector2i v):sf::Vector2f(float(v.x),float(v.y)){}
   vec(sf::Vector2f v):sf::Vector2f(v.x,v.y){}
 
+  static vec Rand(float minX, float minY, float maxX, float maxY) {
+      return vec(Random::rollf(minX, maxX), Random::rollf(minY, maxY));
+  }
+  
   bool Equals(float px, float py) 
   {
       return x == px && y == py;
