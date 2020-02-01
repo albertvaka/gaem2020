@@ -27,28 +27,11 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		int color = Random::roll(0, ExtremityData::BodyColor::SIZE_COLOR - 2);
 		int type = color * (ExtremityData::BodyColor::SIZE_COLOR - 1);
 
-		rightLeg.x = pos.x;
-		rightLeg.y = pos.y;
 		rightLeg.colorType = (ExtremityData::BodyColorType) (type + 1);
-
-		leftLeg.x = pos.x;
-		leftLeg.y = pos.y;
 		leftLeg.colorType = (ExtremityData::BodyColorType) (type + 2);
-
-		rightArm.x = pos.x;
-		rightArm.y = pos.y;
 		rightArm.colorType = (ExtremityData::BodyColorType) (type + 3);
-
-		leftArm.x = pos.x;
-		leftArm.y = pos.y;
 		leftArm.colorType = (ExtremityData::BodyColorType) (type + 4);
-
-		head.x = pos.x;
-		head.y = pos.y;
 		head.colorType = (ExtremityData::BodyColorType) (type + 5);
-
-		body.x = pos.x;
-		body.y = pos.y;
 		body.colorType = (ExtremityData::BodyColorType) (type + 6);
 
 		int noExtremity = Random::roll(0, 4);
@@ -67,23 +50,8 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	{
 		isCarried = true;
 
-		rightLeg.x = x;
-		rightLeg.y = y;
-
-		leftLeg.x = x;
-		leftLeg.y = y;
-
-		rightArm.x = x;
-		rightArm.y = y;
-
-		leftArm.x = x;
-		leftArm.y = y;
-		
-		head.x = x;
-		head.y = y;
-
-		body.x = x;
-		body.y = y;
+		pos.x = x + 5;
+		pos.y = y + 3;
 	}
 
 	void Update(int dt) 
@@ -129,42 +97,42 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void DrawRightLeg(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setPosition(rightLeg.x, rightLeg.y);
+		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(rightLeg.colorType)->second);
 		wnd.draw(spr);
 	}
 
 	void DrawLeftLeg(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setPosition(leftLeg.x, leftLeg.y);
+		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(leftLeg.colorType)->second);
 		wnd.draw(spr);
 	}
 	
 	void DrawRightArm(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setPosition(rightArm.x, rightArm.y);
+		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(rightArm.colorType)->second);
 		wnd.draw(spr);
 	}
 	
 	void DrawLeftArm(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setPosition(leftArm.x, leftArm.y);
+		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(leftArm.colorType)->second);
 		wnd.draw(spr);
 	}
 	
 	void DrawHead(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setPosition(head.x, head.y);
+		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(head.colorType)->second);
 		wnd.draw(spr);
 	}
 
 	void DrawBody(sf::Sprite& spr, sf::RenderWindow& wnd)
 	{
-		spr.setPosition(body.x, body.y);
+		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(body.colorType)->second);
 		wnd.draw(spr);
 	}

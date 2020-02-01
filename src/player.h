@@ -37,29 +37,30 @@ struct Player : public Entity, public EntS<Player>
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, 30));
 
 		//TODO
-		if (Keyboard::IsKeyPressed(GameKeys::ACTION) && !isCarrying) 
+		if (Keyboard::IsKeyJustPressed(GameKeys::ACTION) && !isCarrying) 
 		{
-			if (extremity != NULL && cadaver == NULL)
+			if (extremity != NULL)
 			{
 				isCarrying = true;
 				extremity->isCarried = true;
 				extremity->pos.x = pos.x;
 				extremity->pos.y = pos.y;
-
 			}
-			else if (extremity == NULL && cadaver != NULL)
+			else if (cadaver != NULL)
 			{
 				isCarrying = true;
 				cadaver->carryCadaver(pos.x, pos.y);
 			}
 		}
-		else if (Keyboard::IsKeyPressed(GameKeys::ACTION) && isCarrying)
+		else if (Keyboard::IsKeyJustPressed(GameKeys::ACTION) && isCarrying)
 		{
 			if (extremity != NULL) {
+				isCarrying = false;
 				extremity->isCarried = false;
 				extremity = NULL;
 			}
 			if (cadaver != NULL) {
+				isCarrying = false;
 				cadaver->isCarried = false;
 				cadaver = NULL;
 			}
@@ -67,7 +68,8 @@ struct Player : public Entity, public EntS<Player>
 		else if (isCarrying)
 		{
 			if (extremity != NULL) {
-
+				extremity->carryExtremity(pos.x, pos.y);
+			}
 			if (cadaver != NULL) {
 				cadaver->carryCadaver(pos.x, pos.y);
 			}

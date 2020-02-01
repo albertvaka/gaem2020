@@ -74,8 +74,6 @@ struct Extremity : public Entity, EntS<Extremity>
 
 	Extremity(int x, int y)
 	{
-		data.x = x;
-		data.y = y;
 		pos.x = x;
 		pos.y = y;
 		Extremity();
@@ -85,6 +83,14 @@ struct Extremity : public Entity, EntS<Extremity>
 	{
 		isCarried = false;
 		isCarriable = false;
+	}
+
+	void carryExtremity(int x, int y)
+	{
+		isCarried = true;
+
+		pos.x = x;
+		pos.y = y;
 	}
 
 
