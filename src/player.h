@@ -42,7 +42,7 @@ struct Player : public Entity, public EntS<Player>
 	    } else if (Keyboard::IsKeyPressed(GameKeys::LEFT))
 		{
 			anal.x = -100;
-		}
+		} else if (Keyboard::IsKeyPressed(GameKeys::ACTION))
 
 		speed = anal * 0.2;
 		

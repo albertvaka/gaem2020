@@ -39,9 +39,14 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 	}
 }
 
+void collision_player_extremity(Player* player, Extremity* extremity) {
+	
+}
+
 
 void UpdateCollisions(int dt) 
 {
 	// If A collides with B, call collision_callback
 	//collide(EntS<EntityExample>::getAll(), EntS<EntityExampleSmall>::getAll(), collision_callback);
+	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 }
