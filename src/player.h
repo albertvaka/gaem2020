@@ -242,5 +242,26 @@ struct Player : public Entity, public EntS<Player>
 		bounds().Draw(window);
 	}
 
+	void Draw(sf::VertexArray &vertexArray)
+	{
+		float x = pos.x / 100.0f;
+		float y = pos.y / 100.0f;
+		x = x - 8;
+		y = y - 18;
+		sf::IntRect rect = anim.CurrentFrame();
+		sf::Vector2u posStartInSpritesheet(rect.left,rect.top);
+		sf::Vector2u sizeSprite(rect.width,rect.height);
+		sf::Vector2u scale(5, 5);
+		
+		vertexArray.append(sf::Vertex(sf::Vector2f(x, y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y)));
+		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y)));
+		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y + sizeSprite.y)));
+		vertexArray.append(sf::Vertex(sf::Vector2f(x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y + sizeSprite.y)));
+		
+		
+		
+		//window.draw(spr);
+	}
+
 };
 

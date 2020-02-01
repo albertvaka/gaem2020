@@ -51,3 +51,30 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 	}
 
 }
+void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
+{
+	window.clear(sf::Color(100, 100, 200));
+	sf::VertexArray vao(sf::Quads);
+	EntS<Entity>::sort([](Entity* a, Entity* b) {
+		return a->pos.y < b->pos.y;
+	});
+
+	for (Entity* e : EntS<Entity>::getAll())
+	{
+		e->Draw(vao);
+	}
+
+
+	window.draw(vao,&texture);
+
+	// define the position of the triangle's points
+
+
+
+	// define the color of the triangle's points
+
+
+	// no texture coordinates here, we'll see that later
+
+
+}

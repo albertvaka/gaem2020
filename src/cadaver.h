@@ -133,4 +133,9 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		spr.setPosition(body.pos.x, body.pos.y);
 		spr.setTextureRect(sf::IntRect((10 + body.anim) * 8, (body.color - 1) * 8, 8, 8));
 	}
+
+	void Draw(sf::VertexArray &vertexArray)
+	{
+
+	}
 };

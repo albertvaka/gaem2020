@@ -17,23 +17,25 @@ sf::Font font;
 sf::Texture texture;
 sf::Sprite sprite;
 
-std::vector< std::string > mapita = { // (30 * 15 tiles)
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"X             X              X",
-"X     0       X   X          X",
-"X          XXXX   X          X",
-"X                 X  X       X",
-"XXXXX             X  X       X",
-"X                 X  X       X",
-"X    XXXXXXXXXXXXXX  X       X",
-"X                            X",
-"X     XXXXX XXXXXXXXXX       X",
-"X         X X                X",
-"X     XXXXX XXXXX            X",
-"X                     X      X",
-"X    XXXXXX XXXX             X",
-"X         X X                X",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+std::vector< std::string > mapita = { // (23 * 17 tiles)
+"XXXXXXXXXXXAXXXXXXXXXXX",
+"XXXXXXXXXXAAAXXBBBBBXXX",
+"XX0      XAXAXXB   BXXX",
+"XX XXCXX XAXAX       XX",
+"XB X C X XAAAX XXXXX XX",
+"XB X D X XX XX CC  X XX",
+"XX X   X BB    X D   XX",
+"XX XX XX    BB X   X XX",
+"XX       XX XX XXXXX XX",
+"XX XXXXX X  CC       XX",
+"XX X   X X D X XXXXX XX",
+"XX   D X X   X X   X XX",
+"XX X  CC XXXXX X D X BB",
+"XX XXXXX XBBBX CC  X BB",
+"XX             XX XX XX",
+"XXXXXXXXXXXAX        XX",
+"AAAAAAAAAAAAXXXXXXXXXXX",
+
 };
 
 std::vector< std::vector<bool> > passable;
@@ -64,6 +66,7 @@ void LoadGame(sf::RenderWindow& window)
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
 				case 'X': new Pared(pos); break;
+				case 'B': new Pared(pos); break;
 			}
 			passable[x][y] = (c < 'A');
 			x += 1;
@@ -116,7 +119,7 @@ int main()
 		UpdateEntities(time.asMilliseconds());
 
 		DrawEntities(sprite, window);
-
+		//DrawEntities(texture, window);
 		Camera::StartGuiDraw();
 		DrawGui();
 		ImGui::SFML::Render(window);
@@ -128,7 +131,7 @@ int main()
 		}
 		window.draw(txt_fps);
 		Camera::EndGuiDraw();
-
+		
 		window.display();
 	}
 
