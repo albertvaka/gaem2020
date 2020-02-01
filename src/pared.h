@@ -8,17 +8,21 @@
 struct Pared : public Entity, public EntS<Pared>
 {
 
-	Pared(vec position) {
+	Pared(vec position) 
+	{
 		pos = position;
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
+
+		/*
+		spr.setOrigin(0, 0);
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(sf::IntRect(112, 112, 16, 16));
 		
 		window.draw(spr);
-
+		*/
 	}
 
 	void Draw(sf::VertexArray &vertexArray)
