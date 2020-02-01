@@ -14,6 +14,29 @@ namespace Mates
 		}
 	};
 
+	struct rect
+	{
+		int x = 0;
+		int y = 0;
+		int w = 0;
+		int h = 0;
+		rect() {}
+		rect(Mates::xy _xy_, Mates::xy _wh_)
+		{
+			x = _xy_.x;
+			y = _xy_.y;
+			w = _wh_.x;
+			h = _wh_.y;
+		}
+		rect(int _x_, int _y_, int _w_, int _h_)
+		{
+			x = _x_;
+			y = _y_;
+			w = _w_;
+			h = _h_;
+		}
+	};
+
 	const float   Pi = 3.141592653589793238462643383279502884f;
 	const float   TwoPi = Pi * 2;
 	const float   HalfPi = Pi / 2;

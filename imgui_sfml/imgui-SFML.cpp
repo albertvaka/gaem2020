@@ -584,6 +584,13 @@ void Image(const sf::Texture& texture, const sf::Vector2f& size,
     ImGui::Image(textureID, size, uv0, uv1, tintColor, borderColor);
 }
 
+void Image_FixedSize(const sf::Sprite& sprite, const sf::Color& tintColor,
+	const sf::Color& borderColor) {
+	sf::FloatRect bounds = sprite.getGlobalBounds();
+	Image(sprite, sf::Vector2f(32, 32), tintColor,
+		borderColor);
+}
+
 void Image(const sf::Sprite& sprite, const sf::Color& tintColor,
            const sf::Color& borderColor) {
     sf::FloatRect bounds = sprite.getGlobalBounds();

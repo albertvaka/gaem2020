@@ -1,29 +1,21 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
-
-
-enum AnimationType
-{
-	NONE,
-	ANIM_EXAMPLE,
-	ANIM_EXAMPLE_COLLIDING
-};
 
 struct AnimationData
 {
 	int frames;
-	sf::IntRect anim_frames[16];
-	int frame_timer[16];
+	sf::IntRect rect[16];
+	int timer[16];
 };
 
+#if FALSE
 AnimationData anim_lib[] =
 {
 	//NONE
 	{
 		1,
 		{
-			{0,0,0,0},
+			{0, 0, 0, 0},
 		},
 		0
 	},
@@ -42,32 +34,30 @@ AnimationData anim_lib[] =
 			{3 * 16, 3 * 16, 16, 16},
 		},
 		{
-			100
+			100, 100, 100,
 		},
 	}
 };
-
+#endif
 
 struct Animation
 {
-	AnimationType anim_type;
 	int anim_timer;
-	int current_frame;
+	int frame_current;
+	AnimationData* data;
 
 	void Update(int dt)
 	{
 		anim_timer += dt;
 
-		AnimationData* anim_data = &anim_lib[(int)anim_type];
-
-		if (anim_timer > anim_data->frame_timer[current_frame])
+		if (anim_timer > data->timer[frame_current])
 		{
-			anim_timer -= anim_data->frame_timer[current_frame];
+			anim_timer -= data->timer[frame_current];
 
-			current_frame++;
-			if (current_frame >= anim_data->frames)
+			frame_current++;
+			if (frame_current >= data->frames)
 			{
-				current_frame = 0;
+				frame_current = 0;
 			}
 		}
 	}
@@ -75,42 +65,12 @@ struct Animation
 	void Reset()
 	{
 		anim_timer = 0;
-		current_frame = 0;
-	}
-
-	void Ensure(AnimationType type)
-	{
-		if (anim_type != type)
-		{
-			anim_type = type;
-			Reset();
-		}
+		frame_current = 0;
 	}
 
 	sf::IntRect CurrentFrame()
 	{
-		AnimationData* anim_data = &anim_lib[(int)anim_type];
-		return anim_data->anim_frames[current_frame];
-	}
-
-	static sf::IntRect AnimFrame(AnimationType type, int timer)
-	{
-		AnimationData* anim_data = &anim_lib[(int)type];
-
-		int time_total = 0;
-		for (int i = 0; i < anim_data->frames; ++i)
-		{
-			time_total += anim_data->frame_timer[i];
-		}
-
-		timer = timer % time_total;
-
-		int current_frame = 0;
-		while (timer > anim_data->frame_timer[current_frame])
-		{
-			timer -= anim_data->frame_timer[current_frame];
-			current_frame++;
-		}
-		return anim_data->anim_frames[current_frame];
+		AnimationData* anim_data = data;
+		return anim_data->rect[frame_current];
 	}
 };
