@@ -63,26 +63,15 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 		mesa->cadaver = player->cadaver;
 		mesa->currentPlayer = player->player;
 		player->mesa = mesa;
-		
+
 
 	}
 }
 
-void collision_entity_cinta(Entity* player, Cinta* cinta) {
-	switch (cinta->dir)
-	{
-	case EntityDirection::UP:
-		player->inCinta[static_cast<int>(EntityDirection::UP)] = true;
-		break;
-	case EntityDirection::DOWN:
-		player->inCinta[static_cast<int>(EntityDirection::DOWN)] = true;
-		break;
-	case EntityDirection::LEFT:
-		player->inCinta[static_cast<int>(EntityDirection::LEFT)] = true;
-		break;
-	case EntityDirection::RIGHT:
-		player->inCinta[static_cast<int>(EntityDirection::RIGHT)] = true;
-		break;
+void collision_entity_cinta(Entity* ent, Cinta* cinta) {
+
+	if (ent->prevCintaDirection == cinta->dir || ent->prevCintaDirection == EntityDirection::NONE) {
+		ent->currCintaDirection = cinta->dir;
 	}
 
 }

@@ -27,7 +27,8 @@ struct Entity : public EntS<Entity>
 	int timer = 0;
 	Animation anim;
 	bool alive = true;
-	int inCinta[4] = { 0,0,0,0 };
+	EntityDirection prevCintaDirection = EntityDirection::NONE;
+	EntityDirection currCintaDirection = EntityDirection::NONE;
 	Entity* parent = NULL;
 	EntityDirection dir;
 
@@ -42,17 +43,18 @@ struct Entity : public EntS<Entity>
 
 	void SetSpeedWithCinta()
 	{
-		sf::Vector2f newSpeed(0.f, 0.f);
-		speed.x += inCinta[static_cast<int>(EntityDirection::RIGHT)] * 0.01f;
-		speed.x -= inCinta[static_cast<int>(EntityDirection::LEFT)] * 0.01f;
-		speed.y -= inCinta[static_cast<int>(EntityDirection::UP)] * 0.01f;
-		speed.y += inCinta[static_cast<int>(EntityDirection::DOWN)] * 0.01f;
+		if (currCintaDirection != EntityDirection::NONE)
+		{
+			speed.x += (EntityDirection::RIGHT == currCintaDirection) * 0.015f;
+			speed.x -= (EntityDirection::LEFT == currCintaDirection) * 0.015f;
+			speed.y -= (EntityDirection::UP == currCintaDirection) * 0.015f;
+			speed.y += (EntityDirection::DOWN == currCintaDirection) * 0.015f;
+		}
+		
 		//speed = newSpeed;
-		for (int i = 0; i < 4; i++) inCinta[i] = 0;
+		prevCintaDirection = currCintaDirection;
+		currCintaDirection = EntityDirection::NONE;
 	}
-	bool InCinta()
-	{
-		return inCinta[0] + inCinta[1] + inCinta[2] + inCinta[3];
-	}
+
 
 };

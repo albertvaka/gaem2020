@@ -79,6 +79,7 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void Move(int dt)
 	{
+
 		auto oldPos = pos;
 
 		SetSpeedWithCinta();

@@ -317,14 +317,10 @@ struct Player : public Entity, public EntS<Player>
 	{
 		bounds().Draw(window);
 
-		spr.setOrigin(0, 0);
-
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);
 		spr.setPosition(pos.x + 1.5f, pos.y - 4.f);
 		
-		//spr.setOrigin(8, 8);
-
 		spr.setTextureRect(anim.CurrentFrame());
 		spr.setColor(sf::Color::White);
 
