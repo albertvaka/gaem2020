@@ -163,4 +163,9 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 		wnd.draw(shape);
 	}
+
+	void Draw(sf::VertexArray &vertexArray)
+	{
+
+	}
 };

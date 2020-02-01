@@ -19,23 +19,25 @@ sf::Font font;
 sf::Texture texture;
 sf::Sprite sprite;
 
-std::vector< std::string > mapita = { // (30 * 15 tiles)
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"X             X              X",
-"X     0       X   X          X",
-"X          XXXX   X          X",
-"X                 X  X       X",
-"XXXXX             X  X       X",
-"X                 X  X       X",
-"X    XXXXXXXXXXXXXX  X       X",
-"X                            X",
-"X     XXXXX XXXXXXXXXX       X",
-"X         X X                X",
-"X     XXXXX XXXXX            X",
-"X                     X      X",
-"X    XXXXXX XXXX             X",
-"X         X X                X",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+std::vector< std::string > mapita = { // (23 * 17 tiles)
+"XXXXXXXXXXXAXXXXXXXXXXX",
+"XXXXXXXXXXAAAXXBBBBBXXX",
+"XX0      XAXAXXB   BXXX",
+"XX XXCXX XAXAX       XX",
+"XB X C X XAAAX XXXXX XX",
+"XB X D X XX XX CC  X XX",
+"XX X   X BB    X D   XX",
+"XX XX XX    BB X   X XX",
+"XX       XX XX XXXXX XX",
+"XX XXXXX X  CC       XX",
+"XX X   X X D X XXXXX XX",
+"XX   D X X   X X   X XX",
+"XX X  CC XXXXX X D X BB",
+"XX XXXXX XBBBX CC  X BB",
+"XX             XX XX XX",
+"XXXXXXXXXXXAX        XX",
+"AAAAAAAAAAAAXXXXXXXXXXX",
+
 };
 
 std::vector< std::vector<bool> > passable;
@@ -47,25 +49,27 @@ void LoadGame(sf::RenderWindow& window)
 
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(16, 16, 16, 16));
-	sprite.setScale(4, 4);
 	
 	window.setFramerateLimit(60);
 	ImGui::SFML::Init(window);
 
 	Input::Init(window);
+	Camera::SetZoom(4.f);
+	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / 8, GameData::WINDOW_HEIGHT/8));
 
 	passable.resize(mapita[0].size(), std::vector<bool>(mapita.size()));
 
 	int x = 0, y = 0;
 	for (auto row : mapita) {
 		for (char c : row) {
-			vec pos(64 * x, 64 * y);
+			vec pos(16 * x, 16 * y);
 			switch (c) {
 				case '0': new Player(0, pos); break;
 				case '1': new Player(1, pos); break;
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
 				case 'X': new Pared(pos); break;
+				case 'B': new Pared(pos); break;
 			}
 			passable[x][y] = (c < 'A');
 			x += 1;
@@ -91,8 +95,9 @@ void DrawGui()
 	if (ImGui::Button("SPAWN PLAYER"))
 	{
 		static int count = 4;
-		new Player(count++, vec::Rand(1600, 1600, GameData::WINDOW_WIDTH * 98, GameData::WINDOW_HEIGHT*98));
+		new Player(count++, vec::Rand(16, 16, GameData::WINDOW_WIDTH - 16, GameData::WINDOW_HEIGHT - 16));
 	}
+	ImGui::Text(std::to_string(Camera::GetCameraCenter().x).c_str());
 
 	ImGui::End();
 }
@@ -115,9 +120,15 @@ int main()
 
 		Input::Update(time);
 
+		//#if _DEBUG
+		//Camera::MoveCameraWithArrows(50, time.asSeconds());
+		//Camera::ChangeZoomWithPlusAndMinus(0.5f, time.asSeconds());
+		//#endif
+
 		UpdateEntities(time.asMilliseconds());
 
 		DrawEntities(sprite, window);
+		//DrawEntities(texture, window);
 
 		Camera::StartGuiDraw();
 		DrawGui();
@@ -130,7 +141,7 @@ int main()
 		}
 		window.draw(txt_fps);
 		Camera::EndGuiDraw();
-
+		
 		window.display();
 	}
 

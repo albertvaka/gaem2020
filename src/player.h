@@ -90,7 +90,7 @@ struct Player : public Entity, public EntS<Player>
 		}
 
 
-		speed = anal * 0.003f;
+		speed = anal * 0.0015f;
 		
 		if (anal.x > 70)
 		{
@@ -139,7 +139,7 @@ struct Player : public Entity, public EntS<Player>
 
 		vec newPos = pos + speed * dt;
 		
-		int dd = 8 * 4 * 0.8;
+		float dd = 8 * 0.8;
 
 		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
 		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
@@ -200,8 +200,8 @@ struct Player : public Entity, public EntS<Player>
 	{
 		return 
 		{ 
-			int(((pos.x / 4.f) + 8) / 16), 
-			int(((pos.y / 4.f) + 8) / 16) 
+			int((pos.x + 8) / 16), 
+			int((pos.y + 8) / 16) 
 		};
 	}
 
@@ -256,7 +256,7 @@ struct Player : public Entity, public EntS<Player>
 
 	Bounds bounds() {
 
-		return Bounds(pos.x, pos.y, 16 * 4, 16*4);
+		return Bounds(pos.x, pos.y, 16, 16);
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
@@ -264,8 +264,8 @@ struct Player : public Entity, public EntS<Player>
 		spr.setOrigin(0, 0);
 
 		auto a = spr.getScale();
-		spr.setScale(5, 5);
-		spr.setPosition(pos.x-8, pos.y - 18);
+		spr.setScale(1.25, 1.25);
+		spr.setPosition(pos.x + 1.5f, pos.y - 3.f);
 		
 		//spr.setOrigin(8, 8);
 
@@ -277,5 +277,28 @@ struct Player : public Entity, public EntS<Player>
 
 		bounds().Draw(window);
 	}
+
+
+	void Draw(sf::VertexArray &vertexArray)
+	{
+		float x = pos.x / 100.0f;
+		float y = pos.y / 100.0f;
+		x = x - 8;
+		y = y - 18;
+		sf::IntRect rect = anim.CurrentFrame();
+		sf::Vector2u posStartInSpritesheet(rect.left,rect.top);
+		sf::Vector2u sizeSprite(rect.width,rect.height);
+		sf::Vector2u scale(5, 5);
+		
+		vertexArray.append(sf::Vertex(sf::Vector2f(x, y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y)));
+		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y)));
+		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y + sizeSprite.y)));
+		vertexArray.append(sf::Vertex(sf::Vector2f(x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y + sizeSprite.y)));
+		
+		
+		
+		//window.draw(spr);
+	}
+
 };
 

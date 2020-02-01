@@ -33,5 +33,9 @@ struct Entity : public EntS<Entity>
 	{
 
 	}
+	virtual void Draw(sf::VertexArray& vao)
+	{
+
+	}
 
 };
