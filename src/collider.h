@@ -82,6 +82,10 @@ void collision_cadaver_spawner(Cadaver* ent, Spawner* spawner) {
 
 }
 
+void collision_cadaver_despawner(Entity* e, Entity* e2) {
+	e2->alive = false;
+}
+
 void UpdateCollisions(int dt) 
 {
 
@@ -117,6 +121,7 @@ void UpdateCollisions(int dt)
 	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);
+	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
 
 
 }

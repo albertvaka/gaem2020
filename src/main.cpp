@@ -13,7 +13,6 @@
 #include "mates.h"
 #include "player.h"
 #include "cadaver.h"
-#include "pared.h"
 #include "spawner.h"
 #include "mesa.h"
 
@@ -22,6 +21,7 @@ sf::Font font;
 sf::Texture texture;
 sf::Sprite sprite;
 
+sf::Clock mainClock;
 
 const int TILE_SIZE = 16;
 
@@ -44,9 +44,13 @@ std::vector< std::string > mapita_inicial = { // (23 * 17 tiles)
 "CCCCCCCCCCCCXXXXXXXXXXX",
 };
 
-enum TileType
+enum class TileType
 {
 	WALL,
+	BELT_RIGHT,
+	BELT_LEFT,
+	BELT_UP,
+	BELT_DOWN,
 	FLOOR
 };
 
@@ -61,6 +65,22 @@ TileType TileFromChar(char c)
 		case 'X':
 		{
 			return TileType::WALL;
+		} break;
+		case 'A':
+		{
+			return TileType::BELT_UP;
+		} break;
+		case 'B':
+		{
+			return TileType::BELT_DOWN;
+		} break;
+		case 'C':
+		{
+			return TileType::BELT_LEFT;
+		} break;
+		case 'D':
+		{
+			return TileType::BELT_RIGHT;
 		} break;
 	}
 	return TileType::FLOOR;
@@ -97,7 +117,6 @@ void LoadGame(sf::RenderWindow& window)
 				case '1': new Player(1, pos); break;
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
-				case 'X': new Pared(pos); break;
 				case 'A': new Cinta(pos, EntityDirection::UP); break;
 				case 'B': new Cinta(pos, EntityDirection::DOWN); break;
 				case 'C': new Cinta(pos, EntityDirection::LEFT); break;
@@ -107,11 +126,16 @@ void LoadGame(sf::RenderWindow& window)
 					new Spawner(pos); 
 					new Cinta(pos, EntityDirection::DOWN); 
 					break;
+				case 'Z':
+					new Despawner(pos);
+					new Cinta(pos, EntityDirection::LEFT);
+					break;
 				
 			}
 
-			//passable[x][y] = (c != 'X' && c != 'G' && c!= 'F');
-			passable[x][y] = (c != 'X' && c != 'G' && c != 'F' && c !='A' &&  c != 'B' &&  c != 'C' &&  c != 'D');
+
+			passable[x][y] = (c < 'A');
+
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
 		}
@@ -137,16 +161,40 @@ void DrawGui()
 	ImGui::End();
 }
 
-sf::IntRect TileTex(TileType type)
+void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 {
-	if (type == TileType::FLOOR)
-	{
-		return sf::IntRect(64, 48, 16, 16);
+	int time = mainClock.getElapsedTime().asMilliseconds();
+	TileType type = mapita[i][j];
+	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+	switch (type) {
+	case TileType::FLOOR:
+		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
+		break;
+	case TileType::WALL:
+		sprite.setTextureRect(sf::IntRect(64+16, 48, 16, 16));
+		break;
+	case TileType::BELT_DOWN:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		sprite.setOrigin(0, 16);
+		sprite.setRotation(90);
+		break;
+	case TileType::BELT_UP:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		sprite.setOrigin(16, 0);
+		sprite.setRotation(-90);
+		break;
+	case TileType::BELT_LEFT:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		sprite.setOrigin(16, 16);
+		sprite.setRotation(180);
+		break;
+	case TileType::BELT_RIGHT:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		break;
 	}
-	if (type == TileType::WALL)
-	{
-		return sf::IntRect(64+16, 48, 16, 16);
-	}
+	window.draw(sprite);
+	sprite.setRotation(0);
+	sprite.setOrigin(0, 0);
 }
 
 int main()
@@ -183,12 +231,8 @@ int main()
 		{
 			for (int j = 0; j < mapita[i].size(); ++j)
 			{
-				sprite.setPosition(i*TILE_SIZE, j*TILE_SIZE);
+				drawTile(sprite, window, i, j);
 
-				sprite.setTextureRect(TileTex(mapita[i][j]));
-
-				window.draw(sprite);
-				
 			}
 		}
 

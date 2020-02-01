@@ -104,9 +104,6 @@
     <ClInclude Include="src\extremity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\pared.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\cadaver.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
