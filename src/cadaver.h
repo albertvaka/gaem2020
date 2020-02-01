@@ -4,7 +4,7 @@
 
 #include "extremity.h"
 #include "entity.h"
-
+#include "collider.h"
 
 
 struct Cadaver : public Entity, EntS<Cadaver>
@@ -68,7 +68,27 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	void Move(int dt)
 	{
 		SetSpeedWithCinta();
+		sf::Vector2f oldpos = pos;
 		pos += speed * dt;
+		for (Cadaver* p : EntS<Cadaver>::getAll())
+		{
+			if (p == this) continue;
+			float COLLISION_SIZE = 16;
+
+			vec a = p->pos;
+			vec b = pos;
+
+			//rectangle colision
+			bool colides =
+				(a.x < b.x + COLLISION_SIZE && a.x + COLLISION_SIZE > b.x &&
+					a.y < b.y + COLLISION_SIZE && a.y + COLLISION_SIZE > b.y);
+			if (colides)
+			{
+				pos = oldpos;
+				break;
+			}
+		}
+		
 		speed.x = 0;
 		speed.y = 0;
 
