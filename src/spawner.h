@@ -10,7 +10,7 @@ struct Spawner : public Entity, public EntS<Spawner>
 
 	const int INTERVAL = 3000;
 	bool empty = true;
-	int timer = 0;
+	int timer = INTERVAL;
 	Spawner(vec position) {
 		pos = position;
 	}
