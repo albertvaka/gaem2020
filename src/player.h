@@ -73,17 +73,21 @@ struct Player : public Entity, public EntS<Player>
 			state = EntityState::MOVING;
 			dir = EntityDirection::UP;
 		}
-		else {
+		else 
+		{
 			state = EntityState::IDLE;
 		}
 
 		auto oldPos = pos;
 		bool moved = tryMove(dt);
 
-		if (moved) {
-			for (Player* p : EntS<Player>::getAll()) {
+		if (moved) 
+		{
+			for (Player* p : EntS<Player>::getAll()) 
+			{
 				if (p == this) continue;
-				if (Collide(p->bounds(),this->bounds())) {
+				if (Collide(p->bounds(),this->bounds())) 
+				{
 					pos = oldPos;
 					break;
 				}
@@ -96,55 +100,71 @@ struct Player : public Entity, public EntS<Player>
 		bool moved = false;
 
 		vec newPos = pos + speed * dt;
-		Mates::xy tilePos = PosToTile(pos);
-
-		// Right
-		if (speed.x > 0) {
-			vec testPos = newPos + vec(100 * 8 * 4, 0);
-			Mates::xy tileNewPos = PosToTile(testPos);
-
-			if (passable[tileNewPos.x][tilePos.y]) {
-				pos.x = newPos.x;
-				moved = true;
-			}
-		}
-		else if (speed.x < 0) { //Left
-			vec testPos = newPos - vec(100*8*4, 0);
-			Mates::xy tileNewPos = PosToTile(testPos);
-
-			if (passable[tileNewPos.x][tilePos.y]) {
-				pos.x = newPos.x;
-				moved = true;
-			}
-		}
-
-
-		// Down
-		if (speed.y > 0) {
-			vec testPos = newPos + vec(100 * 8 * 4, 0);
-			Mates::xy tileNewPos = PosToTile(testPos);
-
-			if (passable[tilePos.x][tileNewPos.y]) {
-				pos.y = newPos.y;
-				moved = true;
-			}
-		}
-		else if (speed.y < 0) { //Up
-			vec testPos = newPos - vec(100 * 8 * 4, 0);
-			Mates::xy tileNewPos = PosToTile(testPos);
-
-			if (passable[tilePos.x][tileNewPos.y]) {
-				pos.y = newPos.y;
-				moved = true;
-			}
-		}
-
 		
+		int dd = 8 * 4 * 80;
+
+		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
+		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
+		Mates::xy BL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, dd));
+		Mates::xy BR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, dd));
+
+		Mates::xy TL_y = PosToTile(vec(pos.x, newPos.y) + vec(-dd, -dd));
+		Mates::xy TR_y = PosToTile(vec(pos.x, newPos.y) + vec(dd, -dd));
+		Mates::xy BL_y = PosToTile(vec(pos.x, newPos.y) + vec(-dd, dd));
+		Mates::xy BR_y = PosToTile(vec(pos.x, newPos.y) + vec(dd, dd));
+
+		//Right
+		if (speed.x > 0)
+		{
+			if (passable[TR_x.x][TR_x.y] && passable[BR_x.x][BR_x.y])
+			{
+				pos.x = newPos.x;
+				moved = true;
+			}
+		}
+
+		//Left
+		if (speed.x < 0)
+		{
+			if (passable[TL_x.x][TL_x.y] && passable[BL_x.x][BL_x.y])
+			{
+				pos.x = newPos.x;
+				moved = true;
+			}
+		}
+
+		//Down
+		if (speed.y > 0)
+		{
+			if (passable[BL_y.x][BL_y.y] && passable[BR_y.x][BR_y.y])
+			{
+				pos.y = newPos.y;
+				moved = true;
+			}
+		}
+
+		//Up
+		if (speed.y < 0)
+		{
+			if (passable[TL_y.x][TL_y.y] && passable[TR_y.x][TR_y.y])
+			{
+				pos.y = newPos.y;
+				moved = true;
+			}
+		}
+
+
 		return moved;
 
 	}
-	static Mates::xy PosToTile(vec pos) {
-		return { int(((pos.x / 400.f) + 8) / 16), int(((pos.y / 400.f) + 8) / 16) };
+
+	static Mates::xy PosToTile(vec pos) 
+	{
+		return 
+		{ 
+			int(((pos.x / 400.f) + 8) / 16), 
+			int(((pos.y / 400.f) + 8) / 16) 
+		};
 	}
 
 	void Update(int dt)
