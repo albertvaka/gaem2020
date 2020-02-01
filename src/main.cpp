@@ -20,23 +20,23 @@ sf::Texture texture;
 sf::Sprite sprite;
 
 std::vector< std::string > mapita = { // (23 * 17 tiles)
-"XXXXXXXXXXXAXXXXXXXXXXX",
-"XXXXXXXXXXAAAXXBBBBBXXX",
-"XX0      XAXAXXB   BXXX",
-"XX XXCXX XAXAX       XX",
-"XB X C X XAAAX XXXXX XX",
-"XB X D X XX XX CC  X XX",
-"XX X   X BB    X D   XX",
-"XX XX XX    BB X   X XX",
+"XXXXXXXXXXXBXXXXXXXXXXX",
+"XXXXXXXXXXDDBXXEEEEEXXX",
+"XX0      XAXBXXE   EXXX",
+"XX XXFXX XAXBX       XX",
+"XE X F X XACCX XXXXX XX",
+"XE X G X XX XX FF  X XX",
+"XX X   X EE    X G   XX",
+"XX XX XX    EE X   X XX",
 "XX       XX XX XXXXX XX",
-"XX XXXXX X  CC       XX",
-"XX X   X X D X XXXXX XX",
-"XX   D X X   X X   X XX",
-"XX X  CC XXXXX X D X BB",
-"XX XXXXX XBBBX CC  X BB",
+"XX XXXXX X  FF       XX",
+"XX X   X X G X XXXXX XX",
+"XX   G X X   X X   X XX",
+"XX X  FF XXXXX X G X EE",
+"XX XXXXX XEEEX FF  X EE",
 "XX             XX XX XX",
-"XXXXXXXXXXXAX        XX",
-"AAAAAAAAAAAAXXXXXXXXXXX",
+"XXXXXXXXXXXBX        XX",
+"CCCCCCCCCCCCXXXXXXXXXXX",
 
 };
 
@@ -69,9 +69,12 @@ void LoadGame(sf::RenderWindow& window)
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
 				case 'X': new Pared(pos); break;
-				case 'B': new Pared(pos); break;
+				case 'A': new Cinta(pos, EntityDirection::UP); break;
+				case 'B': new Cinta(pos, EntityDirection::DOWN); break;
+				case 'C': new Cinta(pos, EntityDirection::LEFT); break;
+				case 'D': new Cinta(pos, EntityDirection::RIGHT); break;
 			}
-			passable[x][y] = (c < 'A');
+			passable[x][y] = (c != 'X');
 			x += 1;
 		}
 		y += 1;

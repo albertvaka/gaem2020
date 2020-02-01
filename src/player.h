@@ -30,14 +30,13 @@ struct Player : public Entity, public EntS<Player>
 		speed.x = 0;
 		speed.y = 0;
 	}
-
-	void Move(int dt)
+	void SetSpeedWithPlayerInput()
 	{
 		float threshold = 50;
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, 30));
 
 		//TODO
-		if (Keyboard::IsKeyPressed(GameKeys::ACTION) && !isCarrying) 
+		if (Keyboard::IsKeyPressed(GameKeys::ACTION) && !isCarrying)
 		{
 			if (extremity != NULL && cadaver == NULL)
 			{
@@ -68,7 +67,7 @@ struct Player : public Entity, public EntS<Player>
 		}
 
 		//Player 0 can move with keyboard
-		if (player == 0) 
+		if (player == 0)
 		{
 			if (Keyboard::IsKeyPressed(GameKeys::UP))
 			{
@@ -91,7 +90,7 @@ struct Player : public Entity, public EntS<Player>
 
 
 		speed = anal * 0.0015f;
-		
+
 		if (anal.x > 70)
 		{
 			state = EntityState::MOVING;
@@ -101,7 +100,8 @@ struct Player : public Entity, public EntS<Player>
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::LEFT;
-		} else if (anal.y > 70)
+		}
+		else if (anal.y > 70)
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::DOWN;
@@ -111,12 +111,19 @@ struct Player : public Entity, public EntS<Player>
 			state = EntityState::MOVING;
 			dir = EntityDirection::UP;
 		}
-		else 
+		else
 		{
 			state = EntityState::IDLE;
 		}
+	}
+	void Move(int dt)
+	{
+		
 
 		auto oldPos = pos;
+		SetSpeedWithPlayerInput();
+		SetSpeedWithCinta();
+		
 		bool moved = tryMove(dt);
 
 		if (moved) 

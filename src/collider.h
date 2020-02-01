@@ -3,6 +3,7 @@
 #include "selfregister.h"
 #include "player.h"
 #include "cadaver.h"
+#include "cinta.h"
 #include <functional>
 
 bool Collision(Entity* entity_a, Entity* entity_b)
@@ -53,6 +54,25 @@ void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 	}
 }
 
+void collision_player_cinta(Player* player, Cinta* cinta) {
+	switch (cinta->dir)
+	{
+	case EntityDirection::UP:
+		player->inCinta[static_cast<int>(EntityDirection::UP)] = true;
+		break;
+	case EntityDirection::DOWN:
+		player->inCinta[static_cast<int>(EntityDirection::DOWN)] = true;
+		break;
+	case EntityDirection::LEFT:
+		player->inCinta[static_cast<int>(EntityDirection::LEFT)] = true;
+		break;
+	case EntityDirection::RIGHT:
+		player->inCinta[static_cast<int>(EntityDirection::RIGHT)] = true;
+		break;
+	}
+
+}
+
 void UpdateCollisions(int dt) 
 {
 
@@ -77,6 +97,7 @@ void UpdateCollisions(int dt)
 	// If A collides with B, call collision_callback
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
+	collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_player_cinta);
 
 
 }

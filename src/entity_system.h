@@ -29,6 +29,12 @@ void UpdateEntities(int dt)
 		//e->anim.Update(dt);
 	}
 
+	for (Cinta* e : EntS<Cinta>::getAll())
+	{
+
+		e->anim.Update(dt);
+	}
+
 
 
 	EntS<Entity>::deleteNotAlive();
