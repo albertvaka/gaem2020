@@ -57,7 +57,7 @@ void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 }
 
 void collision_player_mesa(Player* player, Mesa* mesa) {
-	if (player->isCarrying && player->cadaver != NULL)
+	if (player->cadaver != NULL)
 	{
 		mesa->canLet = true;
 		mesa->cadaver = player->cadaver;

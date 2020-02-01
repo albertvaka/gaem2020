@@ -37,6 +37,7 @@ void UpdateEntities(int dt)
 	}
 
 
+
 	for (Spawner* e : EntS<Spawner>::getAll())
 	{
 		e->Update(dt);

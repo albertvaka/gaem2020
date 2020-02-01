@@ -40,7 +40,7 @@ struct Mesa : public Entity, EntS<Mesa>
 		}
 
 		spr.setTextureRect(anim.CurrentFrame());
-		spr.setPosition(pos.x - 6, pos.y -16);
+		spr.setPosition(pos.x - 7, pos.y - 16);
 		wnd.draw(spr);
 	}
 

@@ -49,12 +49,15 @@ struct Player : public Entity, public EntS<Player>
 		{
 			if (mesa->cadaver != NULL)
 			{
+				cadaver = mesa->cadaver;
 				mesa->cadaver = NULL;
+
 				mesa->isEmpty = true;
 				mesa->canLet = true;
-				mesa = NULL;
-				cadaver->carryCadaver(pos.x, pos.y, player);
 
+				cadaver->isLet = false;
+				cadaver->carryCadaver(pos.x, pos.y, player);
+				
 			}
 		}
 		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
@@ -67,7 +70,6 @@ struct Player : public Entity, public EntS<Player>
 				mesa->canLet = false;
 				mesa->isEmpty = false;
 				cadaver = NULL;
-				
 			}
 		}
 
