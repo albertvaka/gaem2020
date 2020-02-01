@@ -52,12 +52,13 @@ void collision_player_extremity(Player* player, Extremity* extremity) {
 void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 	if (!player->isCarrying && !cadaver->isCarried) {
 		player->cadaver = cadaver;
+		player->isCadaverCarriable = true;
 		cadaver->isCarriable = true;
 	}
 }
 
 void collision_player_mesa(Player* player, Mesa* mesa) {
-	if (player->isCarrying && player->cadaver != NULL)
+	if (player->cadaver != NULL)
 	{
 		mesa->canLet = true;
 		mesa->cadaver = player->cadaver;
@@ -82,8 +83,8 @@ void collision_cadaver_spawner(Cadaver* ent, Spawner* spawner) {
 
 }
 
-void collision_cadaver_despawner(Entity* e, Entity* e2) {
-	e2->alive = false;
+void collision_cadaver_despawner(Cadaver* e, Despawner* _) {
+	e->alive = false;
 }
 
 void UpdateCollisions(int dt) 
@@ -95,6 +96,8 @@ void UpdateCollisions(int dt)
 			player->extremity = NULL;
 			player->cadaver = NULL;
 			player->mesa = NULL;
+
+			player->isCadaverCarriable = false;
 		}
 	}
 

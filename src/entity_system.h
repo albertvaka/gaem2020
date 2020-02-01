@@ -21,6 +21,7 @@ void UpdateEntities(int dt)
 	{
 		e->Update(dt);
 		e->anim.Update(dt);
+		e->actionButton.Update(dt);
 	}
 
 	for (Cadaver* e : EntS<Cadaver>::getAll())
@@ -34,6 +35,7 @@ void UpdateEntities(int dt)
 
 		e->anim.Update(dt);
 	}
+
 
 
 	for (Spawner* e : EntS<Spawner>::getAll())
