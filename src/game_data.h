@@ -9,3 +9,4 @@ namespace GameData
 	const std::string GAME_TITLE = "GGJ 2020";
 }
 
+extern std::vector< bool > passable;

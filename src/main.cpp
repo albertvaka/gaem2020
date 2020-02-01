@@ -36,7 +36,7 @@ std::vector< std::string > mapita = { // (30 * 15 tiles)
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 
-
+std::vector< std::vector<bool> > passable;
 
 void LoadGame(sf::RenderWindow& window)
 {
@@ -52,20 +52,25 @@ void LoadGame(sf::RenderWindow& window)
 
 	Input::Init(window);
 
-	vec pos(0, 0);
+	passable.resize(mapita.size(), std::vector<bool>(mapita[0].size()));
+
+	int x, y;
 	for (auto row : mapita) {
 		for (char c : row) {
+			vec pos(6400 * x, 6400 * y);
 			switch (c) {
 				case '0': new Player(0, pos); break;
 				case '1': new Player(1, pos); break;
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
-				case 'X': new Pared(pos); break;
 			}
-			pos.x += 6400;
+			if (c > 'A') {
+				passable[x][y] = false;
+			}
+			x += 1;
 		}
-		pos.y += 6400;
-		pos.x = 0;
+		y += 1;
+		x = 0;
 
 	}
 }
