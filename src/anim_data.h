@@ -56,7 +56,7 @@ AnimationData anim_lib[] =
 			{20,1,8,15},
 		},
 		{
-			100,100,200,100,
+			100,100,100,100,
 		},
 	},
 	//PLAYER_WALKING_RIGHT
