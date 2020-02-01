@@ -19,20 +19,20 @@ sf::Sprite sprite;
 
 std::vector< std::string > mapita = { // (30 * 15 tiles)
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-"X          X                 X",
-"X     0    X                 X",
-"X          X                 X",
-"X                    X       X",
-"XXXXX                X       X",
-"X                    X       X",
-"X                    X       X",
+"X             X              X",
+"X     0       X   X          X",
+"X          XXXX   X          X",
+"X                 X  X       X",
+"XXXXX             X  X       X",
+"X                 X  X       X",
+"X    XXXXXXXXXXXXXX  X       X",
 "X                            X",
-"X     XXXX                   X",
-"X                            X",
-"X                            X",
+"X     XXXXX XXXXXXXXXX       X",
+"X         X X                X",
+"X     XXXXX XXXXX            X",
 "X                     X      X",
-"X                            X",
-"X                            X",
+"X    XXXXXX XXXX             X",
+"X         X X                X",
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 
@@ -87,7 +87,7 @@ void DrawGui()
 	if (ImGui::Button("SPAWN PLAYER"))
 	{
 		static int count = 4;
-		new Player(count++, vec::Rand(0, 0, GameData::WINDOW_WIDTH*100, GameData::WINDOW_HEIGHT*100));
+		new Player(count++, vec::Rand(1600, 1600, GameData::WINDOW_WIDTH * 98, GameData::WINDOW_HEIGHT*98));
 	}
 
 	ImGui::End();

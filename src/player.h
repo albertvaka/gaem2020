@@ -4,6 +4,7 @@
 #include "animation.h"
 #include "rand.h"
 
+
 #include "input.h"
 struct Player : public Entity, public EntS<Player>
 {
@@ -80,18 +81,25 @@ struct Player : public Entity, public EntS<Player>
 		Mates::xy tilePos = PosToTile(pos);
 		Mates::xy tileNewPos = PosToTile(newPos);
 
-		std::cout << tilePos.x << "," << tilePos.y << std::endl;
-		std::cout << tileNewPos.x << "," << tileNewPos.y << std::endl << std::endl;
-
+		vec oldPos = pos;
+		bool moved = false;
 		if (passable[tilePos.x][tileNewPos.y]) {
 			pos.y = newPos.y;
+			moved = true;
 		}
 		if (passable[tileNewPos.x][tilePos.y]) {
 			pos.x = newPos.x;
+			moved = true;
 		}
 
-		for (Player* p : EntS<Player>::getAll()) {
-			if (p == this) continue;
+		if (moved) {
+			for (Player* p : EntS<Player>::getAll()) {
+				if (p == this) continue;
+				if (Distance(p->pos, this->pos) < 1600.f) {
+					pos = oldPos;
+					break;
+				}
+			}
 		}
 	}
 
