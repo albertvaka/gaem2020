@@ -3,6 +3,7 @@
 #include "selfregister.h"
 #include "player.h"
 #include "cadaver.h"
+#include "mesa.h"
 #include <functional>
 
 bool Collision(Entity* entity_a, Entity* entity_b)
@@ -54,6 +55,16 @@ void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 	}
 }
 
+void collision_player_mesa(Player* player, Mesa* mesa) {
+	if (player->isCarrying && player->cadaver != NULL)
+	{
+		mesa->canLet = true;
+		mesa->cadaver = player->cadaver;
+		player->mesa = mesa;
+		
+	}
+}
+
 void UpdateCollisions(int dt) 
 {
 
@@ -75,9 +86,14 @@ void UpdateCollisions(int dt)
 		cadaver->isCarriable = false;
 	}
 
+	for (Mesa * mesa : EntS<Mesa>::getAll())
+	{
+		mesa->canLet = false;
+	}
+
 	// If A collides with B, call collision_callback
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
-
+	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
 
 }

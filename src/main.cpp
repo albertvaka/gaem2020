@@ -15,6 +15,7 @@
 #include "cadaver.h"
 #include "pared.h"
 #include "spawner.h"
+#include "mesa.h"
 
 
 sf::Font font;
@@ -83,6 +84,7 @@ void LoadGame(sf::RenderWindow& window)
 	}
 
 	loadExtremityMap();
+	loadMesas();
 }
 
 void DrawGui()

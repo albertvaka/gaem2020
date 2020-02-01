@@ -18,6 +18,7 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	bool isCarried = false;
 	bool isCarriable = false;
+	bool isLet = false;
 
 
 	int playerCarrying;
@@ -58,6 +59,15 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		pos.y = y + 3;
 
 		playerCarrying = player;
+	}
+
+	void putCadaverOnTable(int x, int y)
+	{
+		isCarried = false;
+		isLet = true;
+
+		pos.x = x;
+		pos.y = y;
 	}
 
 	void Update(int dt) 

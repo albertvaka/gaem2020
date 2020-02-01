@@ -15,13 +15,14 @@ struct Player : public Entity, public EntS<Player>
 	AnimationType animForPlayer(AnimationType anim) {
 		int animint = int(anim);
 		int diff = int(AnimationType::DOCTOR_WALKING_DOWN) - int(AnimationType::PLAYER_WALKING_DOWN);
-		return AnimationType(animint+diff*player);
+		return AnimationType(animint + diff * player);
 	}
 
 	int player;
 	bool isCarrying;
 	Extremity* extremity;
 	Cadaver* cadaver;
+	Mesa* mesa;
 
 	Player(int id, vec position)
 	{
@@ -68,6 +69,26 @@ struct Player : public Entity, public EntS<Player>
 			if (cadaver != NULL) {
 				isCarrying = false;
 				cadaver->isCarried = false;
+				cadaver = NULL;
+			}
+		}
+
+		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& !isCarrying && mesa != NULL)
+		{
+			if (mesa->cadaver != NULL)
+			{
+				mesa->cadaver = false;
+			}
+		}	
+		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& isCarrying && mesa != NULL)
+		{
+			if (cadaver != NULL) {
+				isCarrying = false;
+				cadaver->putCadaverOnTable(mesa->pos.x, mesa->pos.y);
+
+				mesa->isEmpty = false;
 				cadaver = NULL;
 			}
 		}
