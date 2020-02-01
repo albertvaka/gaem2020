@@ -8,7 +8,6 @@
 struct Cinta : public Entity, public EntS<Cinta>
 {
 	
-
 	Cinta(vec position, EntityDirection direction) {
 		pos = position;
 		anim.Ensure(AnimationType::BELT_RIGHT);
@@ -50,6 +49,10 @@ struct Cinta : public Entity, public EntS<Cinta>
 
 	}
 
+	void Update(float dt)
+	{
+
+	}
 	void Draw(sf::VertexArray &vertexArray)
 	{
 		/*
