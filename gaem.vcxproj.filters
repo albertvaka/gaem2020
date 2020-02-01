@@ -121,5 +121,8 @@
     <Text Include="src\cinta.h">
       <Filter>Header Files\Entities</Filter>
     </Text>
+    <Text Include="src\taca.h">
+      <Filter>Header Files\Entities</Filter>
+    </Text>
   </ItemGroup>
 </Project>
