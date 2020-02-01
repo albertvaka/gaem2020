@@ -22,7 +22,7 @@ sf::Sprite sprite;
 std::vector< std::string > mapita = { // (23 * 17 tiles)
 "XXXXXXXXXXXAXXXXXXXXXXX",
 "XXXXXXXXXXAAAXXBBBBBXXX",
-"XX0      XAXAXXB   BXXX",
+"XX0      XAXAXXB  1BXXX",
 "XX XXCXX XAXAX       XX",
 "XB X C X XAAAX XXXXX XX",
 "XB X D X XX XX CC  X XX",
