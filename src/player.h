@@ -71,15 +71,7 @@ struct Player : public Entity, public EntS<Player>
 				cadaver = NULL;
 			}
 		}
-		else if (isCarrying)
-		{
-			if (extremity != NULL) {
-				extremity->carryExtremity(pos.x, pos.y);
-			}
-			if (cadaver != NULL) {
-				cadaver->carryCadaver(pos.x, pos.y);
-			}
-		}
+		
 
 		//Player 0 can move with keyboard
 		if (player == 0) 
@@ -222,6 +214,19 @@ struct Player : public Entity, public EntS<Player>
 	void Update(int dt)
 	{
 		Move(dt);
+
+		if (isCarrying)
+		{
+			if (extremity != NULL) 
+			{
+				extremity->carryExtremity(pos.x, pos.y);
+			}
+			if (cadaver != NULL) 
+			{
+				cadaver->carryCadaver(pos.x, pos.y);
+			}
+		}
+
 		switch (state)
 		{
 			case EntityState::IDLE:
