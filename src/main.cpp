@@ -20,17 +20,19 @@
 InputState input;
 sf::Font font;
 
+#define ANIMS_SUPPORTED 128
+
 namespace Editor
 {
 	sf::Texture texture;
 
 	sf::Sprite spr_selected;
 
-	std::vector<Animation> all_animations(16);
+	std::vector<Animation> all_animations(ANIMS_SUPPORTED);
 	Animation* anim = &all_animations[0];
-	std::vector<AnimationData> all_animation_datas(16);
+	std::vector<AnimationData> all_animation_datas(ANIMS_SUPPORTED);
 	AnimationData* data = &all_animation_datas[0];
-	std::vector<std::string> all_animation_names(16);
+	std::vector<std::string> all_animation_names(ANIMS_SUPPORTED);
 
 	int anims_total = 1;
 	int anim_selected = 0;
@@ -101,8 +103,181 @@ namespace Editor
 		RefreshFrameSelected();
 	}
 
+	void ShiftCurrentFrameLeft()
+	{
+		sf::IntRect tmp_rect = data->rect[frame_current];
+		int tmp_timer = data->timer[frame_current];
 
+		data->rect[frame_current] = data->rect[frame_current - 1];
+		data->timer[frame_current] = data->timer[frame_current - 1];
+
+		frame_current--;
+		
+		data->rect[frame_current] = tmp_rect;
+		data->timer[frame_current] = tmp_timer;
+	}
+
+	void ShiftCurrentFrameRight()
+	{
+		sf::IntRect tmp_rect = data->rect[frame_current];
+		int tmp_timer = data->timer[frame_current];
+
+		data->rect[frame_current] = data->rect[frame_current + 1];
+		data->timer[frame_current] = data->timer[frame_current + 1];
+
+		frame_current++;
+
+		data->rect[frame_current] = tmp_rect;
+		data->timer[frame_current] = tmp_timer;
+	}
 	
+	void Load()
+	{
+		std::ifstream file;
+		file.open("project.anm", ios::in);
+
+		file >> Editor::anims_total;
+
+		for (int i = 0; i < Editor::anims_total; ++i)
+		{
+			std::string anim_name;
+			file >> anim_name;
+
+			Editor::all_animation_names[i] = anim_name;
+
+			int frames;
+			file >> frames;
+			Editor::all_animation_datas[i].frames = frames;
+
+			AnimationData* data = &Editor::all_animation_datas[i];
+
+			for (int j = 0; j < frames; ++j)
+			{
+				file >> data->rect[j].left;
+				file >> data->rect[j].top;
+				file >> data->rect[j].width;
+				file >> data->rect[j].height;
+				file >> data->timer[j];
+			}
+
+			Editor::all_animations[i].data = data;
+		}
+
+		file.close();
+
+		Editor::RefreshFrameSelected();
+		Editor::RefreshAnimationNameInputText();
+	}
+
+	void Save()
+	{
+
+		std::ofstream file;
+		file.open("project.anm", ios::out | ios::trunc);
+
+		file << Editor::anims_total << " ";
+
+		for (int i = 0; i < Editor::anims_total; ++i)
+		{
+			file << Editor::all_animation_names[i] << " ";
+
+			int frames = Editor::all_animation_datas[i].frames;
+			file << frames << " ";
+
+			AnimationData* data = &Editor::all_animation_datas[i];
+
+			for (int j = 0; j < frames; ++j)
+			{
+				file << data->rect[j].left << " ";
+				file << data->rect[j].top << " ";
+				file << data->rect[j].width << " ";
+				file << data->rect[j].height << " ";
+				file << data->timer[j] << " ";
+			}
+		}
+
+		file.close();
+	}
+
+	void Export()
+	{
+
+		std::ofstream file;
+		file.open("anim_data.h", ios::out | ios::trunc);
+
+		file << "#pragma once\n";
+
+		file << "#include <SFML/Graphics.hpp>\n";
+
+		file << "\n";
+
+		file << "struct AnimationData\n";
+		file << "{\n";
+		file << "\tint frames;\n";
+		file << "\tsf::IntRect rect[16];\n";
+		file << "\tint timer[16];\n";
+		file << "};";
+
+
+		file << "\n";
+		file << "\n";
+
+		file << "enum AnimationType\n";
+		file << "{\n";
+
+		for (int i = 0; i < Editor::anims_total; ++i)
+		{
+			file << "\t" << Editor::all_animation_names[i] << ",\n";
+		}
+
+		file << "};\n";
+
+
+		file << "\n";
+
+		file << "AnimationData anim_lib[] = \n";
+		file << "{\n";
+
+		for (int i = 0; i < Editor::anims_total; ++i)
+		{
+			file << "\t//" << Editor::all_animation_names[i] << "\n";
+
+			AnimationData* data = &Editor::all_animation_datas[i];
+
+			file << "\t{\n";
+			{
+				file << "\t\t" << data->frames << ",\n";
+
+				{
+					file << "\t\t{\n";
+					for (int j = 0; j < data->frames; ++j)
+					{
+						file << "\t\t\t{" << data->rect[j].left << ",";
+						file << data->rect[j].top << ",";
+						file << data->rect[j].width << ",";
+						file << data->rect[j].height << "},\n";
+					}
+					file << "\t\t},\n";
+				}
+				{
+					file << "\t\t{\n";
+					file << "\t\t\t";
+					for (int j = 0; j < data->frames; ++j)
+					{
+						file << data->timer[j] << ",";
+					}
+					file << "\n\t\t},\n";
+				}
+
+			}
+			file << "\t},\n";
+		}
+		file << "};\n";
+
+		file.close();
+	}
+
+
 	
 };
 
@@ -122,6 +297,7 @@ void LoadGame(sf::RenderWindow& window)
 	ImGui::SFML::Init(window);
 
 	input.RemapInput();
+
 }
 
 void Image( const sf::FloatRect& textureRect, const sf::Color& tintColor = sf::Color::White, const sf::Color& borderColor = sf::Color::Transparent )
@@ -167,26 +343,26 @@ void EditorSection_Editor()
 	ImGui::InputInt("duration (ms)", Editor::time, 1, 1, 0);
 	ImGui::NextColumn();
 
-
+	ImGui::Columns(1, "columns", false);
 	
 }
 
-void EditorSection_Selector()
+void EditorSection_FrameSelector()
 {
 	sf::Sprite& spr = Editor::spr_selected;
 
 	ImGui::Text("selector.");
 
 	{
-		static int frame_sel = 0;
+		//static int frame_sel = 0;
 		int frames = Editor::data->frames;
 		if (frames > 1)
 		{
 			for (int i = 0; i < frames; ++i)
 			{
-				if (ImGui::RadioButton(std::to_string(i + 1).c_str(), &frame_sel, i))
+				if (ImGui::RadioButton(std::to_string(i + 1).c_str(), &Editor::frame_current, i))
 				{
-					Editor::frame_current = frame_sel;
+					//Editor::frame_current = frame_sel;
 					Editor::RefreshFrameSelected();
 				}
 				ImGui::SameLine();
@@ -206,9 +382,27 @@ void EditorSection_Selector()
 			{
 				Editor::DeleteLastFrame();
 			}
-		}
 
-		
+			
+			ImGui::SameLine();
+			if (ImGui::Button("<<"))
+			{
+				if (Editor::frame_current > 0)
+				{
+					Editor::ShiftCurrentFrameLeft();
+				}
+			}
+			
+			ImGui::SameLine();
+			if (ImGui::Button(">>"))
+			{
+				if (Editor::frame_current < (Editor::anims_total - 1))
+				{
+					Editor::ShiftCurrentFrameRight();
+				}
+			}
+			
+		}
 	}
 
 	//Show all frames
@@ -248,7 +442,10 @@ void EditorSection_AnimationSelector()
 
 				Editor::RefreshAnimationNameInputText();
 			}
-			ImGui::SameLine();
+			if (i == 0 || i % 7 != 0)
+			{
+				ImGui::SameLine();
+			}
 		}
 	}
 
@@ -277,7 +474,7 @@ void EditorStuff()
 	
 	EditorSection_Editor();
 	ImGui::Separator();
-	EditorSection_Selector();
+	EditorSection_FrameSelector();
 	ImGui::Separator();
 	ImGui::Text("preview.");
 	ImGui::NewLine();
@@ -304,145 +501,20 @@ void EditorStuff()
 
 	if (ImGui::Button("LOAD"))
 	{
-		std::ifstream file;
-		file.open("project.anm", ios::in);
-
-		file >> Editor::anims_total;
-
-		for (int i = 0; i < Editor::anims_total; ++i)
-		{
-			std::string anim_name;
-			file >> anim_name;
-
-			Editor::all_animation_names[i] = anim_name;
-
-			int frames;
-			file >> frames;
-			Editor::all_animation_datas[i].frames = frames;
-
-			AnimationData* data = &Editor::all_animation_datas[i];
-
-			for (int j = 0; j < frames; ++j)
-			{
-				file >> data->rect[j].left;
-				file >> data->rect[j].top;
-				file >> data->rect[j].width;
-				file >> data->rect[j].height;
-				file >> data->timer[j];
-			}
-
-			Editor::all_animations[i].data = data;
-		}
-
-		file.close();
-
-		Editor::RefreshFrameSelected();
-		Editor::RefreshAnimationNameInputText();
+		Editor::Load();
 	}
 
 	ImGui::SameLine();
 
 	if (ImGui::Button("SAVE"))
 	{
-		std::ofstream file;
-		file.open("project.anm", ios::out | ios::trunc);
-
-		file << Editor::anims_total << " ";
-
-		for (int i = 0; i < Editor::anims_total; ++i)
-		{
-			file << Editor::all_animation_names[i] << " ";
-
-			int frames = Editor::all_animation_datas[i].frames;
-			file << frames << " ";
-			
-			AnimationData* data = &Editor::all_animation_datas[i];
-
-			for (int j = 0; j < frames; ++j)
-			{
-				file << data->rect[j].left << " ";
-				file << data->rect[j].top << " ";
-				file << data->rect[j].width << " ";
-				file << data->rect[j].height << " ";	
-				file << data->timer[j] << " ";
-			}
-		}
-
-		file.close();
+		Editor::Save();
 	}
 
 	if (ImGui::Button("EXPORT"))
 	{
-		std::ofstream file;
-		file.open("anim_data.h", ios::out | ios::trunc);
+		Editor::Export();
 
-		file << "#pragma once\n";
-
-		file << "#include <SFML/Graphics.hpp>\n";
-
-		file << "struct AnimationData\n";
-		file << "{\n";
-		file << "\tint frames;\n";
-		file << "\tsf::IntRect rect[16];\n";
-		file << "\tint timer[16];\n";
-		file << "};";
-		
-
-		file << "\n";
-
-		file << "enum AnimationType\n";
-		file << "{\n";
-
-		for (int i = 0; i < Editor::anims_total; ++i)
-		{
-			file << "\t" << Editor::all_animation_names[i] << ",\n";
-		}
-
-		file << "};\n";
-
-
-		file << "\n";
-
-		file << "AnimationData anim_lib[] = \n";
-		file << "{\n";
-
-		for (int i = 0; i < Editor::anims_total; ++i)
-		{
-			file << "\t//LA ANIM NUMERO " << i << "\n";
-
-			AnimationData* data = &Editor::all_animation_datas[i];
-
-			file << "\t{\n";
-			{
-				file << "\t\t" << data->frames << ",\n";
-
-				{
-					file << "\t\t{\n";
-					for (int j = 0; j < data->frames; ++j)
-					{
-						file << "\t\t\t{" << data->rect->left << ",";
-						file << data->rect->top << ",";
-						file << data->rect->width << ",";
-						file << data->rect->height << "},\n";
-					}
-					file << "\t\t},\n";
-				}
-				{
-					file << "\t\t{\n";
-					file << "\t\t\t";
-					for (int j = 0; j < data->frames; ++j)
-					{
-						file << data->timer[j] << ",";
-					}
-					file << "\n\t\t},\n";
-				}
-				
-			}
-			file << "\t},\n";
-		}
-		file << "};\n";
-
-		file.close();
 	}
 
 
@@ -592,9 +664,18 @@ int main()
 
 	rtex_preview.create(200, 200);
 
-	Editor::InitNewAnim();
-
-	
+	std::ifstream file;
+	file.open("project.anm", ios::in);
+	if (file.good())
+	{
+		file.close();
+		Editor::Load();
+	}
+	else
+	{
+		file.close();
+		Editor::InitNewAnim();
+	}
 
 	while (window.isOpen())
 	{
