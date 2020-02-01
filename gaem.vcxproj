@@ -164,6 +164,9 @@
     <ClInclude Include="src\rand.h" />
     <ClInclude Include="src\vector.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\cinta.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

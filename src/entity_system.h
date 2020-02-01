@@ -10,6 +10,7 @@
 #include "player.h"
 #include "pared.h"
 #include "cadaver.h"
+#include "cinta.h"
 
 void UpdateEntities(int dt)
 {
