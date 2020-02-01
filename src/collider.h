@@ -7,7 +7,7 @@
 
 bool Collision(Entity* entity_a, Entity* entity_b)
 {
-	int COLLISION_SIZE = 1600;
+	int COLLISION_SIZE = 16000;
 
 	vec a = entity_a->pos;
 	vec b = entity_b->pos;
