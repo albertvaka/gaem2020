@@ -11,6 +11,7 @@
 #include "pared.h"
 #include "cadaver.h"
 #include "cinta.h"
+#include "spawner.h"
 
 void UpdateEntities(int dt)
 {
@@ -28,6 +29,13 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 		//e->anim.Update(dt);
 	}
+
+
+	for (Spawner* e : EntS<Spawner>::getAll())
+	{
+		e->Update(dt);
+	}
+
 
 
 

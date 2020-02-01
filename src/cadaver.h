@@ -19,6 +19,7 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	bool isCarried = false;
 	bool isCarriable = false;
 
+	Cadaver(vec pos) : Cadaver(pos.x, pos.y) { }
 	Cadaver(int x, int y) {
 
 		pos.x = x;
