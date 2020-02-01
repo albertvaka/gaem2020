@@ -207,6 +207,8 @@ void EditorSection_Selector()
 
 void EditorSection_AnimationSelector()
 {
+
+	ImGui::Columns(1, "columns", false);
 	static int anim_sel = 0;
 	
 	if (ImGui::InputText("name", &Editor::buff_animation_name[0], 128))
@@ -237,7 +239,8 @@ void EditorSection_AnimationSelector()
 	{
 		Editor::AddNewAnim();
 	}
-	
+
+	ImGui::Columns(2, "columns", false);
 }
 
 void EditorStuff()
