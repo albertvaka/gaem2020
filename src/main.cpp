@@ -1,3 +1,5 @@
+#include <map>
+
 #include "imgui.h"
 #include "imgui-SFML.h"
 #include <SFML/Graphics.hpp>
@@ -59,7 +61,7 @@ void LoadGame(sf::RenderWindow& window)
 	int x = 0, y = 0;
 	for (auto row : mapita) {
 		for (char c : row) {
-			vec pos(6400 * x, 6400 * y);
+			vec pos(64 * x, 64 * y);
 			switch (c) {
 				case '0': new Player(0, pos); break;
 				case '1': new Player(1, pos); break;
@@ -75,6 +77,8 @@ void LoadGame(sf::RenderWindow& window)
 		x = 0;
 
 	}
+
+	loadExtremityMap();
 }
 
 void DrawGui()
@@ -85,7 +89,7 @@ void DrawGui()
 	if (ImGui::Button("SPAWN CADAVER"))
 	{
 
-		new Cadaver(350, 350);
+		new Cadaver(200,200);
 	}
 	if (ImGui::Button("SPAWN PLAYER"))
 	{
@@ -107,8 +111,6 @@ int main()
 	sf::Text txt_fps;
 	txt_fps.setPosition(10, 10);
 	txt_fps.setFont(font);
-
-	new Cadaver(300, 300);
 
 	while (window.isOpen()) 
 	{

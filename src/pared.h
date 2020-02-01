@@ -15,12 +15,11 @@ struct Pared : public Entity, public EntS<Pared>
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 		spr.setOrigin(0, 0);
-		float x = pos.x / 100.0f;
-		float y = pos.y / 100.0f;
-		spr.setPosition(x, y);
-		spr.setTextureRect(sf::IntRect(100, 100, 16, 16));
+		spr.setPosition(pos.x, pos.y);
+		spr.setTextureRect(sf::IntRect(112, 112, 16, 16));
 		
 		window.draw(spr);
+
 	}
 
 	void Draw(sf::VertexArray &vertexArray)

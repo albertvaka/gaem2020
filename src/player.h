@@ -6,13 +6,22 @@
 
 
 #include "input.h"
+
+#include "cadaver.h"
+
 struct Player : public Entity, public EntS<Player>
 {
 
 	int player;
+	bool isCarrying;
+	Extremity* extremity;
+	Cadaver* cadaver;
+
 	Player(int id, vec position)
 	{
 		player = id;
+
+		isCarrying = false;
 
 		anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
 		state = EntityState::MOVING;
@@ -28,10 +37,39 @@ struct Player : public Entity, public EntS<Player>
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, 30));
 
 		//TODO
-		if (Keyboard::IsKeyPressed(GameKeys::ACTION)) { }
+		if (Keyboard::IsKeyPressed(GameKeys::ACTION) && !isCarrying) 
+		{
+			if (extremity != NULL && cadaver == NULL)
+			{
+				isCarrying = true;
+				extremity->isCarried = true;
+				extremity->pos.x = pos.x;
+				extremity->pos.y = pos.y;
+
+			}
+			else if (extremity == NULL && cadaver != NULL)
+			{
+				isCarrying = true;
+				cadaver->isCarried = true;
+				cadaver->pos.x = pos.x;
+				cadaver->pos.y = pos.y;
+			}
+		}
+		else if (Keyboard::IsKeyPressed(GameKeys::ACTION) && isCarrying)
+		{
+			if (extremity != NULL) {
+				extremity->isCarried = false;
+				extremity = NULL;
+			}
+			if (cadaver != NULL) {
+				cadaver->isCarried = false;
+				cadaver = NULL;
+			}
+		}
 
 		//Player 0 can move with keyboard
-		if (player == 0) {
+		if (player == 0) 
+		{
 			if (Keyboard::IsKeyPressed(GameKeys::UP))
 			{
 				anal.y = -100;
@@ -52,7 +90,7 @@ struct Player : public Entity, public EntS<Player>
 		}
 
 
-		speed = anal * 0.3f;
+		speed = anal * 0.003f;
 		
 		if (anal.x > 70)
 		{
@@ -101,7 +139,7 @@ struct Player : public Entity, public EntS<Player>
 
 		vec newPos = pos + speed * dt;
 		
-		int dd = 8 * 4 * 80;
+		int dd = 8 * 4 * 0.8;
 
 		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
 		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
@@ -162,8 +200,8 @@ struct Player : public Entity, public EntS<Player>
 	{
 		return 
 		{ 
-			int(((pos.x / 400.f) + 8) / 16), 
-			int(((pos.y / 400.f) + 8) / 16) 
+			int(((pos.x / 4.f) + 8) / 16), 
+			int(((pos.y / 4.f) + 8) / 16) 
 		};
 	}
 
@@ -218,7 +256,7 @@ struct Player : public Entity, public EntS<Player>
 
 	Bounds bounds() {
 
-		return Bounds(pos.x / 100.f, pos.y/100.f, 16 * 4, 16*4);
+		return Bounds(pos.x, pos.y, 16 * 4, 16*4);
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
@@ -227,9 +265,7 @@ struct Player : public Entity, public EntS<Player>
 
 		auto a = spr.getScale();
 		spr.setScale(5, 5);
-		float x = pos.x / 100.0f;
-		float y = pos.y / 100.0f;
-		spr.setPosition(x-8, y - 18);
+		spr.setPosition(pos.x-8, pos.y - 18);
 		
 		//spr.setOrigin(8, 8);
 
@@ -241,6 +277,7 @@ struct Player : public Entity, public EntS<Player>
 
 		bounds().Draw(window);
 	}
+
 
 	void Draw(sf::VertexArray &vertexArray)
 	{

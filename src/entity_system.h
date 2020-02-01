@@ -50,6 +50,15 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
+	for (Cadaver* e : EntS<Cadaver>::getAll())
+	{
+		e->Draw(spr, window);
+	}
+
+	for (Extremity* e : EntS<Extremity>::getAll())
+	{
+		e->Draw(spr, window);
+	}
 }
 void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 {

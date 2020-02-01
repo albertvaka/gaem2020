@@ -40,13 +40,43 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 }
 
 void collision_player_extremity(Player* player, Extremity* extremity) {
-	
+	if (!player->isCarrying && !extremity->isCarried) {
+		player->extremity = extremity;
+		extremity->isCarriable = true;
+	}
 }
 
+void collision_player_cadaver(Player* player, Cadaver* cadaver) {
+	if (!player->isCarrying && !cadaver->isCarried) {
+		player->cadaver = cadaver;
+		cadaver->isCarriable = true;
+	}
+}
 
 void UpdateCollisions(int dt) 
 {
+
+	for (Player * player : EntS<Player>::getAll())
+	{
+		if (!player->isCarrying) {
+			player->extremity = NULL;
+			player->cadaver = NULL;
+		}
+	}
+
+	for (Extremity * extremity : EntS<Extremity>::getAll())
+	{
+		extremity->isCarriable = false;
+	}
+
+	for (Cadaver * cadaver : EntS<Cadaver>::getAll())
+	{
+		cadaver->isCarriable = false;
+	}
+
 	// If A collides with B, call collision_callback
-	//collide(EntS<EntityExample>::getAll(), EntS<EntityExampleSmall>::getAll(), collision_callback);
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
+	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
+
+
 }

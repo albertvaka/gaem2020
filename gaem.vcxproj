@@ -147,6 +147,7 @@
     <ClInclude Include="imgui_sfml\imgui-SFML.h" />
     <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
     <ClInclude Include="src\animation.h" />
+    <ClInclude Include="src\anim_data.h" />
     <ClInclude Include="src\bounds.h" />
     <ClInclude Include="src\collider.h" />
     <ClInclude Include="src\entity.h" />
