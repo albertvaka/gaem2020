@@ -12,6 +12,12 @@
 struct Player : public Entity, public EntS<Player>
 {
 
+	AnimationType animForPlayer(AnimationType anim) {
+		int animint = int(anim);
+		int diff = int(AnimationType::DOCTOR_WALKING_DOWN) - int(AnimationType::PLAYER_WALKING_DOWN);
+		return AnimationType(animint+diff*player);
+	}
+
 	int player;
 	bool isCarrying;
 	Extremity* extremity;
@@ -23,7 +29,7 @@ struct Player : public Entity, public EntS<Player>
 
 		isCarrying = false;
 
-		anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
+		anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_DOWN));
 		state = EntityState::MOVING;
 
 		pos = position;
@@ -32,39 +38,39 @@ struct Player : public Entity, public EntS<Player>
 	}
 	void SetSpeedWithPlayerInput()
 	{
-		float threshold = 50;
-		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, 30));
+		float deadZone = 20;
+		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, deadZone));
 
-		//TODO
-		if (Keyboard::IsKeyPressed(GameKeys::ACTION) && !isCarrying)
+		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
+
 		{
-			if (extremity != NULL && cadaver == NULL)
+			if (extremity != NULL)
 			{
 				isCarrying = true;
 				extremity->isCarried = true;
 				extremity->pos.x = pos.x;
 				extremity->pos.y = pos.y;
-
 			}
-			else if (extremity == NULL && cadaver != NULL)
+			else if (cadaver != NULL)
 			{
 				isCarrying = true;
-				cadaver->isCarried = true;
-				cadaver->pos.x = pos.x;
-				cadaver->pos.y = pos.y;
+				cadaver->carryCadaver(pos.x, pos.y, player);
 			}
 		}
-		else if (Keyboard::IsKeyPressed(GameKeys::ACTION) && isCarrying)
+		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && isCarrying)
 		{
 			if (extremity != NULL) {
+				isCarrying = false;
 				extremity->isCarried = false;
 				extremity = NULL;
 			}
 			if (cadaver != NULL) {
+				isCarrying = false;
 				cadaver->isCarried = false;
 				cadaver = NULL;
 			}
 		}
+		
 
 		//Player 0 can move with keyboard
 		if (player == 0)
@@ -80,8 +86,7 @@ struct Player : public Entity, public EntS<Player>
 			if (Keyboard::IsKeyPressed(GameKeys::RIGHT))
 			{
 				anal.x = 100;
-
-			}
+			}	
 			else if (Keyboard::IsKeyPressed(GameKeys::LEFT))
 			{
 				anal.x = -100;
@@ -90,23 +95,23 @@ struct Player : public Entity, public EntS<Player>
 
 
 		speed = anal * 0.0015f;
-
-		if (anal.x > 70)
+		
+		if (anal.x > deadZone)
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::RIGHT;
 		}
-		else if (anal.x < -70)
+		else if (anal.x < -deadZone)
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::LEFT;
-		}
-		else if (anal.y > 70)
+
+		} else if (anal.y > deadZone)
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::DOWN;
 		}
-		else if (anal.y < -70)
+		else if (anal.y < -deadZone)
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::UP;
@@ -121,10 +126,13 @@ struct Player : public Entity, public EntS<Player>
 		
 
 		auto oldPos = pos;
+
 		SetSpeedWithPlayerInput();
 		SetSpeedWithCinta();
 		
-		bool moved = tryMove(dt);
+
+		bool moved = tryMove(dt/4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);
+
 
 		if (moved) 
 		{
@@ -140,13 +148,14 @@ struct Player : public Entity, public EntS<Player>
 		}
 	}
 
-	bool tryMove(int dt) 
+	float boundingBoxSize = 10.f;
+	bool tryMove(float dt)
 	{
 		bool moved = false;
 
 		vec newPos = pos + speed * dt;
 		
-		float dd = 8 * 0.8;
+		float dd = boundingBoxSize/2;
 
 		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
 		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
@@ -215,6 +224,19 @@ struct Player : public Entity, public EntS<Player>
 	void Update(int dt)
 	{
 		Move(dt);
+
+		if (isCarrying)
+		{
+			if (extremity != NULL) 
+			{
+				extremity->carryExtremity(pos.x, pos.y);
+			}
+			if (cadaver != NULL) 
+			{
+				cadaver->carryCadaver(pos.x, pos.y, player);
+			}
+		}
+
 		switch (state)
 		{
 			case EntityState::IDLE:
@@ -222,19 +244,19 @@ struct Player : public Entity, public EntS<Player>
 
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(AnimationType::PLAYER_IDLE_UP);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(AnimationType::PLAYER_IDLE_DOWN);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(AnimationType::PLAYER_IDLE_LEFT);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(AnimationType::PLAYER_IDLE_RIGHT);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_RIGHT));
 				}
 
 			} break;
@@ -243,19 +265,19 @@ struct Player : public Entity, public EntS<Player>
 			{
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(AnimationType::PLAYER_WALKING_UP);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(AnimationType::PLAYER_WALKING_DOWN);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(AnimationType::PLAYER_WALKING_LEFT);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(AnimationType::PLAYER_WALKING_RIGHT);
+					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_RIGHT));
 				}
 			} break;
 		}
@@ -263,16 +285,18 @@ struct Player : public Entity, public EntS<Player>
 
 	Bounds bounds() {
 
-		return Bounds(pos.x, pos.y, 16, 16);
+		return Bounds(pos.x + (16 - boundingBoxSize)/2, pos.y + (16 - boundingBoxSize)/2, boundingBoxSize, boundingBoxSize);
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
+		bounds().Draw(window);
+
 		spr.setOrigin(0, 0);
 
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);
-		spr.setPosition(pos.x + 1.5f, pos.y - 3.f);
+		spr.setPosition(pos.x + 1.5f, pos.y - 4.f);
 		
 		//spr.setOrigin(8, 8);
 
@@ -282,7 +306,6 @@ struct Player : public Entity, public EntS<Player>
 		window.draw(spr);
 		spr.setScale(a);
 
-		bounds().Draw(window);
 	}
 
 

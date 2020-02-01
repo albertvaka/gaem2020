@@ -8,6 +8,7 @@
 
 bool Collision(Entity* entity_a, Entity* entity_b)
 {
+
 	float COLLISION_SIZE = 16;
 
 	vec a = entity_a->pos;
@@ -28,7 +29,7 @@ void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*ca
 	{
 		T* a = setA[i];
 		size_t sb = setB.size();
-		for (size_t j = i+1; j < sb; ++j)
+		for (size_t j = 0; j < sb; ++j)
 		{
 			U* b = setB[j];
 			if ((void*)a == (void*)b) continue;
