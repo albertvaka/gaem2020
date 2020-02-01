@@ -19,6 +19,8 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	bool isCarried = false;
 	bool isCarriable = false;
 
+	int playerCarrying;
+
 	Cadaver(int x, int y) {
 
 		pos.x = x;
@@ -46,12 +48,14 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		}
 	}
 
-	void carryCadaver(int x, int y)
+	void carryCadaver(int x, int y, int player)
 	{
 		isCarried = true;
 
 		pos.x = x + 5;
 		pos.y = y + 3;
+
+		playerCarrying = player;
 	}
 
 	void Update(int dt) 
