@@ -59,7 +59,7 @@ void LoadGame(sf::RenderWindow& window)
 	int x = 0, y = 0;
 	for (auto row : mapita) {
 		for (char c : row) {
-			vec pos(6400 * x, 6400 * y);
+			vec pos(64 * x, 64 * y);
 			switch (c) {
 				case '0': new Player(0, pos); break;
 				case '1': new Player(1, pos); break;
