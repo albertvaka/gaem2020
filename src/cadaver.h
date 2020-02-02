@@ -185,8 +185,8 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		else 
 		{
 			sf::RectangleShape shape;
-			int color = std::min(1.0f, abs(sin(0.5f*isLetClock.getElapsedTime().asSeconds()))) * 245;
-			shape.setFillColor(sf::Color(color, color, 0));
+			int color = std::min(1.0f, abs(sin(0.5f*isLetClock.getElapsedTime().asSeconds()))) * 255;
+			shape.setFillColor(sf::Color(0, (color*3)/4, color));
 			shape.setPosition(pos.x-4.f, pos.y - 6.5f);
 			shape.setSize(sf::Vector2f(15, 15));
 			wnd.draw(shape);

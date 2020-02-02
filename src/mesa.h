@@ -8,6 +8,9 @@
 #include "extremity.h"
 
 struct Mesa;
+struct Collector;
+
+void UpdateCollector(Collector*, int);
 
 struct Collector : public SortedDrawable, EntS<Collector>
 {
@@ -15,14 +18,29 @@ struct Collector : public SortedDrawable, EntS<Collector>
 	int player = -1;
 	Mesa* mesa = nullptr;
 	int currentPlayer;
+
+	bool mesa_was_empty = true;
+
 	Collector(vec position, ExtremityType et)
 	{
 		type = et;
 		pos = position;
-		anim.Ensure(AnimationType::ROOMBA_DOWN);
+		anim.Ensure(AnimationType::CAPSULE_CLOSED);
+		anim.loopable = false;
 	}
-	void Update(int dt) {
 
+	void Update(int dt) 
+	{
+		UpdateCollector(this, dt);
+	}
+
+	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
+	{
+		spr.setScale(1, 1);
+		spr.setTextureRect(anim.CurrentFrame());
+		spr.setPosition(pos.x, pos.y);
+		wnd.draw(spr);
+		spr.setScale(1, 1);
 	}
 
 };
@@ -87,7 +105,8 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 
 		if (cadaver && lever->engineIsFinished)
 		{
-			if (cadaver->HasExtremity(type)) {
+			if (cadaver->HasExtremity(type)) 
+			{
 				cadaver->DeatachExtremity(type, collector->pos);
 			}
 	
@@ -97,3 +116,23 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 
 };
 
+
+
+void UpdateCollector(Collector* c, int dt)
+{
+	bool mesa_empty = c->mesa->isEmpty;
+
+	if (c->mesa_was_empty && !mesa_empty)
+	{
+		c->anim.Ensure(AnimationType::CAPSULE_OPENING);
+		c->anim.loopable = false;
+	}
+
+	if (mesa_empty && !c->mesa_was_empty)
+	{
+		c->anim.Ensure(AnimationType::CAPSULE_CLOSING);
+		c->anim.loopable = false;
+	}
+
+	c->mesa_was_empty = mesa_empty;
+}

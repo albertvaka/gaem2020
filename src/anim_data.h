@@ -52,6 +52,10 @@ enum AnimationType
 	ROOMBA_RIGHT,
 	ROOMBA_DOOR_OPEN,
 	ROOMBA_DOOR_CLOSE,
+	CAPSULE_OPENING,
+	CAPSULE_OPENED,
+	CAPSULE_CLOSED,
+	CAPSULE_CLOSING,
 };
 
 AnimationData anim_lib[] =
@@ -550,6 +554,52 @@ AnimationData anim_lib[] =
 		},
 		{
 			200,200,200,200,500,
+		},
+	},
+	//CAPSULE_OPENING
+	{
+		4,
+		{
+			{224,96,16,16},
+			{240,96,16,16},
+			{240,112,16,16},
+			{224,112,16,16},
+		},
+		{
+			100,100,100,500,
+		},
+	},
+	//CAPSULE_OPENED
+	{
+		1,
+		{
+			{224,112,16,16},
+		},
+		{
+			500,
+		},
+	},
+	//CAPSULE_CLOSED
+	{
+		1,
+		{
+			{224,96,16,16},
+		},
+		{
+			500,
+		},
+	},
+	//CAPSULE_CLOSING
+	{
+		4,
+		{
+			{224,112,16,16},
+			{240,112,16,16},
+			{240,96,16,16},
+			{224,96,16,16},
+		},
+		{
+			100,100,100,500,
 		},
 	},
 };
