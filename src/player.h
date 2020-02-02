@@ -148,7 +148,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 		}
 
 
-		speed = anal * 0.0015f;
+		speed = anal * 0.0008f;
 		
 		if (anal.x > deadZone)
 		{

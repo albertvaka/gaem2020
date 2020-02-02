@@ -9,6 +9,8 @@
 
 extern sf::Clock mainClock;
 
+bool withTaca = true;
+
 struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 { 
 	ExtremityData rightLeg;
@@ -82,8 +84,6 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		currentPlayer = -1;
 	}
 
-
-	bool withTaca = false;
 
 	void Update(int dt) 
 	{

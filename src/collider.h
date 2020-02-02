@@ -51,17 +51,17 @@ bool Collision(Cintable* entity_a, Cleaner* entity_b)
 			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
 }
 
-template <typename T, typename U, typename Z, typename Y>
-void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(Y*, Z*)) 
+template <typename S, typename E, typename X, typename Y>
+void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*callback)(X*, Y*)) 
 {
 	size_t sa = setA.size();
 	for (size_t i = 0; i < sa; ++i)
 	{
-		T* a = setA[i];
+		S* a = setA[i];
 		size_t sb = setB.size();
 		for (size_t j = 0; j < sb; ++j)
 		{
-			U* b = setB[j];
+			E* b = setB[j];
 			if ((void*)a == (void*)b) continue;
 			if (Collision(a, b)) 
 			{
@@ -140,7 +140,11 @@ void collision_clean_taques(Taca* t, Cleaner* c) {
 void collision_stop_cleaner(Player* _, Cleaner* c) {
 	c->speed.x = 0;
 	c->speed.y = 0;
-	c->pos = c->oldPos;
+	if (c->ya_va)
+	{
+		c->pos = c->oldPos;
+	}
+
 }
 
 

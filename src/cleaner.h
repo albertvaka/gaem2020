@@ -10,16 +10,12 @@
 #include "cadaver.h"
 #include "mesa.h"
 
-
-
-
-
 struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 {
 	bool naixement = true;
 
 	float pos_y_spawn;
-
+	SortedDrawable* parent;
 	vec oldPos;
 	AnimationType animForCleaner(AnimationType anim) 
 	{
@@ -30,7 +26,7 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 	Animation actionButton;
 
 	float decisionCounter = 1000.f;
-	Cleaner(vec position)
+	Cleaner(vec position, SortedDrawable* _parent)
 	{
 		anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
 
@@ -40,6 +36,7 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 		speed.x = 0;
 		speed.y = 0;
 
+		parent = _parent;
 		pos_y_spawn = pos.y;
 	}
 	
@@ -192,7 +189,8 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 
 	int timer_naixement = 0;
-	
+	bool ya_va = false;
+
 	void Update(int dt)
 	{
 
@@ -202,10 +200,14 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 		{
 			return;
 		}
-		if (timer_naixement < 2400)
+		else if (timer_naixement < 2400)
 		{
 			pos.y += dt*0.01f;
 			return;
+		}
+		else
+		{
+			ya_va = true;
 		}
 
 		Move(dt);
@@ -217,19 +219,19 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_UP));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_LEFT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_RIGHT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
 
 			} break;
@@ -238,19 +240,19 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 			{
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_UP));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_LEFT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_RIGHT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
 			} break;
 		}
@@ -272,7 +274,9 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 		window.draw(spr);
 
-		
+		if (timer_naixement < 2400) {
+			parent->Draw(spr, window);
+		}
 
 	}
 
@@ -392,7 +396,7 @@ struct CleanerSpawner : public SortedDrawable, public EntS<CleanerSpawner>
 		state = CleanerSpawnerState::ABRIENDOSE;
 		anim.Ensure(AnimationType::ROOMBA_DOOR_OPEN);
 		anim.Reset();
-		new Cleaner(pos);
+		new Cleaner(pos,this);
 	}
 
 };

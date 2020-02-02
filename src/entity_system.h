@@ -101,10 +101,6 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
-	for (CleanerSpawner* e : EntS<CleanerSpawner>::getAll())
-	{
-		e->Draw(spr, window);
-	}
 
 }
 void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
