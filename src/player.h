@@ -360,7 +360,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
-		bounds().Draw(window);
+		//bounds().Draw(window);
 
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);

@@ -27,12 +27,12 @@ const int TILE_SIZE = 16;
 
 std::vector< std::string > mapita_inicial = { // (23 * 16 tiles)
 "XXXXXXXXXXXSXXXXXXXXXXX",
-"XX0      XDDBX       XX",
+"XX       XDDBX       XX",
 "XX XXXXX XAXBX XXXXX XX",
 "X  X   X XAXBX X   X XX",
 "X  XFGFX XACCX XFGFX XX",
-"XX X   X       X   X XX",
-"XX XX XX       XX XX XX",
+"XX X   X  1 2  X   X XX",
+"XX XX XX  0 3  XX XX XX",
 "XX       XXXXX       XX",
 "XX XXXXX X   X XXXXX XX",
 "XX X   X XFGFX X   X XX",
