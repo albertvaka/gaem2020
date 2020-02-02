@@ -360,7 +360,12 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 			if (lever != NULL && lever->engineIsFinished)
 			{
-				isLeverPullable = false;
+				isLeverPullable = true;
+			}
+
+			if (leverCounter < 0) {
+				leverCounter = 0;
+				isPullingLever = false;
 			}
 		}
 		
