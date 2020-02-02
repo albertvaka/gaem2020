@@ -20,6 +20,7 @@ void UpdateEntities(int dt)
 	//Collisions are handled in collider.h
 	UpdateCollisions(dt);
 
+
 	for (Player* e : EntS<Player>::getAll())
 	{
 		e->Update(dt);
@@ -74,7 +75,15 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 		e->anim.Update(dt);
 	}
+	int num_tacs = EntS<Taca>::getAll().size();
+	int num_rumbs = EntS<Cleaner>::getAll().size();
+	if (num_tacs/(num_rumbs + 1) > 800) {
+		int spawners_count = EntS<CleanerSpawner>::getAll().size();
 
+		int sp = Random::roll(0, spawners_count);
+
+		EntS<CleanerSpawner>::getAll()[sp]->TreuElGos();
+	}
 
 	//if (EntS<Taca>::getAll().size() > )
 

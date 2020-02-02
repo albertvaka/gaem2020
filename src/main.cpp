@@ -208,7 +208,7 @@ void LoadGame(sf::RenderWindow& window)
 
 
 			passable[x][y] = (c < 'A');
-			passableCleaner[x][y] = (c < 'E');
+			passableCleaner[x][y] = (c < 'E' || c == 'Z');
 
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
