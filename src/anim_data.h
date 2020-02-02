@@ -50,6 +50,8 @@ enum AnimationType
 	ROOMBA_UP,
 	ROOMBA_LEFT,
 	ROOMBA_RIGHT,
+	ROOMBA_DOOR_OPEN,
+	ROOMBA_DOOR_CLOSE,
 };
 
 AnimationData anim_lib[] =
@@ -519,6 +521,34 @@ AnimationData anim_lib[] =
 		},
 		{
 			800,175,125,175,
+		},
+	},
+	//ROOMBA_DOOR_OPEN
+	{
+		5,
+		{
+			{0,192,16,16},
+			{16,192,16,16},
+			{32,192,16,16},
+			{48,192,16,16},
+			{64,192,16,16},
+		},
+		{
+			200,200,200,200,900,
+		},
+	},
+	//ROOMBA_DOOR_CLOSE
+	{
+		5,
+		{
+			{64,192,16,16},
+			{48,192,16,16},
+			{32,192,16,16},
+			{16,192,16,16},
+			{1,192,16,16},
+		},
+		{
+			200,200,200,200,500,
 		},
 	},
 };
