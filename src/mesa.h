@@ -9,19 +9,19 @@
 
 struct Mesa;
 struct Collector;
+struct Player;
 
 void UpdateCollector(Collector*, int);
 
 struct Collector : public SortedDrawable, EntS<Collector>
 {
 	ExtremityType type;
-	int player = -1;
 	Mesa* mesa = nullptr;
 	Extremity* extremity = nullptr;
-	int currentPlayer;
 
 	bool mesa_was_empty = true;
 
+	Player* currentPlayer = nullptr;
 	Collector(vec position, ExtremityType et)
 	{
 		type = et;
@@ -56,7 +56,7 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 
 
 	ExtremityType type;
-	int currentPlayer = -1;
+	Player* currentPlayer = nullptr;
 	Collector* collector = nullptr;
 
 	Mesa(vec position, ExtremityType et)
@@ -118,8 +118,8 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 					collector->extremity = e;
 				}
 			}
-		lever->engineIsFinished = false;
-		//TODO:: RAYOS Y RETRUECANOS
+			lever->engineIsFinished = false;
+			//TODO:: RAYOS Y RETRUECANOS
 		}
 	}
 

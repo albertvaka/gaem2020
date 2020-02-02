@@ -92,7 +92,7 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 	{
 		mesa->canLet = true;
 		mesa->cadaver = player->cadaver;
-		mesa->currentPlayer = player->player;
+		mesa->currentPlayer = player;
 		player->mesa = mesa;
 	}
 }
@@ -100,7 +100,7 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 void collision_player_collector(Player* player, Collector* mesa) {
 	if (player->cadaver != NULL)
 	{
-		mesa->currentPlayer = player->player;
+		mesa->currentPlayer = player;
 		player->collector = mesa;
 	}
 }
@@ -199,7 +199,12 @@ void UpdateCollisions(int dt)
 	for (Mesa * mesa : EntS<Mesa>::getAll())
 	{
 		mesa->canLet = false;
-		mesa->currentPlayer = -1;
+		mesa->currentPlayer =  nullptr;
+	}
+
+	for (Collector* mesa : EntS<Collector>::getAll())
+	{
+		mesa->currentPlayer = nullptr;
 	}
 
 	// If A collides with B, call collision_callback
