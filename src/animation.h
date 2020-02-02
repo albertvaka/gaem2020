@@ -63,6 +63,15 @@ struct Animation
 			Reset();
 		}
 	}
+	
+	void EnsureNoReset(AnimationType type)
+	{
+		if (anim_type != type)
+		{
+			anim_type = type;
+		}
+	}
+
 
 	sf::IntRect CurrentFrame()
 	{

@@ -222,19 +222,19 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_UP));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_LEFT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_RIGHT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
 
 			} break;
@@ -243,19 +243,19 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 			{
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_UP));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_LEFT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::ROOMBA_RIGHT));
+					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
 			} break;
 		}
