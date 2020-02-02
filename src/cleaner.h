@@ -192,7 +192,8 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 
 	int timer_naixement = 0;
-	
+	bool ya_va = false;
+
 	void Update(int dt)
 	{
 
@@ -202,10 +203,14 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 		{
 			return;
 		}
-		if (timer_naixement < 2400)
+		else if (timer_naixement < 2400)
 		{
 			pos.y += dt*0.01f;
 			return;
+		}
+		else
+		{
+			ya_va = true;
 		}
 
 		Move(dt);
