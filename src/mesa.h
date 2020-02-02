@@ -132,17 +132,17 @@ void UpdateCollector(Collector* c, int dt)
 {
 	bool mesa_empty = c->mesa->isEmpty;
 
-	if (c->mesa_was_empty && !mesa_empty)
+	if (c->mesa_was_empty && (!mesa_empty || c->extremity))
 	{
 		c->anim.Ensure(AnimationType::CAPSULE_OPENING);
 		c->anim.loopable = false;
 	}
 
-	if (mesa_empty && !c->mesa_was_empty)
+	if (!c->mesa_was_empty && (mesa_empty && !c->extremity))
 	{
 		c->anim.Ensure(AnimationType::CAPSULE_CLOSING);
 		c->anim.loopable = false;
 	}
 
-	c->mesa_was_empty = mesa_empty;
+	c->mesa_was_empty = (mesa_empty && !c->extremity);
 }
