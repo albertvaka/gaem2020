@@ -363,7 +363,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 				isLeverPullable = true;
 			}
 
-			if (leverCounter < 0) {
+			if (leverCounter < 0  || lever == NULL) {
 				leverCounter = 0;
 				isPullingLever = false;
 			}
