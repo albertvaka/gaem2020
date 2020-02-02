@@ -102,8 +102,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 			{
 				extremity->isLet = true;
 				extremity->pos = collector->pos;
-				//extremity->PonBien();
-				extremity->pos += vec(3, 2);
+				extremity->PonBien();
 				collector->extremity = extremity;
 				extremity->isCarried = false;
 				extremity = nullptr;
