@@ -116,7 +116,7 @@ struct Extremity : public SortedDrawable, EntS<Extremity>
 		if (type == ExtremityType::HEAD)
 		{
 			pos.x += 4;
-			pos.y -= 4;
+			pos.y += 5;
 		}
 		if (type == ExtremityType::LEFT_ARM)
 		{
