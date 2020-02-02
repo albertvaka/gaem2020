@@ -13,11 +13,6 @@
 struct Player : public SortedDrawable, public EntS<Player>
 {
 
-	AnimationType animForPlayer(AnimationType anim) {
-		int animint = int(anim);
-		int diff = int(AnimationType::DOCTOR_WALKING_DOWN) - int(AnimationType::PLAYER_WALKING_DOWN);
-		return AnimationType(animint + diff * player);
-	}
 	
 	Animation actionButton;
 
@@ -48,7 +43,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 		isCarryingBueno = false;
 		leverTimer = 0;
 
-		anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_DOWN));
+		anim.Ensure((AnimationType::PLAYER_IDLE_DOWN));
 		actionButton.Ensure(AnimationType::BUTTON_A_PRESS);
 
 		state = EntityState::MOVING;
@@ -345,19 +340,19 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_UP));
+					anim.Ensure((AnimationType::PLAYER_IDLE_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_DOWN));
+					anim.Ensure((AnimationType::PLAYER_IDLE_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_LEFT));
+					anim.Ensure((AnimationType::PLAYER_IDLE_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_RIGHT));
+					anim.Ensure((AnimationType::PLAYER_IDLE_RIGHT));
 				}
 
 			} break;
@@ -366,19 +361,19 @@ struct Player : public SortedDrawable, public EntS<Player>
 			{
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_UP));
+					anim.Ensure((AnimationType::PLAYER_WALKING_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_DOWN));
+					anim.Ensure((AnimationType::PLAYER_WALKING_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_LEFT));
+					anim.Ensure((AnimationType::PLAYER_WALKING_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForPlayer(AnimationType::PLAYER_WALKING_RIGHT));
+					anim.Ensure((AnimationType::PLAYER_WALKING_RIGHT));
 				}
 			} break;
 		}
@@ -433,7 +428,9 @@ struct Player : public SortedDrawable, public EntS<Player>
 		spr.setScale(1.25, 1.25);
 		spr.setPosition(pos.x + 1.5f, pos.y - 7.f);
 
-		spr.setTextureRect(anim.CurrentFrame());
+		auto frame = anim.CurrentFrame();
+		frame.left += 4 * 16 * player; //offset
+		spr.setTextureRect(frame);
 
 		window.draw(spr);
 		spr.setScale(a);
