@@ -122,7 +122,11 @@ struct Player : public SortedDrawable, public EntS<Player>
 			if (cadaver != NULL) {
 				isCarrying = false;
 				cadaver->isCarried = false;
+				cadaver->pos.y -= 2;
+				cadaver->pos.x -= 4;
+				cadaver->pos.x = round(cadaver->pos.x / 16.f )*16;
 				cadaver = NULL;
+
 			}
 		}
 
