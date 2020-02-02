@@ -14,7 +14,7 @@ struct Taca : public Cintable, public EntS<Taca>
 		return vec(16,16);
 	}
 
-	bool alive;
+	bool alive = true;
 	vec pos;
 	vec speed;
 	sf::Color m_color = sf::Color(200,0,0);
@@ -24,8 +24,10 @@ struct Taca : public Cintable, public EntS<Taca>
 		currCintaDirection = dir;
 		counter = 7500 + Random::roll(5000);
 		pos = position;
-		m_offset.x = Random::roll(0, 16);
-		m_offset.y = Random::roll(0, 16);
+		
+		Random::CircularRoll(5, m_offset.x, m_offset.y);
+		m_offset.x += 3 + 5;
+		m_offset.y += 3 + 5;
 		m_color.r += Random::roll(0, 50);
 		m_color.g += Random::roll(0, 50);
 		m_color.b += Random::roll(0, 50);
@@ -48,7 +50,7 @@ struct Taca : public Cintable, public EntS<Taca>
 		if (counter < 0) {
 			alive = false;
 		}
-		pos += speed * dt;
+		pos += speed * 0.8 * dt;
 		speed.Zero();
 	}
 

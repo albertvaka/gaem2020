@@ -25,15 +25,15 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 bool Collision(Cintable* entity_a, Cinta* entity_b)
 {
 
-	float COLLISION_SIZE = 1;
+	float COLLISION_SIZE = 16;
 
 	vec a = entity_a->positionPlz();
 	vec b = entity_b->pos;
 
 	//rectangle colision
 	return
-		(a.x < b.x + 16 && a.x + entity_a->sizePlz().x > b.x &&
-			a.y < b.y + 16 && a.y + entity_a->sizePlz().y > b.y);
+		(a.x < b.x + 16 && a.x + COLLISION_SIZE > b.x &&
+			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
 }
 
 template <typename T, typename U, typename Z, typename Y>
