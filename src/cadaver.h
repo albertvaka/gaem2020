@@ -86,8 +86,16 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		counterBloodTimeLeft -= dt * Random::roll(0, 3);
 		if (counterBloodTimeLeft < 0)
 		{
-			new Taca(pos, currCintaDirection);
+			Taca *t = new Taca(pos, currCintaDirection);
 			counterBloodTimeLeft = 100;
+			for (Taca* p : EntS<Taca>::getAll())
+			{
+				if (p == t) continue;
+				if (p->getFinalPos() == t->getFinalPos())
+				{
+					t->alive = false;
+				}
+			}
 		}
 		Move(dt);
 
