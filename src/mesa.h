@@ -1,15 +1,28 @@
 #pragma once
 
 #include "entity.h"
+#include "lever.h"
+
+#include "extremity.h"
 
 struct Mesa : public SortedDrawable, EntS<Mesa>
 {
+
+	enum type {
+		RIGHT_LEG,
+		LEFT_LEG,
+		RIGHT_ARM,
+		LEFT_ARM,
+		HEAD
+	};
 
 	bool canLet;
 	bool isEmpty;
 
 	Cadaver* cadaver;
+	Lever* lever;
 
+	int type;
 	int currentPlayer;
 
 	Mesa(vec position)
@@ -19,11 +32,20 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		isEmpty = true;
 
 		anim.Ensure(AnimationType::POKEMON);
-
+		lever = new Lever(pos);
 	}
 
 	void Update(int dt)
 	{
+		if (lever->engineIsFinished || isEmpty)
+		{
+			lever->canPull = false;
+		}
+		else
+		{
+			lever->canPull = true;
+		}
+
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
@@ -43,6 +65,11 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		spr.setTextureRect(anim.CurrentFrame());
 		spr.setPosition(pos.x - 7, pos.y - 16);
 		wnd.draw(spr);
+
+		if (lever->engineIsFinished)
+		{
+			//TODO:: RAYOS Y RETRUECANOS
+		}
 	}
 
 };

@@ -12,6 +12,8 @@
 #include "cinta.h"
 #include "cleaner.h"
 #include "spawner.h"
+#include "lever.h"
+#include "mesa.h"
 
 void UpdateEntities(int dt)
 {
@@ -41,8 +43,6 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
-
-
 	for (Spawner* e : EntS<Spawner>::getAll())
 	{
 		e->Update(dt);
@@ -52,6 +52,12 @@ void UpdateEntities(int dt)
 	{
 		e->Update(dt);
 		e->anim.Update(dt);
+	}
+
+
+	for (Lever * e : EntS<Lever>::getAll())
+	{
+		e->Update(dt);
 	}
 
 	for (Taca* e : EntS<Taca>::getAll())

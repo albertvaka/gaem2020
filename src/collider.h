@@ -6,6 +6,7 @@
 #include "mesa.h"
 #include "cinta.h"
 #include "spawner.h"
+#include "lever.h"
 #include <functional>
 
 bool Collision(Entity* entity_a, Entity* entity_b)
@@ -92,8 +93,14 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 		mesa->cadaver = player->cadaver;
 		mesa->currentPlayer = player->player;
 		player->mesa = mesa;
+	}
+}
 
-
+void collision_player_lever(Player* player, Lever* lever) {
+	if (lever->canPull)
+	{
+		player->isLeverPullable = true;
+		player->lever = lever;
 	}
 }
 
@@ -134,8 +141,12 @@ void UpdateCollisions(int dt)
 			player->extremity = NULL;
 			player->cadaver = NULL;
 			player->mesa = NULL;
+			player->lever = NULL;
 
 			player->isCadaverCarriable = false;
+			player->isLeverPullable = false;
+			player->leverTimer--;
+
 		}
 	}
 
@@ -161,9 +172,13 @@ void UpdateCollisions(int dt)
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
 	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
+	collide(EntS<Player>::getAll(), EntS<Lever>::getAll(), collision_player_lever);
+	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
+	
 
 
 }
