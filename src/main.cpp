@@ -28,7 +28,7 @@ const int TILE_SIZE = 16;
 
 std::vector< std::string > mapita_inicial = {
 "XXXXXXXXXXXSXXXXXXXXXXX",
-"XXR      XDDBX       XX",
+"XXY      XDDBX       XX",
 "XX XXXXX XAXBX XXXXX XX",
 "X  k   X XAXBX X   g XX",
 "X  XFKFX XACCX XFGFX XX",
@@ -40,7 +40,7 @@ std::vector< std::string > mapita_inicial = {
 "XX XFLFX X   X XFMFX XX",
 "XX X   X XX XX X   X  X",
 "XX XX XX       XX XX  X",
-"XX                  RXX",
+"XX                  YXX",
 "XXXXXXXXXXBBBXXXXXXXXXX",
 "XXXXXXXXXXTTTXXXXXXXXXX",
 "XXXXXXXXXQ    XXXXXXXXX",
@@ -172,7 +172,7 @@ void LoadGame(sf::RenderWindow& window)
 					new Despawner(pos);
 					new Cinta(pos, EntityDirection::LEFT);
 					break;
-				case 'R':
+				case 'Y':
 				case 'Q':
 					new Cleaner(pos);
 					break;
@@ -181,7 +181,7 @@ void LoadGame(sf::RenderWindow& window)
 
 
 			passable[x][y] = (c < 'A');
-			passableCleaner[x][y] = (c < 'E' || c =='R' || c == 'Q');
+			passableCleaner[x][y] = (c < 'E' || c =='Y' || c == 'Q');
 
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
