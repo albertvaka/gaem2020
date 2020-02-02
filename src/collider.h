@@ -171,12 +171,12 @@ void UpdateCollisions(int dt)
 
 	for (Player * player : EntS<Player>::getAll())
 	{
+		player->collector = NULL;
 		if (!player->isCarrying) {
 			player->extremity = NULL;
 			player->cadaver = NULL;
 			player->mesa = NULL;
 			player->lever = NULL;
-			player->collector = NULL;
 
 			player->isCadaverCarriable = false;
 			player->isExtremityCarriable = false;

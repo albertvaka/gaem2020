@@ -25,7 +25,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 	bool isCarrying;
 	bool isCadaverCarriable;
 	bool isExtremityCarriable;
-	
+
 	const int LEVER_TIMER = 100;
 	const int LEVER_MAX_COUNTER = 24;
 	int leverTimer = LEVER_TIMER;
@@ -33,6 +33,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 	bool isLeverPullable = false;
 	bool isPullingLever = false;
 
+	bool isCarryingBueno;
 	Extremity* extremity = nullptr;
 	Cadaver* cadaver = nullptr;
 	Mesa* mesa = nullptr;
@@ -44,7 +45,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 		player = id;
 
 		isCarrying = false;
-		
+		isCarryingBueno = false;
 		leverTimer = 0;
 
 		anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_DOWN));
@@ -60,7 +61,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 	{
 		float deadZone = 20;
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, deadZone));
-
+		bool acabodecoger = false;
 
 		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
 			&& !isCarrying && mesa != NULL)
@@ -85,9 +86,11 @@ struct Player : public SortedDrawable, public EntS<Player>
 			if (extremity == NULL && collector->extremity)
 			{
 				extremity  = collector->extremity;
+				extremity->isLet = false;
 				collector->extremity = nullptr;
 				extremity->isCarried = true;
 				isCarrying = true;
+				acabodecoger = true;
 				extremity->carryExtremity(pos.x, pos.y);
 			}
 		}
@@ -97,10 +100,15 @@ struct Player : public SortedDrawable, public EntS<Player>
 		{
 			if (extremity != NULL && !collector->extremity)
 			{
+				extremity->isLet = true;
+				extremity->pos = collector->pos;
+				//extremity->PonBien();
+				extremity->pos += vec(3, 2);
 				collector->extremity = extremity;
+				extremity->isCarried = false;
 				extremity = nullptr;
 				isCarrying = false;
-				extremity->isCarried = false;
+				acabodecoger = true;
 			}
 		}
 
@@ -117,7 +125,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 			}
 		}
 
-		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+		 if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
 			&& isLeverPullable)
 		{
 			leverCounter += 5;
@@ -125,7 +133,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 		}
 
-		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
+		if (!acabodecoger && ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
 		{
 			if (extremity != NULL)
 			{
@@ -140,7 +148,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 				cadaver->carryCadaver(pos.x, pos.y, player);
 			}
 		}
-		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && isCarrying)
+		else if (!acabodecoger && ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && isCarrying)
 		{
 			if (extremity != NULL) {
 				isCarrying = false;
@@ -319,7 +327,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 	{
 		Move(dt);
 
-		if (isCarrying)
+		if (isCarrying || isCarryingBueno)
 		{
 			if (extremity != NULL) 
 			{
