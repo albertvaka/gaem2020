@@ -9,6 +9,7 @@
 
 struct Mesa;
 struct Collector;
+struct Player;
 
 void UpdateCollector(Collector*, int);
 
