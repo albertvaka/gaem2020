@@ -17,7 +17,14 @@ struct SpawnAnim : public SortedDrawable, EntS<SpawnAnim>
 	{
 		anim.Ensure(AnimationType::SPAWN);
 		pos = _pos;
+
+		pos.x = (((int)pos.x) / 16)*16.0f;
+		
+		pos.y = (((int)pos.y) / 16)*16.0f;
+		pos.y += 150;
+
 		offset = _offset;
+		offset.y -= 150;
 	}
 
 	void Update(int dt)
@@ -92,7 +99,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		e->alive = false;
 
 		new SpawnAnim(e->pos);
-		new SpawnAnim(this->pos, vec(-4, -4));
+		new SpawnAnim(this->pos, vec(0, 0));
 
 	}
 
@@ -126,7 +133,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 
 		new SpawnAnim(pos);
-		new SpawnAnim(this->pos, vec(-4, -4));
+		new SpawnAnim(this->pos, vec(0, 0));
 
 		return e;
 	}
