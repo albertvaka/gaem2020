@@ -69,6 +69,17 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 	}
 
+	for (CleanerSpawner* e : EntS<CleanerSpawner>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
+
+
+	//if (EntS<Taca>::getAll().size() > )
+
+
+
 	EntS<Taca>::deleteNotAlive();
 	EntS<Entity>::deleteNotAlive();
 }
@@ -90,6 +101,11 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
+	for (CleanerSpawner* e : EntS<CleanerSpawner>::getAll())
+	{
+		e->Draw(spr, window);
+	}
+
 }
 void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 {
@@ -105,6 +121,7 @@ void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 		e->Draw(vao);
 	}
 
+	
 
 	window.draw(vao,&texture);
 

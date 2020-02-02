@@ -27,24 +27,22 @@ sf::Clock mainClock;
 const int TILE_SIZE = 16;
 
 std::vector< std::string > mapita_inicial = {
-"XXXXXXXXXXXSXXXXXXXXXXX",
-"XXY      XDDBX       XX",
-"XX XXXXX XAXBX XXXXX XX",
+"XXYYYYYYYXXSXXYYYYYYYXX",
+"XX       XDDBX       XX",
+"XY XXXXX XAXBX XXXXX XX",
 "X  k   X XAXBX X   g XX",
-"X  XFKFX XACCX XFGFX XX",
+"X  XFKFX YACCY XFGFX XX",
 "XX X   X  1 2  X   X XX",
-"XX XX XX  0 3  XX XX XX",
+"XX YY YY  0 3  YY YY XX",
 "XX       XXXXX       XX",
 "XX XXXXX r   X XXXmX XX",
 "XX l   X XFRFX X   X XX",
-"XX XFLFX X   X XFMFX XX",
-"XX X   X XX XX X   X  X",
-"XX XX XX       XX XX  X",
-"XX                  YXX",
+"XX XFLFX X   X XFMFX YX",
+"XX X   X YY YY X   X  X",
+"XX YY YY       YY YY  X",
+"XX                   XX",
 "XXXXXXXXXXBBBXXXXXXXXXX",
-"XXXXXXXXXXTTTXXXXXXXXXX",
-"XXXXXXXXXQ    XXXXXXXXX",
-"XXXXXXXXXXXXXXXXXXXXXXX",
+"XXXXXXXXXXZZZXXXXXXXXXX",
 };
 
 enum class TileType
@@ -54,7 +52,8 @@ enum class TileType
 	BELT_LEFT,
 	BELT_UP,
 	BELT_DOWN,
-	FLOOR
+	FLOOR,
+	ROOMBA_HOME
 };
 
 std::vector< std::vector<TileType> > mapita;
@@ -88,6 +87,10 @@ TileType TileFromChar(char c)
 		case 'D':
 		{
 			return TileType::BELT_RIGHT;
+		} break;
+		case 'Y':
+		{
+			return TileType::ROOMBA_HOME;
 		} break;
 
 	}
@@ -173,15 +176,14 @@ void LoadGame(sf::RenderWindow& window)
 					new Cinta(pos, EntityDirection::LEFT);
 					break;
 				case 'Y':
-				case 'Q':
-					new Cleaner(pos);
+					new CleanerSpawner(pos);
 					break;
 				
 			}
 
 
 			passable[x][y] = (c < 'A');
-			passableCleaner[x][y] = (c < 'E' || c =='Y' || c == 'Q');
+			passableCleaner[x][y] = (c < 'E');
 
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
@@ -213,7 +215,20 @@ void DrawGui()
 			s->spawn();
 		}
 	}
+
 	ImGui::Text(std::to_string(EntS<Cadaver>::getAll().size()).c_str());
+
+	ImGui::Text(std::to_string(EntS<Taca>::getAll().size()).c_str());
+
+	if (ImGui::Button("SPAWN ROOMBA"))
+	{
+		int spawners_count = EntS<CleanerSpawner>::getAll().size();
+
+		int sp = Random::roll(0, spawners_count);
+
+		EntS<CleanerSpawner>::getAll()[sp]->TreuElGos();
+
+	}
 
 	ImGui::End();
 }
@@ -223,31 +238,38 @@ void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 	int time = mainClock.getElapsedTime().asMilliseconds();
 	TileType type = mapita[i][j];
 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-	switch (type) {
-	case TileType::FLOOR:
-		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
-		break;
-	case TileType::WALL:
-		sprite.setTextureRect(sf::IntRect(64+16, 48, 16, 16));
-		break;
-	case TileType::BELT_DOWN:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		sprite.setOrigin(0, 16);
-		sprite.setRotation(90);
-		break;
-	case TileType::BELT_UP:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		sprite.setOrigin(16, 0);
-		sprite.setRotation(-90);
-		break;
-	case TileType::BELT_LEFT:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		sprite.setOrigin(16, 16);
-		sprite.setRotation(180);
-		break;
-	case TileType::BELT_RIGHT:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		break;
+	switch (type) 
+	{
+		case TileType::FLOOR:
+			sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
+			break;
+		case TileType::WALL:
+			sprite.setTextureRect(sf::IntRect(64+16, 48, 16, 16));
+			break;
+		case TileType::BELT_DOWN:
+			sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+			sprite.setOrigin(0, 16);
+			sprite.setRotation(90);
+			break;
+		case TileType::BELT_UP:
+			sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+			sprite.setOrigin(16, 0);
+			sprite.setRotation(-90);
+			break;
+		case TileType::BELT_LEFT:
+			sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+			sprite.setOrigin(16, 16);
+			sprite.setRotation(180);
+			break;
+		case TileType::BELT_RIGHT:
+			sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+			break;
+		case TileType::ROOMBA_HOME:
+		{
+			sprite.setTextureRect(sf::IntRect(0, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE));
+		} break;
+			
+			
 	}
 	window.draw(sprite);
 	sprite.setRotation(0);
