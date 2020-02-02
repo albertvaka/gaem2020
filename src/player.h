@@ -32,10 +32,11 @@ struct Player : public SortedDrawable, public EntS<Player>
 	bool isLeverPullable = false;
 	bool isPullingLever = false;
 
-	Extremity* extremity;
-	Cadaver* cadaver;
-	Mesa* mesa;
-	Lever* lever;
+	Extremity* extremity = nullptr;
+	Cadaver* cadaver = nullptr;
+	Mesa* mesa = nullptr;
+	Lever* lever = nullptr;
+	Collector* collector = nullptr;
 
 	Player(int id, vec position)
 	{

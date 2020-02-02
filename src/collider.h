@@ -11,7 +11,6 @@
 
 bool Collision(Entity* entity_a, Entity* entity_b)
 {
-
 	float COLLISION_SIZE = 16;
 
 	vec a = entity_a->pos;
@@ -93,6 +92,14 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 		mesa->cadaver = player->cadaver;
 		mesa->currentPlayer = player->player;
 		player->mesa = mesa;
+	}
+}
+
+void collision_player_collector(Player* player, Collector* mesa) {
+	if (player->cadaver != NULL)
+	{
+		mesa->currentPlayer = player->player;
+		player->collector = mesa;
 	}
 }
 

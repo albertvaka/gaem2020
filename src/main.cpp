@@ -30,14 +30,14 @@ std::vector< std::string > mapita_inicial = {
 "XXXXXXXXXXXSXXXXXXXXXXX",
 "XXR      XDDBX       XX",
 "XX XXXXX XAXBX XXXXX XX",
-"X  X   X XAXBX X   X XX",
-"X  XFGFX XACCX XFGFX XX",
+"X  k   X XAXBX X   g XX",
+"X  XFKFX XACCX XFGFX XX",
 "XX X   X  1 2  X   X XX",
 "XX XX XX  0 3  XX XX XX",
 "XX       XXXXX       XX",
-"XX XXXXX X   X XXXXX XX",
-"XX X   X XFGFX X   X XX",
-"XX XFGFX X   X XFGFX XX",
+"XX XXXXX r   X XXXmX XX",
+"XX l   X XFRFX X   X XX",
+"XX XFLFX X   X XFMFX XX",
 "XX X   X XX XX X   X  X",
 "XX XX XX       XX XX  X",
 "XX                  RXX",
@@ -94,6 +94,26 @@ TileType TileFromChar(char c)
 	return TileType::FLOOR;
 }
 
+ExtremityType letraToExtremity(char c) {
+	switch (c) {
+	case 'G':
+	case 'g':
+		return ExtremityType::HEAD;
+	case 'K':
+	case 'k':
+		return ExtremityType::LEFT_ARM;
+	case 'L':
+	case 'l':
+		return ExtremityType::LEFT_LEG;
+	case 'R':
+	case 'r':
+		return ExtremityType::RIGHT_LEG;
+	case 'M':
+	case 'm':
+		return ExtremityType::RIGHT_ARM;
+	}
+}
+
 void LoadGame(sf::RenderWindow& window)
 {
 	texture.loadFromFile("data/spritesheet.png");
@@ -130,8 +150,21 @@ void LoadGame(sf::RenderWindow& window)
 				case 'T': new Cinta(pos, EntityDirection::DOWN); break;
 				case 'C': new Cinta(pos, EntityDirection::LEFT); break;
 				case 'D': new Cinta(pos, EntityDirection::RIGHT); break;
-				case 'G': new Mesa(pos); break;
-				case 'S': 
+				case 'G':
+				case 'K':
+				case 'L':
+				case 'R':
+				case 'M':
+					new Mesa(pos, letraToExtremity(c)); 
+					break;
+				case 'g':
+				case 'k':
+				case 'l':
+				case 'r':
+				case 'm':
+					new Collector(pos, letraToExtremity(c));
+					break;
+				case 'S':
 					new Spawner(pos); 
 					new Cinta(pos, EntityDirection::DOWN); 
 					break;
@@ -155,6 +188,15 @@ void LoadGame(sf::RenderWindow& window)
 		}
 		y += 1;
 		x = 0;
+	}
+
+	for (Collector* c : EntS<Collector>::getAll()) {
+		for (Mesa* m : EntS<Mesa>::getAll()) {
+			if (m->type == c->type) {
+				m->collector = c;
+				c->mesa = m;
+			}
+		}
 	}
 
 	loadExtremityMap();
