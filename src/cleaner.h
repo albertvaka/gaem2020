@@ -12,11 +12,10 @@
 
 struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 {
-
+	vec oldPos;
 	AnimationType animForCleaner(AnimationType anim) {
 		int animint = int(anim);
-		int diff = int(AnimationType::DOCTOR_WALKING_DOWN) - int(AnimationType::PLAYER_WALKING_DOWN);
-		return AnimationType(animint + diff * 0);
+		return AnimationType(animint);
 	}
 	
 	Animation actionButton;
@@ -26,8 +25,7 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 	{
 
 
-		anim.Ensure(animForCleaner(AnimationType::PLAYER_IDLE_DOWN));
-		actionButton.Ensure(AnimationType::BUTTON_A_PRESS);
+		anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
 
 		state = EntityState::MOVING;
 
@@ -62,38 +60,39 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 				speed.y = -0.05;
 				break;
 			}
-			if (speed.x > 0)
-			{
-				state = EntityState::MOVING;
-				dir = EntityDirection::RIGHT;
-			}
-			else if (speed.x < 0)
-			{
-				state = EntityState::MOVING;
-				dir = EntityDirection::LEFT;
-
-			}
-			else if (speed.y > 0)
-			{
-				state = EntityState::MOVING;
-				dir = EntityDirection::DOWN;
-			}
-			else if (speed.y < 0)
-			{
-				state = EntityState::MOVING;
-				dir = EntityDirection::UP;
-			}
-			else
-			{
-				state = EntityState::IDLE;
-			}
+			
 		}
-		auto oldPos = pos;
+		oldPos = pos;
 
 		
 
 		bool moved = tryMove(dt/4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);
 
+		if (pos.x > oldPos.x)
+		{
+			state = EntityState::MOVING;
+			dir = EntityDirection::RIGHT;
+		}
+		else if (pos.x < oldPos.x)
+		{
+			state = EntityState::MOVING;
+			dir = EntityDirection::LEFT;
+
+		}
+		else if (pos.y > oldPos.y)
+		{
+			state = EntityState::MOVING;
+			dir = EntityDirection::DOWN;
+		}
+		else if (pos.y < oldPos.y)
+		{
+			state = EntityState::MOVING;
+			dir = EntityDirection::UP;
+		}
+		else
+		{
+			state = EntityState::IDLE;
+		}
 
 		if (moved) 
 		{
@@ -109,7 +108,7 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 		}
 	}
 
-	float boundingBoxSize = 10.f;
+	float boundingBoxSize = 13.f;
 	bool tryMove(float dt)
 	{
 		bool moved = false;
@@ -195,19 +194,19 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_IDLE_UP));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_IDLE_DOWN));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_IDLE_LEFT));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_IDLE_RIGHT));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
 
 			} break;
@@ -216,19 +215,19 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 			{
 				if (dir == EntityDirection::UP)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_WALKING_UP));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_UP));
 				}
 				if (dir == EntityDirection::DOWN)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_WALKING_DOWN));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
 				if (dir == EntityDirection::LEFT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_WALKING_LEFT));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
 				if (dir == EntityDirection::RIGHT)
 				{
-					anim.Ensure(animForCleaner(AnimationType::PLAYER_WALKING_RIGHT));
+					anim.Ensure(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
 			} break;
 		}
@@ -243,14 +242,12 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 	{
 		//bounds().Draw(window);
 
-		auto a = spr.getScale();
-		spr.setScale(1.25, 1.25);
-		spr.setPosition(pos.x + 1.5f, pos.y - 4.f);
+
+		spr.setPosition(pos.x+1, pos.y+1);
 		
 		spr.setTextureRect(anim.CurrentFrame());
 
 		window.draw(spr);
-		spr.setScale(a);
 
 		
 

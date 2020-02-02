@@ -48,7 +48,10 @@ struct Taca : public Cintable, public EntS<Taca>
 		SetSpeedWithCinta(speed);
 		counter -= dt;
 		if (counter < 0) {
-			alive = false;
+			if (currCintaDirection != EntityDirection::NONE  || prevCintaDirection != EntityDirection::NONE)
+			{
+				alive = false;
+			}
 		}
 		pos += speed * 0.8 * dt;
 		speed.Zero();
@@ -59,5 +62,9 @@ struct Taca : public Cintable, public EntS<Taca>
 		
 	}
 
+	vec getFinalPos()
+	{
+		return vec(pos.x + m_offset.x, pos.y + m_offset.y);
+	}
 
 };

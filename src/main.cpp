@@ -28,7 +28,7 @@ const int TILE_SIZE = 16;
 
 std::vector< std::string > mapita_inicial = { // (23 * 16 tiles)
 "XXXXXXXXXXXSXXXXXXXXXXX",
-"XX       XDDBX       XX",
+"XXR      XDDBX       XX",
 "XX XXXXX XAXBX XXXXX XX",
 "X  X   X XAXBX X   X XX",
 "X  XFGFX XACCX XFGFX XX",
@@ -40,9 +40,11 @@ std::vector< std::string > mapita_inicial = { // (23 * 16 tiles)
 "XX XFGFX X   X XFGFX XX",
 "XX X   X XX XX X   X  X",
 "XX XX XX       XX XX  X",
-"XX                   XX",
+"XX                  RXX",
 "XXXXXXXXXXBBBXXXXXXXXXX",
-"XXXXXXXXXXBBBXXXXXXXXXX",
+"XXXXXXXXXXTTTXXXXXXXXXX",
+"XXXXXXXXXQ    XXXXXXXXX",
+"XXXXXXXXXXXXXXXXXXXXXXX",
 };
 
 enum class TileType
@@ -74,6 +76,7 @@ TileType TileFromChar(char c)
 		} break;
 		case 'S':
 		case 'B':
+		case 'T':
 		{
 			return TileType::BELT_DOWN;
 		} break;
@@ -110,7 +113,6 @@ void LoadGame(sf::RenderWindow& window)
 	passableCleaner.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
 	mapita.resize(mapita_inicial[0].size(), std::vector<TileType>(mapita_inicial.size()));
 
-	bool spawned = false;
 	int x = 0, y = 0;
 	for (auto row : mapita_inicial) 
 	{
@@ -125,6 +127,7 @@ void LoadGame(sf::RenderWindow& window)
 				case '3': new Player(3, pos); break;
 				case 'A': new Cinta(pos, EntityDirection::UP); break;
 				case 'B': new Cinta(pos, EntityDirection::DOWN); break;
+				case 'T': new Cinta(pos, EntityDirection::DOWN); break;
 				case 'C': new Cinta(pos, EntityDirection::LEFT); break;
 				case 'D': new Cinta(pos, EntityDirection::RIGHT); break;
 				case 'G': new Mesa(pos); break;
@@ -136,18 +139,16 @@ void LoadGame(sf::RenderWindow& window)
 					new Despawner(pos);
 					new Cinta(pos, EntityDirection::LEFT);
 					break;
-				case ' ':
-					if (!spawned) {
-						new Cleaner(pos);
-						spawned = true;
-					}
+				case 'R':
+				case 'Q':
+					new Cleaner(pos);
 					break;
 				
 			}
 
 
 			passable[x][y] = (c < 'A');
-			passableCleaner[x][y] = (c < 'E');
+			passableCleaner[x][y] = (c < 'E' || c =='R' || c == 'Q');
 
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
