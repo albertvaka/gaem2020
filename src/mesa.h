@@ -1,19 +1,33 @@
 #pragma once
 
+#include <vector>
+#include "rand.h"
+
 #include "entity.h"
 #include "lever.h"
-
 #include "extremity.h"
+
+static std::vector<int> v;
+
+void initMesaVector()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		v.push_back(i);
+	}
+	std::random_shuffle(v.begin(), v.end());
+}
 
 struct Mesa : public SortedDrawable, EntS<Mesa>
 {
 
-	enum type {
+	enum Type {
 		RIGHT_LEG,
 		LEFT_LEG,
 		RIGHT_ARM,
 		LEFT_ARM,
-		HEAD
+		HEAD,
+		SIZE
 	};
 
 	bool canLet;
@@ -22,11 +36,14 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 	Cadaver* cadaver;
 	Lever* lever;
 
-	int type;
+	Type type;
 	int currentPlayer;
 
 	Mesa(vec position)
 	{
+		type = (Type) v.back();
+		v.pop_back();
+
 		pos = position;
 		canLet = false;
 		isEmpty = true;

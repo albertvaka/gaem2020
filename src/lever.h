@@ -2,7 +2,6 @@
 
 #include "entity.h"
 
-
 struct Lever : public SortedDrawable, public EntS<Lever>
 {
 	bool canPull = false;

@@ -104,6 +104,8 @@ void LoadGame(sf::RenderWindow& window)
 	Camera::SetZoom(4.f);
 	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / 8, GameData::WINDOW_HEIGHT/8));
 
+	initMesaVector();
+
 	passable.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
 	mapita.resize(mapita_inicial[0].size(), std::vector<TileType>(mapita_inicial.size()));
 
@@ -147,6 +149,7 @@ void LoadGame(sf::RenderWindow& window)
 	}
 
 	loadExtremityMap();
+	
 }
 
 void DrawGui()
