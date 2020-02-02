@@ -117,7 +117,10 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 	}
 
-	
+	bool IsOk()
+	{
+		return true;
+	}
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
 

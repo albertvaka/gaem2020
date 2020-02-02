@@ -6,7 +6,7 @@
 #include "mesa.h"
 #include "cinta.h"
 #include "spawner.h"
-
+#include "popupText.h"
 #include "lever.h"
 #include <functional>
 
@@ -133,6 +133,19 @@ void collision_entity_despawner(Entity* e, Despawner* _) {
 	e->alive = false;
 }
 
+void collision_cadaver_despawner(Cadaver* e, Despawner* _) {
+	if (e->alive) {
+		if(e->IsOk()){
+			new TextMolest(vec(GameData::WINDOW_WIDTH/2, GameData::WINDOW_HEIGHT/2), TextMolest::GOOD);
+		}
+		else {
+			new TextMolest(vec(GameData::WINDOW_WIDTH / 2, GameData::WINDOW_HEIGHT / 2), TextMolest::BAD);
+		}
+	}
+	e->alive = false;
+	
+}
+
 void collision_clean_taques(Taca* t, Cleaner* c) {
 	t->alive = false;
 }
@@ -193,7 +206,7 @@ void UpdateCollisions(int dt)
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Detector>::getAll(), collision_cadaver_spawner);
-	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
+	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
 	collide(EntS<Cleaner>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
 	
 
