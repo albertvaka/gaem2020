@@ -119,6 +119,8 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		isCarried = false;
 		isLet = true;
 
+		isLetClock.restart();
+
 		pos.x = position.x + 4;
 		pos.y = position.y + 4;
 
@@ -162,15 +164,20 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	{
 		return true;
 	}
+
+	sf::Clock isLetClock;
+
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
 
-		if (!isLet) {
+		if (!isLet) 
+		{
 			spr.setRotation(-90);
 		}
-		else {
+		else 
+		{
 			sf::RectangleShape shape;
-			int color = abs(sin(mainClock.getElapsedTime().asSeconds())) * 120;
+			int color = std::min(1.0f, abs(sin(0.5f*isLetClock.getElapsedTime().asSeconds()))) * 245;
 			shape.setFillColor(sf::Color(color, color, 0));
 			shape.setPosition(pos.x-4.f, pos.y - 6.5f);
 			shape.setSize(sf::Vector2f(15, 15));
