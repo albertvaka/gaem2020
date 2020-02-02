@@ -32,10 +32,11 @@ struct Player : public SortedDrawable, public EntS<Player>
 	bool isLeverPullable = false;
 	bool isPullingLever = false;
 
-	Extremity* extremity;
-	Cadaver* cadaver;
-	Mesa* mesa;
-	Lever* lever;
+	Extremity* extremity = nullptr;
+	Cadaver* cadaver = nullptr;
+	Mesa* mesa = nullptr;
+	Lever* lever = nullptr;
+	Collector* collector = nullptr;
 
 	Player(int id, vec position)
 	{
@@ -372,7 +373,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);
-		spr.setPosition(pos.x + 1.5f, pos.y - 4.f);
+		spr.setPosition(pos.x + 1.5f, pos.y - 7.f);
 		
 		spr.setTextureRect(anim.CurrentFrame());
 

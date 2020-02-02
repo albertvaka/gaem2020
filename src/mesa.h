@@ -5,28 +5,50 @@
 
 #include "extremity.h"
 
+enum ExtremityType {
+	RIGHT_LEG,
+	LEFT_LEG,
+	RIGHT_ARM,
+	LEFT_ARM,
+	HEAD
+};
+
+struct Mesa;
+
+struct Collector : public SortedDrawable, EntS<Collector>
+{
+	ExtremityType type;
+	int player = -1;
+	Mesa* mesa = nullptr;
+	int currentPlayer;
+	Collector(vec position, ExtremityType et)
+	{
+		type = et;
+		pos = position;
+		anim.Ensure(AnimationType::ROOMBA_DOWN);
+	}
+	void Update(int dt) {
+
+	}
+
+};
+
 struct Mesa : public SortedDrawable, EntS<Mesa>
 {
-
-	enum type {
-		RIGHT_LEG,
-		LEFT_LEG,
-		RIGHT_ARM,
-		LEFT_ARM,
-		HEAD
-	};
 
 	bool canLet;
 	bool isEmpty;
 
-	Cadaver* cadaver;
-	Lever* lever;
+	Cadaver* cadaver = nullptr;
+	Lever* lever = nullptr;
 
-	int type;
-	int currentPlayer;
+	ExtremityType type;
+	int currentPlayer = -1;
+	Collector* collector = nullptr;
 
-	Mesa(vec position)
+	Mesa(vec position, ExtremityType et)
 	{
+		type = type;
 		pos = position;
 		canLet = false;
 		isEmpty = true;
@@ -62,9 +84,11 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		//	wnd.draw(shape);
 		//}
 
+		spr.setScale(1.25f, 1.25f);
 		spr.setTextureRect(anim.CurrentFrame());
-		spr.setPosition(pos.x - 7, pos.y - 16);
+		spr.setPosition(pos.x - 11.2f, pos.y - 22.5f);
 		wnd.draw(spr);
+		spr.setScale(1,1);
 
 		if (lever->engineIsFinished)
 		{

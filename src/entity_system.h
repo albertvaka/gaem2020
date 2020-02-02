@@ -53,7 +53,11 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 		e->anim.Update(dt);
 	}
-
+	for (Collector* e : EntS<Collector>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
 
 	for (Lever * e : EntS<Lever>::getAll())
 	{
