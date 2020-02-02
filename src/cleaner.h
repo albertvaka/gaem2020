@@ -14,7 +14,7 @@
 
 
 
-struct Cleaner : public SortedDrawable, public EntS<Cleaner>
+struct Cleaner : public Entity, public EntS<Cleaner>
 {
 	bool naixement = true;
 
