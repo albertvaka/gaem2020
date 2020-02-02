@@ -33,7 +33,7 @@ std::vector< std::string > mapita_inicial = {
 "X  k   X XAXBX X   g XX",
 "X  XFKFX YACCY XFGFX XX",
 "XX X   X  1 2  X   X XX",
-"XX YU YY  0 3  YÑ YY XX",
+"XX YU YY  0 3  Yy YY XX",
 "XX       XXXXX       XX",
 "XX XXXXX r   X XXXmX XX",
 "XX l   X XFRFX X   X XX",
@@ -72,7 +72,7 @@ TileType TileFromChar(char c)
 {
 	switch (c)
 	{
-		case 'Ñ':
+		case 'y':
 			return TileType::SIGN_HEAD;
 		case 'u':
 			return TileType::SIGN_RIGHT_ARM;
