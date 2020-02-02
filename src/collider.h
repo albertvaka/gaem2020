@@ -134,13 +134,17 @@ void collision_entity_despawner(Entity* e, Despawner* _) {
 	e->alive = false;
 }
 
-void collision_cadaver_despawner(Cadaver* e, Despawner* _) {
-	if (e->alive) {
-		if(e->IsOk()){
+void collision_cadaver_despawner(Cadaver* e, Despawner* _) 
+{
+	if (e->alive) 
+	{
+		if(e->IsOk())
+		{
 			new TextMolest(vec(GameData::WINDOW_WIDTH/2, GameData::WINDOW_HEIGHT/2), TextMolest::GOOD);
 			countGoods += 1;
 		}
-		else {
+		else 
+		{
 			new TextMolest(vec(GameData::WINDOW_WIDTH / 2, GameData::WINDOW_HEIGHT / 2), TextMolest::BAD);
 			countBads += 1;
 		}

@@ -165,7 +165,12 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 	bool IsOk()
 	{
-		return true;
+		bool has_all = true;
+		for (int i = 0; i < (int)ExtremityType::COUNT; ++i)
+		{
+			has_all &= HasExtremity((ExtremityType)i);
+		}
+		return has_all;
 	}
 
 	sf::Clock isLetClock;

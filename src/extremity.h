@@ -5,12 +5,14 @@
 
 std::map<int, sf::IntRect> extremitySprPos;
 
-enum ExtremityType {
-	RIGHT_LEG,
+enum class ExtremityType 
+{
+	RIGHT_LEG = 0,
 	LEFT_LEG,
 	RIGHT_ARM,
 	LEFT_ARM,
-	HEAD
+	HEAD,
+	COUNT
 };
 
 struct ExtremityData 

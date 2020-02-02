@@ -14,16 +14,24 @@ struct TextMolest : public SortedDrawable, public EntS<TextMolest>
 	};
 
 	int timer = 0;
-	Type m_type = GOOD;
+	Type m_type = BAD;
 
 	TextMolest(vec position, Type type) 
 	{
-		pos = vec(16*13.5f, 16*10);
+		pos = vec(16*13.5f, 16*14);
 		m_type = type;
+
+		if (type == BAD)
+		{
+			pos.x = 16 * 11.5f;
+		}
 
 		speed.x = 0;// 16 * 2.5f;
 		speed.y = -16* 1.8f;
 	}
+
+	bool descansito = false;
+	int descansito_rot = 0;
 
 	void Update(int dt)
 	{
@@ -31,7 +39,24 @@ struct TextMolest : public SortedDrawable, public EntS<TextMolest>
 
 		pos += (dt/1000.0f) * speed;
 
-		if (timer > 10000) alive = false;
+		if (timer > 5800)
+		{
+			speed = vec(0, 0);
+			descansito = true;
+			descansito_rot += dt;
+		}
+		if (timer > 9000)
+		{
+			speed.y = +16 * 3.0f;
+			descansito = true;
+			descansito_rot += dt;
+		}
+		if (timer > 22000)
+		{
+			alive = false;
+			descansito = true;
+			descansito_rot += dt;
+		}
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
@@ -41,8 +66,24 @@ struct TextMolest : public SortedDrawable, public EntS<TextMolest>
 
 		float rot = sin(timer / 100.0f) * 5;
 
-		spr.setOrigin(16 * 2.5f, 8);
+		if (m_type == GOOD)
+		{
+			spr.setOrigin(16 * 2.5f, 8);
+		}
+		if (m_type == BAD)
+		{
+			spr.setOrigin(16 * 1.5f, 8);
+		}
+
+
 		spr.setScale(scx, scy);
+
+
+		if (descansito)
+		{
+			rot = sin(5800 / 100.0f) * 5 + (360.0f * descansito_rot/3000.0f);
+		}
+
 		spr.setRotation(rot);
 
 		
@@ -58,6 +99,8 @@ struct TextMolest : public SortedDrawable, public EntS<TextMolest>
 
 			case Type::BAD:
 			{
+				spr.setTextureRect(sf::IntRect(128, 192+16, 16 * 3, 16));
+
 				//spr.setTextureRect(anim.CurrentFrame());
 				spr.setPosition(pos);
 				wnd.draw(spr);
