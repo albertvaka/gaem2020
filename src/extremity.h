@@ -80,8 +80,7 @@ struct Extremity : public SortedDrawable, EntS<Extremity>
 	ExtremityType type;
 	ExtremityData data;
 	bool isCarried;
-	bool isCarriable; 
-	bool isLet = false;
+	bool isLet = true;
 
 	Extremity(int x, int y, ExtremityType t) : Extremity()
 	{
@@ -93,7 +92,6 @@ struct Extremity : public SortedDrawable, EntS<Extremity>
 	Extremity() 
 	{
 		isCarried = false;
-		isCarriable = false;
 	}
 
 	void carryExtremity(int x, int y)

@@ -86,7 +86,6 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	}
 
 	bool isCarried = false;
-	bool isCarriable = false;
 	bool isLet = false;
 	float counterBloodTimeLeft = 100.f;
 

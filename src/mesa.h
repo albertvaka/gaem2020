@@ -9,7 +9,6 @@
 
 struct Mesa;
 struct Collector;
-struct Player;
 
 void UpdateCollector(Collector*, int);
 
@@ -119,6 +118,7 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 				}
 			}
 			lever->engineIsFinished = false;
+
 			//TODO:: RAYOS Y RETRUECANOS
 		}
 	}

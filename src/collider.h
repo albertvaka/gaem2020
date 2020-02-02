@@ -72,10 +72,9 @@ void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*ca
 }
 
 void collision_player_extremity(Player* player, Extremity* extremity) {
-	if (!player->isCarrying && !extremity->isCarried) {
+	if (!player->isCarrying && !extremity->isCarried && !extremity->isLet) {
 		player->extremity = extremity;
 		player->isExtremityCarriable = true;
-		extremity->isCarriable = true;
 	}
 }
 
@@ -83,7 +82,6 @@ void collision_player_cadaver(Player* player, Cadaver* cadaver) {
 	if (!player->isCarrying && !cadaver->isCarried) {
 		player->cadaver = cadaver;
 		player->isCadaverCarriable = true;
-		cadaver->isCarriable = true;
 	}
 }
 
@@ -97,11 +95,11 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 	}
 }
 
-void collision_player_collector(Player* player, Collector* mesa) {
-	if (player->cadaver != NULL)
+void collision_player_collector(Player* player, Collector* coll) {
+	if (player->collector == NULL)
 	{
-		mesa->currentPlayer = player;
-		player->collector = mesa;
+		coll->currentPlayer = player;
+		player->collector = coll;
 	}
 }
 
@@ -178,22 +176,13 @@ void UpdateCollisions(int dt)
 			player->cadaver = NULL;
 			player->mesa = NULL;
 			player->lever = NULL;
+			player->collector = NULL;
 
 			player->isCadaverCarriable = false;
 			player->isExtremityCarriable = false;
 			player->isLeverPullable = false;
 
 		}
-	}
-
-	for (Extremity * extremity : EntS<Extremity>::getAll())
-	{
-		extremity->isCarriable = false;
-	}
-
-	for (Cadaver * cadaver : EntS<Cadaver>::getAll())
-	{
-		cadaver->isCarriable = false;
 	}
 
 	for (Mesa * mesa : EntS<Mesa>::getAll())
@@ -214,6 +203,7 @@ void UpdateCollisions(int dt)
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
 	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);
 	collide(EntS<Player>::getAll(), EntS<Lever>::getAll(), collision_player_lever);
+	collide(EntS<Player>::getAll(), EntS<Collector>::getAll(), collision_player_collector);
 	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);

@@ -82,23 +82,25 @@ struct Player : public SortedDrawable, public EntS<Player>
 		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
 			&& !isCarrying && collector != NULL)
 		{
-			if (extremity != NULL)
+			if (extremity == NULL && collector->extremity)
 			{
 				extremity  = collector->extremity;
 				collector->extremity = nullptr;
+				extremity->isCarried = true;
 				isCarrying = true;
+				extremity->carryExtremity(pos.x, pos.y);
 			}
 		}
 
 		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
 			&& isCarrying && collector != NULL)
 		{
-			if (extremity != NULL)
+			if (extremity != NULL && !collector->extremity)
 			{
 				collector->extremity = extremity;
 				extremity = nullptr;
 				isCarrying = false;
-
+				extremity->isCarried = false;
 			}
 		}
 
@@ -408,13 +410,13 @@ struct Player : public SortedDrawable, public EntS<Player>
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);
 		spr.setPosition(pos.x + 1.5f, pos.y - 7.f);
-		
+
 		spr.setTextureRect(anim.CurrentFrame());
 
 		window.draw(spr);
 		spr.setScale(a);
 
-		if (((isCadaverCarriable || isExtremityCarriable) && !isCarrying) || isLeverPullable || mesa != NULL)
+		if (((isCadaverCarriable || isExtremityCarriable) && !isCarrying) || isLeverPullable || mesa != NULL || (collector && collector->extremity))
 		{
 			spr.setTextureRect(actionButton.CurrentFrame());
 			spr.setPosition(pos.x + 13, pos.y - 10);
@@ -442,6 +444,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 				lever->canPull = false;
 				isLeverPullable = false;
 				leverCounter = LEVER_MAX_COUNTER;
+				leverTimer = LEVER_TIMER;
 			}
 			else
 			{
