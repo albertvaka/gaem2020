@@ -49,6 +49,10 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
+	for (Lever * e : EntS<Lever>::getAll())
+	{
+		e->Update(dt);
+	}
 
 
 

@@ -24,15 +24,26 @@ struct Player : public Entity, public EntS<Player>
 	int player;
 	bool isCarrying;
 	bool isCadaverCarriable;
+	
+	const int LEVER_TIMER = 100;
+	const int LEVER_MAX_COUNTER = 24;
+	int leverTimer = LEVER_TIMER;
+	int leverCounter = 0;
+	bool isLeverPullable = false;
+	bool isPullingLever = false;
+
 	Extremity* extremity;
 	Cadaver* cadaver;
 	Mesa* mesa;
+	Lever* lever;
 
 	Player(int id, vec position)
 	{
 		player = id;
 
 		isCarrying = false;
+		
+		leverTimer = 0;
 
 		anim.Ensure(animForPlayer(AnimationType::PLAYER_IDLE_DOWN));
 		actionButton.Ensure(AnimationType::BUTTON_A_PRESS);
@@ -78,8 +89,14 @@ struct Player : public Entity, public EntS<Player>
 			}
 		}
 
-		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
+		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& isLeverPullable)
+		{
+			leverCounter += 5;
+			isPullingLever = true;
+		}
 
+		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
 		{
 			if (extremity != NULL)
 			{
@@ -317,6 +334,23 @@ struct Player : public Entity, public EntS<Player>
 				}
 			} break;
 		}
+
+		if (isPullingLever)
+		{
+			leverTimer -= dt;
+			if (leverTimer <= 0)
+			{
+				leverCounter--;
+				leverTimer = LEVER_TIMER;
+			}
+
+			if (lever != NULL && lever->engineIsFinished)
+			{
+				isLeverPullable = false;
+			}
+		}
+		
+
 	}
 
 	Bounds bounds() {
@@ -337,7 +371,7 @@ struct Player : public Entity, public EntS<Player>
 		window.draw(spr);
 		spr.setScale(a);
 
-		if (isCadaverCarriable && !isCarrying)
+		if ((isCadaverCarriable && !isCarrying) || isLeverPullable)
 		{
 			spr.setTextureRect(actionButton.CurrentFrame());
 			spr.setPosition(pos.x + 13, pos.y - 10);
@@ -346,6 +380,41 @@ struct Player : public Entity, public EntS<Player>
 		else
 		{
 			actionButton.Reset();
+		}
+
+		if (isPullingLever && leverCounter > 0 && isLeverPullable)
+		{
+			sf::IntRect leverBckRect = sf::IntRect(pos.x, pos.y - 16, LEVER_MAX_COUNTER, 4);
+			sf::RectangleShape leverBckShape = sf::RectangleShape();
+			leverBckShape.setPosition(leverBckRect.left, leverBckRect.top);
+			leverBckShape.setSize(sf::Vector2f(leverBckRect.width, leverBckRect.height));
+			leverBckShape.setFillColor(sf::Color(73, 0, 0));
+
+			window.draw(leverBckShape);
+
+			int width;
+			if (leverCounter > LEVER_MAX_COUNTER)
+			{
+				lever->engineIsFinished = true;
+				lever->canPull = false;
+				isLeverPullable = false;
+				leverCounter = LEVER_MAX_COUNTER;
+			}
+			else
+			{
+				width = leverCounter;
+
+			}
+
+
+			sf::IntRect leverFrontRect = sf::IntRect(pos.x, pos.y - 16, leverCounter, 4);
+			sf::RectangleShape leverFrontShape = sf::RectangleShape();
+			leverFrontShape.setPosition(leverFrontRect.left, leverFrontRect.top);
+			leverFrontShape.setSize(sf::Vector2f(leverFrontRect.width, leverFrontRect.height));
+			leverFrontShape.setFillColor(sf::Color(188, 0, 0));
+
+			window.draw(leverFrontShape);
+
 		}
 
 	}

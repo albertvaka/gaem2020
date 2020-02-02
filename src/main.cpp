@@ -84,6 +84,7 @@ TileType TileFromChar(char c)
 		{
 			return TileType::BELT_RIGHT;
 		} break;
+
 	}
 	return TileType::FLOOR;
 }
