@@ -24,6 +24,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 	int player;
 	bool isCarrying;
 	bool isCadaverCarriable;
+	bool isExtremityCarriable;
 	
 	const int LEVER_TIMER = 100;
 	const int LEVER_MAX_COUNTER = 24;
@@ -384,7 +385,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 		window.draw(spr);
 		spr.setScale(a);
 
-		if ((isCadaverCarriable && !isCarrying) || isLeverPullable)
+		if (((isCadaverCarriable || isExtremityCarriable) && !isCarrying) || isLeverPullable || mesa != NULL)
 		{
 			spr.setTextureRect(actionButton.CurrentFrame());
 			spr.setPosition(pos.x + 13, pos.y - 10);

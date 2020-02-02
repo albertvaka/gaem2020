@@ -74,6 +74,7 @@ void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*ca
 void collision_player_extremity(Player* player, Extremity* extremity) {
 	if (!player->isCarrying && !extremity->isCarried) {
 		player->extremity = extremity;
+		player->isExtremityCarriable = true;
 		extremity->isCarriable = true;
 	}
 }
@@ -175,8 +176,8 @@ void UpdateCollisions(int dt)
 			player->lever = NULL;
 
 			player->isCadaverCarriable = false;
+			player->isExtremityCarriable = false;
 			player->isLeverPullable = false;
-			player->leverTimer--;
 
 		}
 	}

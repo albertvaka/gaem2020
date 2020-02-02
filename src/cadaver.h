@@ -59,6 +59,8 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE;
 			break;
 		}
+		e->isCarried = false;
+
 	}
 
 	bool isCarried = false;
@@ -111,6 +113,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		pos.x = x;
 		pos.y = y + 3;
 
+		isLet = false;
 		currentPlayer = player;
 	}
 
