@@ -263,6 +263,71 @@ void DrawGui()
 	ImGui::End();
 }
 
+
+sf::IntRect SelectTileWallWithBorders(int i, int j)
+{
+	return (sf::IntRect(64 + 16, 48, 16, 16));
+
+	
+
+	if (i == 1 && j == 0)
+	{
+		int asdf = 0;
+	}
+
+	bool isFloor[3][3];
+	for (int ii = -1; ii < 2; ++ii)
+	{
+		for (int jj = -1; jj < 2; ++jj)
+		{
+			int x = i + ii;
+			int y = j + jj;
+
+			if (x < 0 || x >= mapita.size() ||
+				y < 0 || y >= mapita[x].size())
+			{
+				isFloor[1 + ii][1 + jj] = false;
+			}
+			else
+			{
+				isFloor[1 + ii][1 + jj] = (mapita[x][y] == TileType::FLOOR);
+			}
+		}
+	}
+
+	bool TL = isFloor[0][0];
+	bool T = isFloor[1][0];
+	bool TR = isFloor[2][0];
+
+	bool L = isFloor[0][1];
+	bool R = isFloor[2][1];
+
+	bool BL = isFloor[2][2];
+	bool B = isFloor[2][2];
+	bool BR = isFloor[2][2];
+
+	if (T && !L && !R && !B)
+	{
+		return (sf::IntRect(48, 208, 16, 16));
+	}
+	if (!T && L && !R && !B)
+	{
+		return (sf::IntRect(32, 224, 16, 16));
+	}
+	if (!T && !L && R && !B)
+	{
+		return (sf::IntRect(64, 224, 16, 16));
+	}
+	if (!T && !L && !R && B)
+	{
+		return (sf::IntRect(48, 240, 16, 16));
+	}
+
+
+	return (sf::IntRect(64 + 16, 48, 16, 16));
+
+}
+
 void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 {
 	int time = mainClock.getElapsedTime().asMilliseconds();
@@ -299,8 +364,9 @@ void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
 		break;
 	case TileType::WALL:
-		sprite.setTextureRect(sf::IntRect(64+16, 48, 16, 16));
-		break;
+	{
+		sprite.setTextureRect(SelectTileWallWithBorders(i, j));
+	} break;
 	case TileType::BELT_DOWN:
 		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
 		sprite.setOrigin(0, 16);

@@ -80,11 +80,10 @@ struct Extremity : public SortedDrawable, EntS<Extremity>
 	bool isCarried;
 	bool isCarriable; 
 
-	Extremity(int x, int y)
+	Extremity(int x, int y) : Extremity()
 	{
 		pos.x = x;
 		pos.y = y;
-		Extremity();
 	}
 
 	Extremity() 
