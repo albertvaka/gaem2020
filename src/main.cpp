@@ -230,13 +230,16 @@ void LoadGame(sf::RenderWindow& window)
 		}
 	}
 
+#ifdef _DEBUG
 	new Cadaver(100, 100);
+#endif
 	loadExtremityMap();
 	
 }
 
 void DrawGui()
 {
+#ifdef _DEBUG
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
 
 	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
@@ -265,6 +268,7 @@ void DrawGui()
 	}
 
 	ImGui::End();
+#endif
 }
 
 
@@ -440,6 +444,7 @@ int main()
 		Camera::StartGuiDraw();
 		DrawGui();
 		ImGui::SFML::Render(window);
+#ifdef _DEBUG
 		fps_counter++;
 		if (fpsClock.getElapsedTime().asSeconds() > 0.5f) 
 		{
@@ -447,6 +452,7 @@ int main()
 			fps_counter = 0;
 		}
 		window.draw(txt_fps);
+#endif
 		Camera::EndGuiDraw();
 		
 		window.display();
