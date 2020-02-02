@@ -22,9 +22,6 @@
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{a356d510-df19-4422-a35e-dedb7b5d4c88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\EntitySystem">
-      <UniqueIdentifier>{b773d533-4670-45e1-9ccc-3ed042304ae5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -80,12 +77,6 @@
     <ClInclude Include="src\game_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity_system.h">
-      <Filter>Header Files\EntitySystem</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity.h">
-      <Filter>Header Files\EntitySystem</Filter>
-    </ClInclude>
     <ClInclude Include="src\collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,8 +107,16 @@
     <ClInclude Include="src\mesa.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\cleaner.h">
     <ClInclude Include="src\lever.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity_system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cleaner.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
