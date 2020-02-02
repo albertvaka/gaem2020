@@ -6,6 +6,7 @@
 #include "mesa.h"
 #include "cinta.h"
 #include "spawner.h"
+
 #include "lever.h"
 #include <functional>
 
@@ -119,9 +120,12 @@ void collision_entity_cinta(Cintable *ent, Cinta* cinta) {
 
 }
 
-void collision_cadaver_spawner(Cadaver* ent, Spawner* spawner) {
-
-	spawner->empty = false;
+void collision_cadaver_spawner(Cadaver* ent, Detector* detector) {
+	if (detector->spawner)
+	{
+		detector->spawner->empty = false;
+	}
+	
 
 }
 
@@ -184,7 +188,7 @@ void UpdateCollisions(int dt)
 	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
-	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);
+	collide(EntS<Cadaver>::getAll(), EntS<Detector>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
 	
 

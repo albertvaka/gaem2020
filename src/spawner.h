@@ -13,6 +13,7 @@ struct Spawner : public Entity, public EntS<Spawner>
 	int timer = INTERVAL;
 	Spawner(vec position) {
 		pos = position;
+		
 	}
 
 	void Update(int dt)
@@ -33,7 +34,19 @@ struct Spawner : public Entity, public EntS<Spawner>
 	}
 
 };
+struct Detector : public Entity, public EntS<Detector>
+{
+	Spawner* spawner;
+	Detector(vec position, Spawner *s) {
+		pos = position;
+		spawner = s;
+	}
+	void Update(int dt)
+	{
 
+	}
+
+};
 struct Despawner : public Entity, public EntS<Despawner>
 {
 	Despawner(vec position) {

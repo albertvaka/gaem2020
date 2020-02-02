@@ -168,8 +168,12 @@ void LoadGame(sf::RenderWindow& window)
 					new Collector(pos, letraToExtremity(c));
 					break;
 				case 'S':
-					new Spawner(pos); 
-					new Cinta(pos, EntityDirection::DOWN); 
+				{
+					Spawner *s = new Spawner(pos);
+					new Detector(vec(pos.x - 16, pos.y + 16), s);
+					new Cinta(pos, EntityDirection::DOWN);
+				}
+					
 					break;
 				case 'Z':
 					new Despawner(pos);
