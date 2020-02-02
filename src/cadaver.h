@@ -133,6 +133,8 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			wnd.draw(shape);
 		}
 
+		DrawBody(spr, wnd);
+
 		if (rightLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE)
 		{
 			DrawRightLeg(spr, wnd);
@@ -158,7 +160,6 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			DrawHead(spr, wnd);
 		}
 
-		DrawBody(spr, wnd);
 
 	/*	if (isCarriable)
 		{
