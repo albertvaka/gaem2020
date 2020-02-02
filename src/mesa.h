@@ -62,9 +62,11 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		//	wnd.draw(shape);
 		//}
 
+		spr.setScale(1.25f, 1.25f);
 		spr.setTextureRect(anim.CurrentFrame());
-		spr.setPosition(pos.x - 7, pos.y - 16);
+		spr.setPosition(pos.x - 11.2f, pos.y - 22.5f);
 		wnd.draw(spr);
+		spr.setScale(1,1);
 
 		if (lever->engineIsFinished)
 		{

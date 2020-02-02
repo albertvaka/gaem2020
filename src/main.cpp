@@ -26,7 +26,7 @@ sf::Clock mainClock;
 
 const int TILE_SIZE = 16;
 
-std::vector< std::string > mapita_inicial = { // (23 * 16 tiles)
+std::vector< std::string > mapita_inicial = {
 "XXXXXXXXXXXSXXXXXXXXXXX",
 "XXR      XDDBX       XX",
 "XX XXXXX XAXBX XXXXX XX",

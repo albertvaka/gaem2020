@@ -372,7 +372,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);
-		spr.setPosition(pos.x + 1.5f, pos.y - 4.f);
+		spr.setPosition(pos.x + 1.5f, pos.y - 7.f);
 		
 		spr.setTextureRect(anim.CurrentFrame());
 
