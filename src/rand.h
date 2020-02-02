@@ -90,13 +90,13 @@ namespace Random
 	inline uint roll_1d20() { return action.roll_1d20(); }
 
 	inline uint roll(uint min, uint max) { return action.roll(min, max); }
-	inline uint roll(uint max) { return roll(1, max); }
+	inline uint roll(uint max) { return roll(0, max); }
 
 	inline uint64_t roll64(uint64_t min, uint64_t max) { return action.roll64(min, max); }
-	inline uint64_t roll64(uint64_t max) { return roll(1, (uint)max); }
+	inline uint64_t roll64(uint64_t max) { return roll(0, (uint)max); }
 
 	inline float rollf(float min, float max) { return action.rollf(min, max); }
-	inline float rollf(float max) { return rollf(1, max); }
+	inline float rollf(float max) { return rollf(0, max); }
 
 	template<typename _T>
 	void shuffle(_T *values, size_t count)

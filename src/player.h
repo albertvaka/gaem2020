@@ -3,7 +3,7 @@
 #include "entity.h"
 #include "animation.h"
 #include "rand.h"
-
+#include "cleaner.h"
 
 #include "input.h"
 
@@ -193,6 +193,14 @@ struct Player : public SortedDrawable, public EntS<Player>
 			{
 				if (p == this) continue;
 				if (Collide(p->bounds(),this->bounds())) 
+				{
+					pos = oldPos;
+					break;
+				}
+			}
+			for (Cleaner* p : EntS<Cleaner>::getAll())
+			{
+				if (Collide(p->bounds(), this->bounds()))
 				{
 					pos = oldPos;
 					break;

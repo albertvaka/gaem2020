@@ -37,6 +37,20 @@ bool Collision(Cintable* entity_a, Cinta* entity_b)
 			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
 }
 
+bool Collision(Cintable* entity_a, Cleaner* entity_b)
+{
+
+	float COLLISION_SIZE = 16;
+
+	vec a = entity_a->positionPlz();
+	vec b = entity_b->pos;
+
+	//rectangle colision
+	return
+		(a.x < b.x + 16 && a.x + COLLISION_SIZE > b.x &&
+			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
+}
+
 template <typename T, typename U, typename Z, typename Y>
 void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(Y*, Z*)) 
 {
@@ -108,6 +122,16 @@ void collision_cadaver_despawner(Cadaver* e, Despawner* _) {
 	e->alive = false;
 }
 
+void collision_clean_taques(Taca* t, Cleaner* c) {
+	t->alive = false;
+}
+
+void collision_stop_cleaner(Player* _, Cleaner* c) {
+	c->speed.x = 0;
+	c->speed.y = 0;
+}
+
+
 void UpdateCollisions(int dt) 
 {
 
@@ -143,6 +167,8 @@ void UpdateCollisions(int dt)
 	}
 
 	// If A collides with B, call collision_callback
+	collide(EntS<Taca>::getAll(), EntS<Cleaner>::getAll(), collision_clean_taques);
+	collide(EntS<Player>::getAll(), EntS<Cleaner>::getAll(), collision_stop_cleaner);
 	collide(EntS<Player>::getAll(), EntS<Extremity>::getAll(), collision_player_extremity);
 	collide(EntS<Player>::getAll(), EntS<Cadaver>::getAll(), collision_player_cadaver);
 	collide(EntS<Player>::getAll(), EntS<Mesa>::getAll(), collision_player_mesa);

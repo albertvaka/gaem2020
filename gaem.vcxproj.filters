@@ -116,6 +116,7 @@
     <ClInclude Include="src\mesa.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="src\cleaner.h">
     <ClInclude Include="src\lever.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>

@@ -149,6 +149,7 @@
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\anim_data.h" />
     <ClInclude Include="src\bounds.h" />
+    <ClInclude Include="src\cleaner.h" />
     <ClInclude Include="src\collider.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\extremity.h" />

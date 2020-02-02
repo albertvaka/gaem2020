@@ -14,6 +14,7 @@
 #include "player.h"
 #include "cadaver.h"
 #include "spawner.h"
+#include "cleaner.h"
 #include "mesa.h"
 
 
@@ -57,6 +58,7 @@ enum class TileType
 std::vector< std::vector<TileType> > mapita;
 
 std::vector< std::vector<bool> > passable;
+std::vector< std::vector<bool> > passableCleaner;
 
 TileType TileFromChar(char c)
 {
@@ -107,9 +109,10 @@ void LoadGame(sf::RenderWindow& window)
 	initMesaVector();
 
 	passable.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
+	passableCleaner.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
 	mapita.resize(mapita_inicial[0].size(), std::vector<TileType>(mapita_inicial.size()));
 
-
+	bool spawned = false;
 	int x = 0, y = 0;
 	for (auto row : mapita_inicial) 
 	{
@@ -135,11 +138,18 @@ void LoadGame(sf::RenderWindow& window)
 					new Despawner(pos);
 					new Cinta(pos, EntityDirection::LEFT);
 					break;
+				case ' ':
+					if (!spawned) {
+						new Cleaner(pos);
+						spawned = true;
+					}
+					break;
 				
 			}
 
 
 			passable[x][y] = (c < 'A');
+			passableCleaner[x][y] = (c < 'E');
 
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
