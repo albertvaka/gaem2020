@@ -5,7 +5,7 @@
 #include "rand.h"
 #include "vector.h"
 
-struct TextMolest : public Entity, public EntS<TextMolest>
+struct TextMolest : public SortedDrawable, public EntS<TextMolest>
 {
 	enum Type {
 		GOOD,
@@ -21,17 +21,17 @@ struct TextMolest : public Entity, public EntS<TextMolest>
 	void Update(int dt)
 	{
 		timer += dt;
-		if (timer > 3000) alive = false;
+		if (timer > 3000) alive = true;
 
 	}
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
-		spr.setScale(timer, timer);
+		spr.setScale(3, 3);
 		switch (m_type)
 		{
 		case Type::GOOD:
 		{
-			spr.setTextureRect(Animation::AnimFrame(AnimationType::, 0));
+			spr.setTextureRect(sf::IntRect(0,0,700,700));
 			
 			spr.setPosition(pos);
 			wnd.draw(spr);

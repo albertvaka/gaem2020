@@ -70,6 +70,11 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 	}
 
+	for (TextMolest* e : EntS<TextMolest>::getAll())
+	{
+		e->Update(dt);
+	}
+
 	for (CleanerSpawner* e : EntS<CleanerSpawner>::getAll())
 	{
 		e->Update(dt);
@@ -106,6 +111,11 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 	});
 
 	for (SortedDrawable* e : EntS<SortedDrawable>::getAll())
+	{
+		e->Draw(spr, window);
+	}
+
+	for (TextMolest* e : EntS<TextMolest>::getAll())
 	{
 		e->Draw(spr, window);
 	}
