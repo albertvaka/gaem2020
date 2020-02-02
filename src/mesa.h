@@ -17,6 +17,7 @@ struct Collector : public SortedDrawable, EntS<Collector>
 	ExtremityType type;
 	int player = -1;
 	Mesa* mesa = nullptr;
+	Extremity* extremity = nullptr;
 	int currentPlayer;
 
 	bool mesa_was_empty = true;
@@ -103,14 +104,22 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		wnd.draw(spr);
 		spr.setScale(1,1);
 
-		if (cadaver && lever->engineIsFinished)
-		{
-			if (cadaver->HasExtremity(type)) 
-			{
-				cadaver->DeatachExtremity(type, collector->pos);
+		if (cadaver && lever->engineIsFinished) {
+			if (collector->extremity) {
+				if (!cadaver->HasExtremity(type)) {
+					cadaver->AttachExtremity(collector->extremity);
+					collector->extremity = nullptr;
+				}
 			}
-	
-			//TODO:: RAYOS Y RETRUECANOS
+			else
+			{
+				if (cadaver->HasExtremity(type)) {
+					Extremity* e = cadaver->DeatachExtremity(type, collector->pos);
+					collector->extremity = e;
+				}
+			}
+		lever->engineIsFinished = false;
+		//TODO:: RAYOS Y RETRUECANOS
 		}
 	}
 

@@ -77,13 +77,15 @@ struct ExtremityData
 
 struct Extremity : public SortedDrawable, EntS<Extremity> 
 {
-
+	ExtremityType type;
 	ExtremityData data;
 	bool isCarried;
 	bool isCarriable; 
+	bool isLet = false;
 
-	Extremity(int x, int y) : Extremity()
+	Extremity(int x, int y, ExtremityType t) : Extremity()
 	{
+		type = t;
 		pos.x = x;
 		pos.y = y;
 	}

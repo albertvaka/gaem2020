@@ -45,6 +45,8 @@ std::vector< std::string > mapita_inicial = {
 "XXXXXXXXXXZZZXXXXXXXXXX",
 };
 
+Collector* collectDebug = nullptr;
+
 enum class TileType
 {
 	SIGN_GOOD,
@@ -187,7 +189,8 @@ void LoadGame(sf::RenderWindow& window)
 				case 'l':
 				case 'r':
 				case 'm':
-					new Collector(pos, letraToExtremity(c));
+					if (c == 'k') collectDebug = new Collector(pos, letraToExtremity(c));
+					else new Collector(pos, letraToExtremity(c));;
 					break;
 				case 'S':
 				{
@@ -208,7 +211,7 @@ void LoadGame(sf::RenderWindow& window)
 			}
 
 
-			passable[x][y] = (c < 'A' || c == 'k');
+			passable[x][y] = (c < 'A');
 			passableCleaner[x][y] = (c < 'E' || c == 'Z');
 
 			mapita[x][y] = TileFromChar(c);
@@ -245,6 +248,7 @@ void DrawGui()
 	}
 
 	ImGui::Checkbox("Blood", &withTaca);
+	ImGui::Text(std::to_string(!!collectDebug->extremity).c_str());
 
 	ImGui::Text(std::to_string(EntS<Cadaver>::getAll().size()).c_str());
 

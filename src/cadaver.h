@@ -35,8 +35,30 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		}
 		return true;
 	}
-	void DeatachExtremity(ExtremityType et, vec pos) {
-		Extremity* e = new Extremity(pos.x,pos.y);
+
+	void AttachExtremity(Extremity* e) {
+		switch (e->type) {
+		case ExtremityType::HEAD:
+			head = e->data;
+			break;
+		case ExtremityType::LEFT_ARM:
+			leftArm = e->data;
+			break;
+		case ExtremityType::RIGHT_ARM:
+			rightArm = e->data;
+			break;
+		case ExtremityType::LEFT_LEG:
+			leftLeg = e->data;
+			break;
+		case ExtremityType::RIGHT_LEG:
+			rightLeg = e->data;
+			break;
+		}
+		e->alive = false;
+	}
+
+	Extremity* DeatachExtremity(ExtremityType et, vec pos) {
+		Extremity* e = new Extremity(pos.x,pos.y, et);
 		switch (et) {
 		case ExtremityType::HEAD:
 			e->data = head;
@@ -60,7 +82,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			break;
 		}
 		e->isCarried = false;
-
+		return e;
 	}
 
 	bool isCarried = false;

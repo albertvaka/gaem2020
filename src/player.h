@@ -78,6 +78,30 @@ struct Player : public SortedDrawable, public EntS<Player>
 				
 			}
 		}
+
+		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& !isCarrying && collector != NULL)
+		{
+			if (extremity != NULL)
+			{
+				extremity  = collector->extremity;
+				collector->extremity = nullptr;
+				isCarrying = true;
+			}
+		}
+
+		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
+			&& isCarrying && collector != NULL)
+		{
+			if (extremity != NULL)
+			{
+				collector->extremity = extremity;
+				extremity = nullptr;
+				isCarrying = false;
+
+			}
+		}
+
 		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
 			&& isCarrying && mesa != NULL)
 		{
