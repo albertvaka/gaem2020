@@ -43,10 +43,10 @@ public:
 		for (int i = getAll().size() - 1; i >= 0; i--) 
 		{
 			T* e = getAll()[i];
-			if (e->parent && !e->parent->alive) 
-			{
-				e->parent = NULL;
-			}
+			//if (e->parent && !e->parent->alive) 
+				//{
+				//	e->parent = NULL;
+			//}
 		}
 		for (int i = getAll().size()-1; i >= 0; i--) 
 		{
@@ -57,4 +57,5 @@ public:
 			}
 		}
 	}
+
 };

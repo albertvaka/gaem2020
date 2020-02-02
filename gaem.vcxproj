@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\cinta.h" />
+    <Text Include="src\taca.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

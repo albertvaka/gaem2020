@@ -5,7 +5,7 @@
 
 #include "extremity.h"
 
-struct Mesa : public Entity, EntS<Mesa>
+struct Mesa : public SortedDrawable, EntS<Mesa>
 {
 
 	enum type {

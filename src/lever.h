@@ -3,7 +3,7 @@
 #include "entity.h"
 
 
-struct Lever : public Entity, public EntS<Lever>
+struct Lever : public SortedDrawable, public EntS<Lever>
 {
 	bool canPull = false;
 	bool engineIsFinished = false;
@@ -14,11 +14,13 @@ struct Lever : public Entity, public EntS<Lever>
 		pos.y = position.y - 40;
 	}
 
-	void Update(int dt) {
+	void Update(int dt)
+	{
 		
 	}
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override {
+	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
+	{
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(sf::IntRect(16, 112, 16, 16));
 		wnd.draw(spr);

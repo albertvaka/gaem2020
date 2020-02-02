@@ -5,9 +5,10 @@
 #include "extremity.h"
 #include "entity.h"
 #include "collider.h"
+#include "taca.h"
 
 
-struct Cadaver : public Entity, EntS<Cadaver>
+struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 { 
 	ExtremityData rightLeg;
 	ExtremityData leftLeg;
@@ -19,13 +20,13 @@ struct Cadaver : public Entity, EntS<Cadaver>
 	bool isCarried = false;
 	bool isCarriable = false;
 	bool isLet = false;
-
+	float counterBloodTimeLeft = 100.f;
 
 	int currentPlayer;
 	Cadaver(vec pos) : Cadaver(pos.x, pos.y) { }
 
 	Cadaver(int x, int y) {
-
+		
 		pos.x = x;
 		pos.y = y;
 		
@@ -51,6 +52,14 @@ struct Cadaver : public Entity, EntS<Cadaver>
 		}
 	}
 
+	vec positionPlz() {
+		return pos;
+	}
+
+	vec sizePlz() override {
+		return vec(16, 16);
+	}
+
 	void carryCadaver(int x, int y, int player)
 	{
 		isCarried = true;
@@ -74,35 +83,22 @@ struct Cadaver : public Entity, EntS<Cadaver>
 
 	void Update(int dt) 
 	{
+		counterBloodTimeLeft -= dt * Random::roll(0, 3);
+		if (counterBloodTimeLeft < 0)
+		{
+			new Taca(pos, currCintaDirection);
+			counterBloodTimeLeft = 100;
+		}
 		Move(dt);
+
 	}
 
 	void Move(int dt)
 	{
 
-		auto oldPos = pos;
-
-		SetSpeedWithCinta();
+		SetSpeedWithCinta(speed);
 		sf::Vector2f oldpos = pos;
 		pos += speed * dt;
-		for (Cadaver* p : EntS<Cadaver>::getAll())
-		{
-			if (p == this) continue;
-			float COLLISION_SIZE = 16;
-
-			vec a = p->pos;
-			vec b = pos;
-
-			//rectangle colision
-			bool colides =
-				(a.x < b.x + COLLISION_SIZE && a.x + COLLISION_SIZE > b.x &&
-					a.y < b.y + COLLISION_SIZE && a.y + COLLISION_SIZE > b.y);
-			if (colides)
-			{
-				pos = oldpos;
-				break;
-			}
-		}
 		
 		speed.x = 0;
 		speed.y = 0;

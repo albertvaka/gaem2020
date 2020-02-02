@@ -10,7 +10,7 @@
 #include "cadaver.h"
 #include "mesa.h"
 
-struct Player : public Entity, public EntS<Player>
+struct Player : public SortedDrawable, public EntS<Player>
 {
 
 	AnimationType animForPlayer(AnimationType anim) {
@@ -181,7 +181,7 @@ struct Player : public Entity, public EntS<Player>
 		auto oldPos = pos;
 
 		SetSpeedWithPlayerInput();
-		SetSpeedWithCinta();
+		//SetSpeedWithCinta(speed);
 		
 
 		bool moved = tryMove(dt/4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);

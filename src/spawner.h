@@ -10,7 +10,7 @@ struct Spawner : public Entity, public EntS<Spawner>
 
 	const int INTERVAL = 3000;
 	bool empty = true;
-	int timer = 0;
+	int timer = INTERVAL;
 	Spawner(vec position) {
 		pos = position;
 	}
@@ -19,14 +19,16 @@ struct Spawner : public Entity, public EntS<Spawner>
 	{
 		timer += dt;
 		if (timer > INTERVAL) {
-			timer -= INTERVAL;
-			spawn();
+			if (empty) {
+				timer -= INTERVAL;
+				spawn();
+			}
 		}
+		empty = true;
 	}
 
 	void spawn() {
-		if(empty) new Cadaver(pos);
-		empty = true;
+		new Cadaver(pos);
 		
 	}
 

@@ -11,6 +11,8 @@
 #include "cadaver.h"
 #include "cinta.h"
 #include "spawner.h"
+#include "lever.h"
+#include "mesa.h"
 
 void UpdateEntities(int dt)
 {
@@ -36,8 +38,6 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
-
-
 	for (Spawner* e : EntS<Spawner>::getAll())
 	{
 		e->Update(dt);
@@ -49,27 +49,34 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
+
 	for (Lever * e : EntS<Lever>::getAll())
 	{
 		e->Update(dt);
 	}
 
+	for (Taca* e : EntS<Taca>::getAll())
+	{
+		e->Update(dt);
+	}
 
-
-
+	EntS<Taca>::deleteNotAlive();
 	EntS<Entity>::deleteNotAlive();
 }
 
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 {
 
+	for (Taca* e : EntS<Taca>::getAll())
+	{
+		e->Draw(spr, window);
+	}
 
-
-	EntS<Entity>::sort([](Entity* a, Entity* b) {
+	EntS<SortedDrawable>::sort([](SortedDrawable* a, SortedDrawable* b) {
 		return a->pos.y < b->pos.y;
 	});
 
-	for (Entity* e : EntS<Entity>::getAll())
+	for (SortedDrawable* e : EntS<SortedDrawable>::getAll())
 	{
 		e->Draw(spr, window);
 	}
@@ -78,12 +85,13 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 {
 	window.clear(sf::Color(100, 100, 200));
+
 	sf::VertexArray vao(sf::Quads);
 	EntS<Entity>::sort([](Entity* a, Entity* b) {
 		return a->pos.y < b->pos.y;
 	});
 
-	for (Entity* e : EntS<Entity>::getAll())
+	for (SortedDrawable* e : EntS<SortedDrawable>::getAll())
 	{
 		e->Draw(vao);
 	}
