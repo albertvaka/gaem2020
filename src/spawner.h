@@ -21,7 +21,7 @@ struct Spawner : public Entity, public EntS<Spawner>
 		timer += dt;
 		if (timer > INTERVAL) {
 			if (empty) {
-				timer -= INTERVAL;
+				timer = 0;
 				spawn();
 			}
 		}

@@ -80,7 +80,7 @@ void UpdateEntities(int dt)
 	if (num_tacs/(num_rumbs + 1) > 800) {
 		int spawners_count = EntS<CleanerSpawner>::getAll().size();
 
-		int sp = Random::roll(0, spawners_count);
+		int sp = Random::roll(0, spawners_count-1);
 
 		EntS<CleanerSpawner>::getAll()[sp]->TreuElGos();
 	}
@@ -112,6 +112,7 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 
 
 }
+/*
 void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 {
 	window.clear(sf::Color(100, 100, 200));
@@ -141,3 +142,4 @@ void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 
 
 }
+*/
