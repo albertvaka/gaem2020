@@ -31,7 +31,7 @@ struct TextMolest : public Entity, public EntS<TextMolest>
 		{
 		case Type::GOOD:
 		{
-			//spr.setTextureRect(Animation::AnimFrame(AnimationType::ROOMBA_DOOR_OPEN, 0));
+			spr.setTextureRect(Animation::AnimFrame(AnimationType::, 0));
 			
 			spr.setPosition(pos);
 			wnd.draw(spr);

@@ -67,7 +67,8 @@ std::vector< std::vector<TileType> > mapita;
 
 std::vector< std::vector<bool> > passable;
 std::vector< std::vector<bool> > passableCleaner;
-
+int countGoods = 0;
+int countBads = 0;
 TileType TileFromChar(char c)
 {
 	switch (c)

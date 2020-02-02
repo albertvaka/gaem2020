@@ -1,131 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Imgui">
-      <UniqueIdentifier>{6976f914-6123-40ca-9d2e-5a11e0c4f6be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Imgui">
-      <UniqueIdentifier>{bda8dfda-e158-4f5f-aa77-9259a6247653}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entities">
-      <UniqueIdentifier>{a356d510-df19-4422-a35e-dedb7b5d4c88}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="imgui_sfml\imgui-SFML.cpp" />
+    <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\rand.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_sfml\imgui-SFML.cpp">
-      <Filter>Source Files\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Source Files\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Source Files\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Source Files\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui_sfml\imconfig-SFML.h" />
+    <ClInclude Include="imgui_sfml\imgui-SFML.h" />
+    <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
+    <ClInclude Include="src\animation.h" />
+    <ClInclude Include="src\anim_data.h" />
+    <ClInclude Include="src\bounds.h" />
+    <ClInclude Include="src\cleaner.h" />
+    <ClInclude Include="src\collider.h" />
+    <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\extremity.h" />
+    <ClInclude Include="src\lever.h" />
+    <ClInclude Include="src\mesa.h" />
+    <ClInclude Include="src\cadaver.h" />
+    <ClInclude Include="src\player.h" />
+    <ClInclude Include="src\selfregister.h" />
+    <ClInclude Include="src\entity_system.h" />
+    <ClInclude Include="src\game_data.h" />
+    <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\mates.h" />
+    <ClInclude Include="src\rand.h" />
+    <ClInclude Include="src\spawner.h" />
+    <ClInclude Include="src\vector.h" />
+    <ClInclude Include="src\popupText.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\mates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_sfml\imgui-SFML_export.h">
-      <Filter>Header Files\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imconfig.h">
-      <Filter>Header Files\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_sfml\imconfig-SFML.h">
-      <Filter>Header Files\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui.h">
-      <Filter>Header Files\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_sfml\imgui-SFML.h">
-      <Filter>Header Files\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game_data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\selfregister.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bounds.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\player.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\extremity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cadaver.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\anim_data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\spawner.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mesa.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lever.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity_system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cleaner.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\cinta.h">
-      <Filter>Header Files\Entities</Filter>
-    </Text>
-    <Text Include="src\taca.h">
-      <Filter>Header Files\Entities</Filter>
-    </Text>
+    <Text Include="src\cinta.h" />
+    <Text Include="src\taca.h" />
   </ItemGroup>
 </Project>
