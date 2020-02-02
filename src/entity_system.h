@@ -80,6 +80,14 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 		e->anim.Update(dt);
 	}
+
+	for (SpawnAnim* e : EntS<SpawnAnim>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
+
+
 	int num_tacs = EntS<Taca>::getAll().size();
 	int num_rumbs = EntS<Cleaner>::getAll().size();
 	if (num_tacs/(num_rumbs + 1) > 800) {

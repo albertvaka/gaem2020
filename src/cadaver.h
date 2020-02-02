@@ -7,6 +7,41 @@
 #include "collider.h"
 #include "taca.h"
 
+struct SpawnAnim : public SortedDrawable, EntS<SpawnAnim>
+{
+	int timer = 0;
+
+	vec offset;
+
+	SpawnAnim(vec _pos, vec _offset = vec())
+	{
+		anim.Ensure(AnimationType::SPAWN);
+		pos = _pos;
+		offset = _offset;
+	}
+
+	void Update(int dt)
+	{
+		timer += dt;
+		if (timer > 650)
+		{
+			alive = false;
+		}
+	}
+
+	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
+	{
+
+		spr.setPosition(pos + offset);
+		spr.setTextureRect(anim.CurrentFrame());
+		wnd.draw(spr);
+
+	}
+
+
+};
+
+
 extern sf::Clock mainClock;
 
 bool withTaca = true;
@@ -55,6 +90,10 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			break;
 		}
 		e->alive = false;
+
+		new SpawnAnim(e->pos);
+		new SpawnAnim(this->pos, vec(-4, -4));
+
 	}
 
 	Extremity* DeatachExtremity(ExtremityType et, vec pos) {
@@ -84,6 +123,10 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		e->isCarried = false;
 
 		e->PonBien();
+
+
+		new SpawnAnim(pos);
+		new SpawnAnim(this->pos, vec(-4, -4));
 
 		return e;
 	}

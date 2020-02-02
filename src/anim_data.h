@@ -56,6 +56,7 @@ enum AnimationType
 	CAPSULE_OPENED,
 	CAPSULE_CLOSED,
 	CAPSULE_CLOSING,
+	SPAWN,
 };
 
 AnimationData anim_lib[] =
@@ -600,6 +601,21 @@ AnimationData anim_lib[] =
 		},
 		{
 			100,100,100,500,
+		},
+	},
+	//SPAWN
+	{
+		6,
+		{
+			{144,160,16,16},
+			{160,160,16,16},
+			{176,160,16,16},
+			{192,160,16,16},
+			{208,160,16,16},
+			{224,160,16,16},
+		},
+		{
+			100,100,100,100,100,150,
 		},
 	},
 };
