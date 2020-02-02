@@ -6,12 +6,12 @@
 #include "mesa.h"
 #include "cinta.h"
 #include "spawner.h"
+#include "popupText.h"
 #include "lever.h"
 #include <functional>
 
 bool Collision(Entity* entity_a, Entity* entity_b)
 {
-
 	float COLLISION_SIZE = 16;
 
 	vec a = entity_a->pos;
@@ -51,17 +51,17 @@ bool Collision(Cintable* entity_a, Cleaner* entity_b)
 			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
 }
 
-template <typename T, typename U, typename Z, typename Y>
-void collide(const std::vector<T*>& setA, const std::vector<U*>& setB, void (*callback)(Y*, Z*)) 
+template <typename S, typename E, typename X, typename Y>
+void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*callback)(X*, Y*)) 
 {
 	size_t sa = setA.size();
 	for (size_t i = 0; i < sa; ++i)
 	{
-		T* a = setA[i];
+		S* a = setA[i];
 		size_t sb = setB.size();
 		for (size_t j = 0; j < sb; ++j)
 		{
-			U* b = setB[j];
+			E* b = setB[j];
 			if ((void*)a == (void*)b) continue;
 			if (Collision(a, b)) 
 			{
@@ -96,6 +96,14 @@ void collision_player_mesa(Player* player, Mesa* mesa) {
 	}
 }
 
+void collision_player_collector(Player* player, Collector* mesa) {
+	if (player->cadaver != NULL)
+	{
+		mesa->currentPlayer = player->player;
+		player->collector = mesa;
+	}
+}
+
 void collision_player_lever(Player* player, Lever* lever) {
 	if (lever->canPull)
 	{
@@ -112,14 +120,32 @@ void collision_entity_cinta(Cintable *ent, Cinta* cinta) {
 
 }
 
-void collision_cadaver_spawner(Cadaver* ent, Spawner* spawner) {
-
-	spawner->empty = false;
+void collision_cadaver_spawner(Cadaver* ent, Detector* detector) {
+	if (detector->spawner)
+	{
+		detector->spawner->empty = false;
+	}
+	
 
 }
 
-void collision_cadaver_despawner(Cadaver* e, Despawner* _) {
+void collision_entity_despawner(Entity* e, Despawner* _) {
 	e->alive = false;
+}
+
+void collision_cadaver_despawner(Cadaver* e, Despawner* _) {
+	if (e->alive) {
+		if(e->IsOk()){
+			new TextMolest(vec(GameData::WINDOW_WIDTH/2, GameData::WINDOW_HEIGHT/2), TextMolest::GOOD);
+			countGoods += 1;
+		}
+		else {
+			new TextMolest(vec(GameData::WINDOW_WIDTH / 2, GameData::WINDOW_HEIGHT / 2), TextMolest::BAD);
+			countBads += 1;
+		}
+	}
+	e->alive = false;
+	
 }
 
 void collision_clean_taques(Taca* t, Cleaner* c) {
@@ -129,7 +155,11 @@ void collision_clean_taques(Taca* t, Cleaner* c) {
 void collision_stop_cleaner(Player* _, Cleaner* c) {
 	c->speed.x = 0;
 	c->speed.y = 0;
-	c->pos = c->oldPos;
+	if (c->ya_va)
+	{
+		c->pos = c->oldPos;
+	}
+
 }
 
 
@@ -177,8 +207,9 @@ void UpdateCollisions(int dt)
 	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
-	collide(EntS<Cadaver>::getAll(), EntS<Spawner>::getAll(), collision_cadaver_spawner);
+	collide(EntS<Cadaver>::getAll(), EntS<Detector>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
+	collide(EntS<Cleaner>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
 	
 
 

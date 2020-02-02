@@ -26,46 +26,67 @@ sf::Clock mainClock;
 
 const int TILE_SIZE = 16;
 
-std::vector< std::string > mapita_inicial = { // (23 * 16 tiles)
-"XXXXXXXXXXXSXXXXXXXXXXX",
-"XXR      XDDBX       XX",
-"XX XXXXX XAXBX XXXXX XX",
-"X  X   X XAXBX X   X XX",
-"X  XFGFX XACCX XFGFX XX",
+std::vector< std::string > mapita_inicial = {
+"XXYYYYYYYXwSXXYYYYYYYXX",
+"XX       XDDBX       XX",
+"XY XXXXX XAXBX XXXXX XX",
+"X  k   X XAXBX X   g XX",
+"X  XFKFX YACCY XFGFX XX",
 "XX X   X  1 2  X   X XX",
-"XX XX XX  0 3  XX XX XX",
+"XX YU YY  0 3  Yy YY XX",
 "XX       XXXXX       XX",
-"XX XXXXX X   X XXXXX XX",
-"XX X   X XFGFX X   X XX",
-"XX XFGFX X   X XFGFX XX",
-"XX X   X XX XX X   X  X",
-"XX XX XX       XX XX  X",
-"XX                  RXX",
-"XXXXXXXXXXBBBXXXXXXXXXX",
-"XXXXXXXXXXTTTXXXXXXXXXX",
-"XXXXXXXXXQ    XXXXXXXXX",
-"XXXXXXXXXXXXXXXXXXXXXXX",
+"XX XXXXX X   X XXXmX XX",
+"XX X   l XFRFX X   X XX",
+"XX XFLFX X   r XFMFX YX",
+"XX X   X Yp YY X   X  X",
+"XX YP YY       Yu YY  X",
+"XX                   XX",
+"XXXXXXXXXXBBBhXXXXXXXXX",
+"XXXXXXXXXXZZZXXXXXXXXXX",
 };
 
 enum class TileType
 {
+	SIGN_GOOD,
+	SIGN_BAD,
+	SIGN_RIGHT_LEG,
+	SIGN_LEFT_LEG,
+	SIGN_LEFT_ARM,
+	SIGN_RIGHT_ARM,
+	SIGN_HEAD,
 	WALL,
 	BELT_RIGHT,
 	BELT_LEFT,
 	BELT_UP,
 	BELT_DOWN,
-	FLOOR
+	FLOOR,
+	ROOMBA_HOME
 };
 
 std::vector< std::vector<TileType> > mapita;
 
 std::vector< std::vector<bool> > passable;
 std::vector< std::vector<bool> > passableCleaner;
-
+int countGoods = 0;
+int countBads = 0;
 TileType TileFromChar(char c)
 {
 	switch (c)
 	{
+		case 'y':
+			return TileType::SIGN_HEAD;
+		case 'u':
+			return TileType::SIGN_RIGHT_ARM;
+		case 'U':
+			return TileType::SIGN_LEFT_ARM;
+		case 'p':
+			return TileType::SIGN_RIGHT_LEG;
+		case 'P':
+			return TileType::SIGN_LEFT_LEG;
+		case 'h':
+			return TileType::SIGN_GOOD;
+		case 'w':
+			return TileType::SIGN_BAD;
 		case 'X':
 		{
 			return TileType::WALL;
@@ -89,9 +110,33 @@ TileType TileFromChar(char c)
 		{
 			return TileType::BELT_RIGHT;
 		} break;
+		case 'Y':
+		{
+			return TileType::ROOMBA_HOME;
+		} break;
 
 	}
 	return TileType::FLOOR;
+}
+
+ExtremityType letraToExtremity(char c) {
+	switch (c) {
+	case 'G':
+	case 'g':
+		return ExtremityType::HEAD;
+	case 'K':
+	case 'k':
+		return ExtremityType::LEFT_ARM;
+	case 'L':
+	case 'l':
+		return ExtremityType::LEFT_LEG;
+	case 'R':
+	case 'r':
+		return ExtremityType::RIGHT_LEG;
+	case 'M':
+	case 'm':
+		return ExtremityType::RIGHT_ARM;
+	}
 }
 
 void LoadGame(sf::RenderWindow& window)
@@ -108,8 +153,6 @@ void LoadGame(sf::RenderWindow& window)
 	Input::Init(window);
 	Camera::SetZoom(4.f);
 	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / 8, GameData::WINDOW_HEIGHT/8));
-
-	initMesaVector();
 
 	passable.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
 	passableCleaner.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
@@ -132,25 +175,41 @@ void LoadGame(sf::RenderWindow& window)
 				case 'T': new Cinta(pos, EntityDirection::DOWN); break;
 				case 'C': new Cinta(pos, EntityDirection::LEFT); break;
 				case 'D': new Cinta(pos, EntityDirection::RIGHT); break;
-				case 'G': new Mesa(pos); break;
-				case 'S': 
-					new Spawner(pos); 
-					new Cinta(pos, EntityDirection::DOWN); 
+				case 'G':
+				case 'K':
+				case 'L':
+				case 'R':
+				case 'M':
+					new Mesa(pos, letraToExtremity(c)); 
+					break;
+				case 'g':
+				case 'k':
+				case 'l':
+				case 'r':
+				case 'm':
+					new Collector(pos, letraToExtremity(c));
+					break;
+				case 'S':
+				{
+					Spawner *s = new Spawner(pos);
+					new Detector(vec(pos.x - 16, pos.y + 16), s);
+					new Cinta(pos, EntityDirection::DOWN);
+				}
+					
 					break;
 				case 'Z':
 					new Despawner(pos);
-					new Cinta(pos, EntityDirection::LEFT);
+					new Cinta(pos, EntityDirection::DOWN);
 					break;
-				case 'R':
-				case 'Q':
-					new Cleaner(pos);
+				case 'Y':
+					new CleanerSpawner(pos);
 					break;
 				
 			}
 
 
-			passable[x][y] = (c < 'A');
-			passableCleaner[x][y] = (c < 'E' || c =='R' || c == 'Q');
+			passable[x][y] = (c < 'A' || c == 'k');
+			passableCleaner[x][y] = (c < 'E' || c == 'Z');
 
 			mapita[x][y] = TileFromChar(c);
 			x += 1;
@@ -159,6 +218,16 @@ void LoadGame(sf::RenderWindow& window)
 		x = 0;
 	}
 
+	for (Collector* c : EntS<Collector>::getAll()) {
+		for (Mesa* m : EntS<Mesa>::getAll()) {
+			if (m->type == c->type) {
+				m->collector = c;
+				c->mesa = m;
+			}
+		}
+	}
+
+	new Cadaver(100, 100);
 	loadExtremityMap();
 	
 }
@@ -174,7 +243,22 @@ void DrawGui()
 			s->spawn();
 		}
 	}
+
+	ImGui::Checkbox("Blood", &withTaca);
+
 	ImGui::Text(std::to_string(EntS<Cadaver>::getAll().size()).c_str());
+
+	ImGui::Text(std::to_string(EntS<Taca>::getAll().size()).c_str());
+
+	if (ImGui::Button("SPAWN ROOMBA"))
+	{
+		int spawners_count = EntS<CleanerSpawner>::getAll().size();
+
+		int sp = Random::roll(0, spawners_count);
+
+		EntS<CleanerSpawner>::getAll()[sp]->TreuElGos();
+
+	}
 
 	ImGui::End();
 }
@@ -184,7 +268,33 @@ void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 	int time = mainClock.getElapsedTime().asMilliseconds();
 	TileType type = mapita[i][j];
 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+
 	switch (type) {
+	case TileType::ROOMBA_HOME:
+	{
+		sprite.setTextureRect(sf::IntRect(0, 13 * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+	} break;
+	case TileType::SIGN_HEAD:
+		sprite.setTextureRect(sf::IntRect(0 * 16, 10 * 16, 16, 16));
+		break;
+	case TileType::SIGN_LEFT_ARM:
+		sprite.setTextureRect(sf::IntRect(1 * 16, 10 * 16, 16, 16));
+		break;
+	case TileType::SIGN_LEFT_LEG:
+		sprite.setTextureRect(sf::IntRect(3 * 16, 10 * 16, 16, 16));
+		break;
+	case TileType::SIGN_RIGHT_ARM:
+		sprite.setTextureRect(sf::IntRect(2 * 16, 10 * 16, 16, 16));
+		break;
+	case TileType::SIGN_RIGHT_LEG:
+		sprite.setTextureRect(sf::IntRect(4 * 16, 10 * 16, 16, 16));
+		break;
+	case TileType::SIGN_GOOD:
+		sprite.setTextureRect(sf::IntRect(5*16, 10 * 16, 16, 16));
+		break;
+	case TileType::SIGN_BAD:
+		sprite.setTextureRect(sf::IntRect(6 * 16, 10 * 16, 16, 16));
+		break;
 	case TileType::FLOOR:
 		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
 		break;

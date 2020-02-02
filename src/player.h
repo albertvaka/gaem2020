@@ -32,10 +32,11 @@ struct Player : public SortedDrawable, public EntS<Player>
 	bool isLeverPullable = false;
 	bool isPullingLever = false;
 
-	Extremity* extremity;
-	Cadaver* cadaver;
-	Mesa* mesa;
-	Lever* lever;
+	Extremity* extremity = nullptr;
+	Cadaver* cadaver = nullptr;
+	Mesa* mesa = nullptr;
+	Lever* lever = nullptr;
+	Collector* collector = nullptr;
 
 	Player(int id, vec position)
 	{
@@ -121,7 +122,11 @@ struct Player : public SortedDrawable, public EntS<Player>
 			if (cadaver != NULL) {
 				isCarrying = false;
 				cadaver->isCarried = false;
+				cadaver->pos.y -= 2;
+				cadaver->pos.x -= 4;
+				cadaver->pos.x = round(cadaver->pos.x / 16.f )*16;
 				cadaver = NULL;
+
 			}
 		}
 
@@ -147,7 +152,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 		}
 
 
-		speed = anal * 0.0015f;
+		speed = anal * 0.0008f;
 		
 		if (anal.x > deadZone)
 		{
@@ -372,7 +377,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);
-		spr.setPosition(pos.x + 1.5f, pos.y - 4.f);
+		spr.setPosition(pos.x + 1.5f, pos.y - 7.f);
 		
 		spr.setTextureRect(anim.CurrentFrame());
 

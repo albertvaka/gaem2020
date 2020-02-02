@@ -20,6 +20,7 @@ void UpdateEntities(int dt)
 	//Collisions are handled in collider.h
 	UpdateCollisions(dt);
 
+
 	for (Player* e : EntS<Player>::getAll())
 	{
 		e->Update(dt);
@@ -53,7 +54,11 @@ void UpdateEntities(int dt)
 		e->Update(dt);
 		e->anim.Update(dt);
 	}
-
+	for (Collector* e : EntS<Collector>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
 
 	for (Lever * e : EntS<Lever>::getAll())
 	{
@@ -64,6 +69,30 @@ void UpdateEntities(int dt)
 	{
 		e->Update(dt);
 	}
+
+	for (TextMolest* e : EntS<TextMolest>::getAll())
+	{
+		e->Update(dt);
+	}
+
+	for (CleanerSpawner* e : EntS<CleanerSpawner>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
+	int num_tacs = EntS<Taca>::getAll().size();
+	int num_rumbs = EntS<Cleaner>::getAll().size();
+	if (num_tacs/(num_rumbs + 1) > 800) {
+		int spawners_count = EntS<CleanerSpawner>::getAll().size();
+
+		int sp = Random::roll(0, spawners_count-1);
+
+		EntS<CleanerSpawner>::getAll()[sp]->TreuElGos();
+	}
+
+	//if (EntS<Taca>::getAll().size() > )
+
+
 
 	EntS<Taca>::deleteNotAlive();
 	EntS<Entity>::deleteNotAlive();
@@ -86,7 +115,14 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
+	for (TextMolest* e : EntS<TextMolest>::getAll())
+	{
+		e->Draw(spr, window);
+	}
+
+
 }
+/*
 void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 {
 	window.clear(sf::Color(100, 100, 200));
@@ -101,6 +137,7 @@ void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 		e->Draw(vao);
 	}
 
+	
 
 	window.draw(vao,&texture);
 
@@ -115,3 +152,4 @@ void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 
 
 }
+*/

@@ -7,43 +7,42 @@
 #include "lever.h"
 #include "extremity.h"
 
-static std::vector<int> v;
+struct Mesa;
 
-void initMesaVector()
+struct Collector : public SortedDrawable, EntS<Collector>
 {
-	for (int i = 0; i < 5; i++)
+	ExtremityType type;
+	int player = -1;
+	Mesa* mesa = nullptr;
+	int currentPlayer;
+	Collector(vec position, ExtremityType et)
 	{
-		v.push_back(i);
+		type = et;
+		pos = position;
+		anim.Ensure(AnimationType::ROOMBA_DOWN);
 	}
-	std::random_shuffle(v.begin(), v.end());
-}
+	void Update(int dt) {
+
+	}
+
+};
 
 struct Mesa : public SortedDrawable, EntS<Mesa>
 {
-
-	enum Type {
-		RIGHT_LEG,
-		LEFT_LEG,
-		RIGHT_ARM,
-		LEFT_ARM,
-		HEAD,
-		SIZE
-	};
-
 	bool canLet;
 	bool isEmpty;
 
-	Cadaver* cadaver;
-	Lever* lever;
+	Cadaver* cadaver = nullptr;
+	Lever* lever = nullptr;
 
-	Type type;
-	int currentPlayer;
 
-	Mesa(vec position)
+	ExtremityType type;
+	int currentPlayer = -1;
+	Collector* collector = nullptr;
+
+	Mesa(vec position, ExtremityType et)
 	{
-		type = (Type) v.back();
-		v.pop_back();
-
+		type = et;
 		pos = position;
 		canLet = false;
 		isEmpty = true;
@@ -65,6 +64,7 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 
 	}
 
+
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
 		//if (canLet || (currentPlayer >= 0 && !isEmpty)) 
@@ -79,12 +79,18 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		//	wnd.draw(shape);
 		//}
 
+		spr.setScale(1.25f, 1.25f);
 		spr.setTextureRect(anim.CurrentFrame());
-		spr.setPosition(pos.x - 7, pos.y - 16);
+		spr.setPosition(pos.x - 11.2f, pos.y - 22.5f);
 		wnd.draw(spr);
+		spr.setScale(1,1);
 
-		if (lever->engineIsFinished)
+		if (cadaver && lever->engineIsFinished)
 		{
+			if (cadaver->HasExtremity(type)) {
+				cadaver->DeatachExtremity(type, collector->pos);
+			}
+	
 			//TODO:: RAYOS Y RETRUECANOS
 		}
 	}
