@@ -82,6 +82,9 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			break;
 		}
 		e->isCarried = false;
+
+		e->PonBien();
+
 		return e;
 	}
 

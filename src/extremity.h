@@ -115,6 +115,35 @@ struct Extremity : public SortedDrawable, EntS<Extremity>
 		wnd.draw(spr);
 	}
 
+	void PonBien()
+	{
+		if (type == ExtremityType::HEAD)
+		{
+			pos.x += 4;
+			pos.y += 4;
+		}
+		if (type == ExtremityType::LEFT_ARM)
+		{
+			pos.x += 2;
+			pos.y += 3;
+		}
+		if (type == ExtremityType::LEFT_LEG)
+		{
+			pos.x += 5;
+			pos.y += 2;
+		}
+		if (type == ExtremityType::RIGHT_ARM)
+		{
+			pos.x += 2;
+			pos.y += 3;
+		}
+		if (type == ExtremityType::RIGHT_LEG)
+		{
+			pos.x += 3;
+			pos.y += 2;
+		}
+	}
+
 };
 
 void loadExtremityMap()
