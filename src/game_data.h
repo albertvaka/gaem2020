@@ -11,3 +11,4 @@ namespace GameData
 }
 
 extern std::vector< std::vector< bool > > passable;
+extern std::vector< std::vector< bool > > passableCleaner;

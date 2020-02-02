@@ -10,6 +10,7 @@
 #include "player.h"
 #include "cadaver.h"
 #include "cinta.h"
+#include "cleaner.h"
 #include "spawner.h"
 
 void UpdateEntities(int dt)
@@ -23,7 +24,11 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 		e->actionButton.Update(dt);
 	}
-
+	for (Cleaner* e : EntS<Cleaner>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
 	for (Cadaver* e : EntS<Cadaver>::getAll())
 	{
 		e->Update(dt);
