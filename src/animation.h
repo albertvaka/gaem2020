@@ -24,18 +24,26 @@ struct Animation
 
 		if (current_frame >= anim_data->frames && !loopable)
 		{
+			current_frame = anim_data->frames - 1;
 			return;
 		}
 
 		if (anim_timer > anim_data->timer[current_frame])
 		{
 			anim_timer -= anim_data->timer[current_frame];
-
 			current_frame++;
 			if (current_frame >= anim_data->frames)
 			{
-				current_frame = 0;
-				anim_timer = anim_timer % anim_data->timer[0];
+
+				if (loopable)
+				{
+					current_frame = 0;
+					anim_timer = anim_timer % anim_data->timer[0];
+				}
+				else
+				{
+					current_frame--;
+				}
 			}
 		}
 	}
@@ -44,6 +52,7 @@ struct Animation
 	{
 		anim_timer = 0;
 		current_frame = 0;
+		loopable = true;
 	}
 
 	void Ensure(AnimationType type)

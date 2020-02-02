@@ -339,11 +339,13 @@ struct CleanerSpawner : public SortedDrawable, public EntS<CleanerSpawner>
 		case CleanerSpawnerState::ABRIENDOSE:
 		{
 			anim.Ensure(AnimationType::ROOMBA_DOOR_OPEN);
+			anim.loopable = false;
 
 			timer += dt;
-			if (timer > 2000)
+			if (timer > 2600)
 			{
 				state = CleanerSpawnerState::TANCANT;
+				timer = 0;
 			}
 
 		} break;
@@ -352,7 +354,7 @@ struct CleanerSpawner : public SortedDrawable, public EntS<CleanerSpawner>
 		{
 			anim.Ensure(AnimationType::ROOMBA_DOOR_CLOSE);
 			timer += dt;
-			if (timer > 2000)
+			if (timer > 800)
 			{
 				state = CleanerSpawnerState::NORMAL;
 			}
