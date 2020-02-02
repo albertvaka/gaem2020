@@ -67,7 +67,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	{
 		isCarried = true;
 
-		pos.x = x + 5;
+		pos.x = x;
 		pos.y = y + 3;
 
 		currentPlayer = player;
@@ -171,7 +171,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	const int xt = 4;
 	const int yt = 12;
 
-	const int xp = 0;
+	const int xp = 5;
 	const int yp = 8;
 
 
