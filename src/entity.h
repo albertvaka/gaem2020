@@ -29,7 +29,7 @@ struct Entity : public EntS<Entity>
 	Animation anim;
 	bool alive = true;
 	//Entity* parent = NULL;
-	EntityDirection dir;
+	EntityDirection dir = EntityDirection::DOWN;
 };
 
 struct SortedDrawable : public Entity, public EntS<SortedDrawable> {
