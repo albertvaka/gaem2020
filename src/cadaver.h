@@ -20,6 +20,47 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	ExtremityData head;
 	ExtremityData body;
 
+	bool HasExtremity(ExtremityType et) {
+		switch (et) {
+		case ExtremityType::HEAD:
+			return head.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+		case ExtremityType::LEFT_ARM:
+			return leftArm.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+		case ExtremityType::RIGHT_ARM:
+			return rightArm.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+		case ExtremityType::LEFT_LEG:
+			return leftLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+		case ExtremityType::RIGHT_LEG:
+			return rightLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+		}
+		return true;
+	}
+	void DeatachExtremity(ExtremityType et, vec pos) {
+		Extremity* e = new Extremity(pos.x,pos.y);
+		switch (et) {
+		case ExtremityType::HEAD:
+			e->data = head;
+			head.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			break;
+		case ExtremityType::LEFT_ARM:
+			e->data = leftArm;
+			leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			break;
+		case ExtremityType::RIGHT_ARM:
+			e->data = rightArm;
+			rightArm.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			break;
+		case ExtremityType::LEFT_LEG:
+			e->data = leftLeg;
+			leftLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			break;
+		case ExtremityType::RIGHT_LEG:
+			e->data = rightLeg;
+			rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			break;
+		}
+	}
+
 	bool isCarried = false;
 	bool isCarriable = false;
 	bool isLet = false;
@@ -43,7 +84,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		head.colorType = (ExtremityData::BodyColorType) (type + 5);
 		body.colorType = (ExtremityData::BodyColorType) (type + 6);
 		int noExtremity = Random::roll(0, 4);
-		/*
+
 		switch (noExtremity)
 		{
 		case 0: rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
@@ -52,7 +93,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		case 3: leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
 		case 4: head.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
 		}
-		*/
+
 	}
 
 	vec positionPlz() {

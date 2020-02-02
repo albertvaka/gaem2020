@@ -208,7 +208,7 @@ void LoadGame(sf::RenderWindow& window)
 			}
 
 
-			passable[x][y] = (c < 'A');
+			passable[x][y] = (c < 'A' || c == 'k');
 			passableCleaner[x][y] = (c < 'E' || c == 'Z');
 
 			mapita[x][y] = TileFromChar(c);
@@ -227,6 +227,7 @@ void LoadGame(sf::RenderWindow& window)
 		}
 	}
 
+	new Cadaver(100, 100);
 	loadExtremityMap();
 }
 

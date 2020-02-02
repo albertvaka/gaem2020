@@ -5,6 +5,14 @@
 
 std::map<int, sf::IntRect> extremitySprPos;
 
+enum ExtremityType {
+	RIGHT_LEG,
+	LEFT_LEG,
+	RIGHT_ARM,
+	LEFT_ARM,
+	HEAD
+};
+
 struct ExtremityData 
 {
 
@@ -104,19 +112,8 @@ struct Extremity : public SortedDrawable, EntS<Extremity>
 		spr.setPosition(pos.x, pos.y);
 		spr.setTextureRect(extremitySprPos.find(data.colorType)->second);
 		wnd.draw(spr);
-
-		DrawCarriable(spr, wnd);
 	}
 
-	void DrawCarriable(sf::Sprite& spr, sf::RenderTarget& wnd)
-	{
-		sf::RectangleShape shape;
-		shape.setFillColor(sf::Color::White);
-		shape.setPosition(pos.x, pos.y);
-		shape.setSize(sf::Vector2f(16, 16));
-
-		wnd.draw(shape);
-	}
 };
 
 void loadExtremityMap()

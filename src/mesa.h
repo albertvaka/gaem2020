@@ -5,14 +5,6 @@
 
 #include "extremity.h"
 
-enum ExtremityType {
-	RIGHT_LEG,
-	LEFT_LEG,
-	RIGHT_ARM,
-	LEFT_ARM,
-	HEAD
-};
-
 struct Mesa;
 
 struct Collector : public SortedDrawable, EntS<Collector>
@@ -48,7 +40,7 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 
 	Mesa(vec position, ExtremityType et)
 	{
-		type = type;
+		type = et;
 		pos = position;
 		canLet = false;
 		isEmpty = true;
@@ -70,6 +62,7 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 
 	}
 
+
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
 		//if (canLet || (currentPlayer >= 0 && !isEmpty)) 
@@ -90,8 +83,12 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		wnd.draw(spr);
 		spr.setScale(1,1);
 
-		if (lever->engineIsFinished)
+		if (cadaver && lever->engineIsFinished)
 		{
+			if (cadaver->HasExtremity(type)) {
+				cadaver->DeatachExtremity(type, collector->pos);
+			}
+	
 			//TODO:: RAYOS Y RETRUECANOS
 		}
 	}
