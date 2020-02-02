@@ -10,16 +10,12 @@
 #include "cadaver.h"
 #include "mesa.h"
 
-
-
-
-
-struct Cleaner : public Entity, public EntS<Cleaner>
+struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 {
 	bool naixement = true;
 
 	float pos_y_spawn;
-
+	SortedDrawable* parent;
 	vec oldPos;
 	AnimationType animForCleaner(AnimationType anim) 
 	{
@@ -30,7 +26,7 @@ struct Cleaner : public Entity, public EntS<Cleaner>
 	Animation actionButton;
 
 	float decisionCounter = 1000.f;
-	Cleaner(vec position)
+	Cleaner(vec position, SortedDrawable* _parent)
 	{
 		anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
 
@@ -40,6 +36,7 @@ struct Cleaner : public Entity, public EntS<Cleaner>
 		speed.x = 0;
 		speed.y = 0;
 
+		parent = _parent;
 		pos_y_spawn = pos.y;
 	}
 	
@@ -277,7 +274,9 @@ struct Cleaner : public Entity, public EntS<Cleaner>
 
 		window.draw(spr);
 
-		
+		if (timer_naixement < 2400) {
+			parent->Draw(spr, window);
+		}
 
 	}
 
@@ -397,7 +396,7 @@ struct CleanerSpawner : public SortedDrawable, public EntS<CleanerSpawner>
 		state = CleanerSpawnerState::ABRIENDOSE;
 		anim.Ensure(AnimationType::ROOMBA_DOOR_OPEN);
 		anim.Reset();
-		new Cleaner(pos);
+		new Cleaner(pos,this);
 	}
 
 };
