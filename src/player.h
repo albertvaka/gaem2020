@@ -122,6 +122,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 		{
 			leverCounter += 5;
 			isPullingLever = true;
+
 		}
 
 		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
@@ -395,6 +396,20 @@ struct Player : public SortedDrawable, public EntS<Player>
 			}
 		}
 		
+
+		if (lever != NULL)
+		{
+			if (((Keyboard::IsKeyPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonPressed(player, GamePad::Button::A)) && isLeverPullable)
+			{
+				lever->is_pushed_down = true;
+			}
+			else
+			{
+				lever->is_pushed_down = false;
+			}
+
+		}
+
 
 	}
 
