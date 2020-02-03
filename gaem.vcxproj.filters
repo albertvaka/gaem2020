@@ -35,6 +35,7 @@
     <ClInclude Include="src\spawner.h" />
     <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\popupText.h" />
+    <ClInclude Include="src\door.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\cinta.h" />

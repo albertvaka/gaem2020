@@ -25,6 +25,7 @@ struct Entity : public EntS<Entity>
 	EntityState state;
 	vec pos;
 	vec speed;
+	vec size = vec(16, 16);
 	int timer = 0;
 	Animation anim;
 	bool alive = true;

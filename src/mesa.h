@@ -104,23 +104,25 @@ struct Mesa : public SortedDrawable, EntS<Mesa>
 		wnd.draw(spr);
 		spr.setScale(1,1);
 
-		if (cadaver && lever->engineIsFinished) {
-			if (collector->extremity) {
-				if (!cadaver->HasExtremity(type)) {
+		if (cadaver && lever->engineIsFinished) 
+		{
+			if (collector->extremity) 
+			{
+				if (!cadaver->HasExtremity(type)) 
+				{
 					cadaver->AttachExtremity(collector->extremity);
 					collector->extremity = nullptr;
 				}
 			}
 			else
 			{
-				if (cadaver->HasExtremity(type)) {
+				if (cadaver->HasExtremity(type)) 
+				{
 					Extremity* e = cadaver->DeatachExtremity(type, collector->pos);
 					collector->extremity = e;
 				}
 			}
 			lever->engineIsFinished = false;
-
-			//TODO:: RAYOS Y RETRUECANOS
 		}
 	}
 
