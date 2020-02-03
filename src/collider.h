@@ -158,10 +158,9 @@ void collision_clean_taques(Taca* t, Cleaner* c) {
 void collision_stop_cleaner(Player* _, Cleaner* c) {
 	c->speed.x = 0;
 	c->speed.y = 0;
-	if (c->ya_va)
-	{
-		c->pos = c->oldPos;
-	}
+
+	c->pos = c->oldPos;
+	c->stuck = true;
 
 }
 

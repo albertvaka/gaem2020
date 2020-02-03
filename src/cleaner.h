@@ -31,41 +31,45 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 		anim.Ensure(animForCleaner(AnimationType::ROOMBA_DOWN));
 
 		state = EntityState::MOVING;
-
+		oldPos = position;
 		pos = position;
+
 		speed.x = 0;
 		speed.y = 0;
 
 		parent = _parent;
 		pos_y_spawn = pos.y;
 	}
-	
+	void DecideNextAction() {
+		decisionCounter = 1000.f;
+		int newdir = Random::roll(1);
+		switch (newdir)
+		{
+		case 0:
+			speed.x = 0.05;
+			break;
+		case 1:
+			speed.x = -0.05;
+			break;
+		}
+		newdir = Random::roll(1);
+		switch (newdir)
+		{
+		case 0:
+			speed.y = 0.05;
+			break;
+		case 1:
+			speed.y = -0.05;
+			break;
+		}
+	}
 	void Move(int dt)
 	{
 		
 		decisionCounter -= dt;
 		if (decisionCounter < 0) {
-			decisionCounter = 1000.f;
-			int newdir = Random::roll(1);
-			switch (newdir)
-			{
-			case 0:
-				speed.x = 0.05;
-				break;
-			case 1:
-				speed.x = -0.05;
-				break;
-			}
-			newdir = Random::roll(1);
-			switch (newdir)
-			{
-			case 0:
-				speed.y = 0.05;
-				break;
-			case 1:
-				speed.y = -0.05;
-				break;
-			}
+			DecideNextAction();
+			
 			
 		}
 		oldPos = pos;
@@ -108,6 +112,7 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 				if (Collide(p->bounds(),this->bounds())) 
 				{
 					pos = oldPos;
+					DecideNextAction();
 					break;
 				}
 			}
@@ -189,11 +194,17 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 
 	int timer_naixement = 0;
+	bool stuck = false;
 	bool ya_va = false;
 
 	void Update(int dt)
 	{
-
+		oldPos = pos;
+		if (stuck) {
+			stuck = false;
+			return;
+		}
+		int oldTimer = timer_naixement;
 		timer_naixement += dt;
 
 		if (timer_naixement < 800)
@@ -202,13 +213,21 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 		}
 		else if (timer_naixement < 2400)
 		{
+			
 			pos.y += dt*0.01f;
+			for (Cleaner* p : EntS<Cleaner>::getAll())
+			{
+				if (p == this) continue;
+				if (Collide(p->bounds(), this->bounds()))
+				{
+					pos = oldPos;
+					timer_naixement = oldTimer;
+					break;
+				}
+			}
 			return;
 		}
-		else
-		{
-			ya_va = true;
-		}
+
 
 		Move(dt);
 
@@ -327,7 +346,10 @@ struct CleanerSpawner : public SortedDrawable, public EntS<CleanerSpawner>
 
 
 	}
+	Bounds bounds() {
 
+		return Bounds(pos.x + (16 - 16) / 2, pos.y + (16 - 16) / 2, 16, 16);
+	}
 	int timer = 0;
 
 	void Update(int dt)
@@ -346,7 +368,16 @@ struct CleanerSpawner : public SortedDrawable, public EntS<CleanerSpawner>
 			anim.loopable = false;
 
 			timer += dt;
-			if (timer > 2600)
+			bool haSortit = true;
+			for (Cleaner* p : EntS<Cleaner>::getAll())
+			{
+				if (Collide(p->bounds(), this->bounds()))
+				{
+					haSortit = false;
+					break;
+				}
+			}
+			if (timer > 2600 && haSortit)
 			{
 				state = CleanerSpawnerState::TANCANT;
 				timer = 0;

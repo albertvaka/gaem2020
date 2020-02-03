@@ -90,7 +90,7 @@ void UpdateEntities(int dt)
 
 	int num_tacs = EntS<Taca>::getAll().size();
 	int num_rumbs = EntS<Cleaner>::getAll().size();
-	if (num_tacs/(num_rumbs + 1) > 800) {
+	if (num_tacs/(num_rumbs + 1) > 1300 && num_rumbs < 3) {
 		int spawners_count = EntS<CleanerSpawner>::getAll().size();
 
 		int sp = Random::roll(0, spawners_count-1);
