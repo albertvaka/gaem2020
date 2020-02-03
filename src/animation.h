@@ -52,8 +52,8 @@ struct Animation
 
 		if (anim_timer > data->timer[frame_current])
 		{
-			anim_timer -= data->timer[frame_current];
-
+			anim_timer = anim_timer - data->timer[frame_current];
+			
 			frame_current++;
 			if (frame_current >= data->frames)
 			{

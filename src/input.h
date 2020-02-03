@@ -9,9 +9,10 @@ enum class GameKeys
 {
 	UP = 0, DOWN, LEFT, RIGHT,
 	ACTION, START,
-	SHIFT,
+	SHIFT, CTRL,
 	F1, F2, F3, F4, F5, F6, 
 	F7, F8, F9, F10, F11, F12,
+	C, V,
 	COUNT
 };
 
@@ -61,6 +62,11 @@ struct InputState
 		input_map[GameKeys::START] = sf::Keyboard::Key::Enter;
 
 		input_map[GameKeys::SHIFT] = sf::Keyboard::Key::LShift;
+		input_map[GameKeys::CTRL] = sf::Keyboard::Key::LControl;
+
+		input_map[GameKeys::C] = sf::Keyboard::Key::C;
+		input_map[GameKeys::V] = sf::Keyboard::Key::V;
+
 
 		input_map[GameKeys::F1] = sf::Keyboard::Key::F1;
 		input_map[GameKeys::F2] = sf::Keyboard::Key::F2;

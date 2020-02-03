@@ -41,6 +41,9 @@ namespace Editor
 	sf::IntRect* rect = &data->rect[0];
 	int* time = &data->timer[0];
 
+	sf::IntRect clipboard_rect;
+	int clipboard_time;
+
 	char buff_animation_name[128];
 
 	void RefreshFrameSelected()
@@ -560,6 +563,20 @@ void UpdateInput(sf::RenderWindow& window, int dt)
 	{
 		Editor::rect->width = (sf::Mouse::getPosition(window).x / 2 - Editor::rect->left);
 		Editor::rect->height = (sf::Mouse::getPosition(window).y / 2 - Editor::rect->top);
+	}
+
+	if (input.IsPressed(GameKeys::CTRL))
+	{
+		if (input.IsJustPressed(GameKeys::C))
+		{
+			Editor::clipboard_rect = *Editor::rect;
+			Editor::clipboard_time = *Editor::time;
+		}
+		if (input.IsJustPressed(GameKeys::V))
+		{
+			*Editor::rect = Editor::clipboard_rect;
+			*Editor::time = Editor::clipboard_time;
+		}
 	}
 
 	if (input.IsPressed(GameKeys::SHIFT))
