@@ -10,6 +10,7 @@
 #include "lever.h"
 #include <functional>
 #include "door.h"
+#include "cleaner.h"
 
 bool Collision(Entity* entity_a, Entity* entity_b)
 {
@@ -166,7 +167,7 @@ void collision_stop_cleaner(Player* _, Cleaner* c) {
 
 }
 
-void coll_player_doorsensor(Player* p, DoorSensor* ds)
+void coll_ent_doorsensor(Entity* _, DoorSensor* ds)
 {
 	ds->activated = true;
 }
@@ -217,8 +218,8 @@ void UpdateCollisions(int dt)
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
 	collide(EntS<Cleaner>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
 
-	collide(EntS<Player>::getAll(), EntS<DoorSensor>::getAll(), coll_player_doorsensor);
-	
+	collide(EntS<Player>::getAll(), EntS<DoorSensor>::getAll(), coll_ent_doorsensor);
+	collide(EntS<Cleaner>::getAll(), EntS<DoorSensor>::getAll(), coll_ent_doorsensor);
 
 
 }
