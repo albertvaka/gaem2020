@@ -269,11 +269,12 @@ void LoadGame(sf::RenderWindow& window)
 			}
 		}
 	}
+	loadExtremityMap();
 
 #ifdef _DEBUG
 	new Cadaver(100, 100);
+	new Extremity(120, 120, RandomExtremityType(), RandomExtremityColor());
 #endif
-	loadExtremityMap();
 	
 }
 

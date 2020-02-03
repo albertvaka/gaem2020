@@ -55,25 +55,25 @@ bool withTaca = true;
 
 struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 { 
-	ExtremityData rightLeg;
-	ExtremityData leftLeg;
-	ExtremityData rightArm;
-	ExtremityData leftArm;
-	ExtremityData head;
-	ExtremityData body;
+	ExtremityColor rightLeg;
+	ExtremityColor leftLeg;
+	ExtremityColor rightArm;
+	ExtremityColor leftArm;
+	ExtremityColor head;
+	ExtremityColor body;
 
 	bool HasExtremity(ExtremityType et) {
 		switch (et) {
 		case ExtremityType::HEAD:
-			return head.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+			return head != ExtremityColor::NONE_COLOR;
 		case ExtremityType::LEFT_ARM:
-			return leftArm.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+			return leftArm != ExtremityColor::NONE_COLOR;
 		case ExtremityType::RIGHT_ARM:
-			return rightArm.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+			return rightArm != ExtremityColor::NONE_COLOR;
 		case ExtremityType::LEFT_LEG:
-			return leftLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+			return leftLeg != ExtremityColor::NONE_COLOR;
 		case ExtremityType::RIGHT_LEG:
-			return rightLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE;
+			return rightLeg != ExtremityColor::NONE_COLOR;
 		}
 		return true;
 	}
@@ -81,19 +81,19 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	void AttachExtremity(Extremity* e) {
 		switch (e->type) {
 		case ExtremityType::HEAD:
-			head = e->data;
+			head = e->color;
 			break;
 		case ExtremityType::LEFT_ARM:
-			leftArm = e->data;
+			leftArm = e->color;
 			break;
 		case ExtremityType::RIGHT_ARM:
-			rightArm = e->data;
+			rightArm = e->color;
 			break;
 		case ExtremityType::LEFT_LEG:
-			leftLeg = e->data;
+			leftLeg = e->color;
 			break;
 		case ExtremityType::RIGHT_LEG:
-			rightLeg = e->data;
+			rightLeg = e->color;
 			break;
 		}
 		e->alive = false;
@@ -104,33 +104,33 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	}
 
 	Extremity* DeatachExtremity(ExtremityType et, vec pos) {
-		Extremity* e = new Extremity(pos.x,pos.y, et);
+		ExtremityColor color;
 		switch (et) {
 		case ExtremityType::HEAD:
-			e->data = head;
-			head.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			color = head;
+			head = ExtremityColor::NONE_COLOR;
 			break;
 		case ExtremityType::LEFT_ARM:
-			e->data = leftArm;
-			leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			color = leftArm;
+			leftArm = ExtremityColor::NONE_COLOR;
 			break;
 		case ExtremityType::RIGHT_ARM:
-			e->data = rightArm;
-			rightArm.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			color = rightArm; 
+			rightArm = ExtremityColor::NONE_COLOR;
 			break;
 		case ExtremityType::LEFT_LEG:
-			e->data = leftLeg;
-			leftLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			color = leftLeg;
+			leftLeg = ExtremityColor::NONE_COLOR;
 			break;
 		case ExtremityType::RIGHT_LEG:
-			e->data = rightLeg;
-			rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE;
+			color = rightLeg;
+			rightLeg = ExtremityColor::NONE_COLOR;
 			break;
 		}
+		Extremity* e = new Extremity(pos.x, pos.y, et, color);
+		e->isLet = true;
 		e->isCarried = false;
-
 		e->PonBien();
-
 
 		new SpawnAnim(pos);
 		new SpawnAnim(this->pos, vec(0, 0));
@@ -150,24 +150,23 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		pos.x = x;
 		pos.y = y;
 		
-		int color = Random::roll(0, ExtremityData::BodyColor::SIZE_COLOR - 2);
-		int type = color * (ExtremityData::BodyColor::SIZE_COLOR - 1);
+		ExtremityColor color = RandomExtremityColor();
 
-		rightLeg.colorType = (ExtremityData::BodyColorType) (type + 1);
-		leftLeg.colorType = (ExtremityData::BodyColorType) (type + 2);
-		rightArm.colorType = (ExtremityData::BodyColorType) (type + 3);
-		leftArm.colorType = (ExtremityData::BodyColorType) (type + 4);
-		head.colorType = (ExtremityData::BodyColorType) (type + 5);
-		body.colorType = (ExtremityData::BodyColorType) (type + 6);
+		rightLeg = color;
+		leftLeg = color;
+		rightArm = color;
+		leftArm = color;
+		head = color;
+		body = color;
 		int noExtremity = Random::roll(0, 4);
 
 		switch (noExtremity)
 		{
-		case 0: rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 1: leftLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 2: rightArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 3: leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 4: head.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+		case 0: rightLeg = ExtremityColor::NONE_COLOR; break;
+		case 1: leftLeg = ExtremityColor::NONE_COLOR; break;
+		case 2: rightArm = ExtremityColor::NONE_COLOR; break;
+		case 3: leftArm = ExtremityColor::NONE_COLOR; break;
+		case 4: head = ExtremityColor::NONE_COLOR; break;
 		}
 
 	}
@@ -268,27 +267,27 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 		DrawBody(spr, wnd);
 
-		if (rightLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE)
+		if (rightLeg != ExtremityColor::NONE_COLOR)
 		{
 			DrawRightLeg(spr, wnd);
 		}
 		
-		if (leftLeg.colorType != ExtremityData::BodyColorType::NONE_TYPE)
+		if (leftLeg != ExtremityColor::NONE_COLOR)
 		{
 			DrawLeftLeg(spr, wnd);
 		}
 
-		if (rightArm.colorType != ExtremityData::BodyColorType::NONE_TYPE)
+		if (rightArm != ExtremityColor::NONE_COLOR)
 		{
 			DrawRightArm(spr, wnd);
 		}
 		
-		if (leftArm.colorType != ExtremityData::BodyColorType::NONE_TYPE)
+		if (leftArm != ExtremityColor::NONE_COLOR)
 		{
 			DrawLeftArm(spr, wnd);
 		}
 		
-		if (head.colorType != ExtremityData::BodyColorType::NONE_TYPE)
+		if (head != ExtremityColor::NONE_COLOR)
 		{
 			DrawHead(spr, wnd);
 		}
@@ -321,7 +320,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		else {
 			spr.setPosition(pos.x + 3 + xt, pos.y - 1 + yt);
 		}
-		spr.setTextureRect(extremitySprPos.find(rightLeg.colorType)->second);
+		spr.setTextureRect(extremitySprPos[rightLeg][ExtremityType::RIGHT_LEG]);
 		wnd.draw(spr);
 	}
 
@@ -336,7 +335,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		else {
 			spr.setPosition(pos.x + 3 + xt, pos.y + 1 + yt);
 		}
-		spr.setTextureRect(extremitySprPos.find(leftLeg.colorType)->second);
+		spr.setTextureRect(extremitySprPos[leftLeg][ExtremityType::LEFT_LEG]);
 		wnd.draw(spr);
 	}
 	
@@ -351,7 +350,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		else {
 			spr.setPosition(pos.x + xt, pos.y - 1 + yt);
 		}
-		spr.setTextureRect(extremitySprPos.find(rightArm.colorType)->second);
+		spr.setTextureRect(extremitySprPos[rightArm][ExtremityType::RIGHT_ARM]);
 		wnd.draw(spr);
 	}
 	
@@ -366,7 +365,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		else {
 			spr.setPosition(pos.x + xt, pos.y+1 + yt);
 		}
-		spr.setTextureRect(extremitySprPos.find(leftArm.colorType)->second);
+		spr.setTextureRect(extremitySprPos[leftArm][ExtremityType::LEFT_ARM]);
 		wnd.draw(spr);
 	}
 	
@@ -381,7 +380,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		else {
 			spr.setPosition(pos.x - 3 + xt, pos.y + yt);
 		}
-		spr.setTextureRect(extremitySprPos.find(head.colorType)->second);
+		spr.setTextureRect(extremitySprPos[head][ExtremityType::HEAD]);
 		wnd.draw(spr);
 	}
 
@@ -397,7 +396,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			spr.setPosition(pos.x + xt, pos.y + yt);
 
 		}
-		spr.setTextureRect(extremitySprPos.find(body.colorType)->second);
+		spr.setTextureRect(extremitySprPos[body][ExtremityType::BODY]);
 		wnd.draw(spr);
 	}
 
