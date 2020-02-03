@@ -31,7 +31,7 @@ struct vec : public sf::Vector2f
   void Zero(){x=0.0; y=0.0;}
 
   //returns true if both x and y are zero
-  bool isZero()const{return (x*x + y*y) < MinFloat;}
+  bool isZero()const{return (x*x + y*y) < Mates::MinFloat;}
 
   //returns the length of the vector
   inline float    Length()const;
@@ -117,7 +117,7 @@ struct vec : public sf::Vector2f
 
   bool operator==(const vec& rhs) const
   {
-    return (isEqual(x, rhs.x) && isEqual(y,rhs.y) );
+    return (Mates::isEqual(x, rhs.x) && Mates::isEqual(y,rhs.y) );
   }
 
   bool operator!=(const vec& rhs) const

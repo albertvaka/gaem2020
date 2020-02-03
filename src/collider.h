@@ -9,23 +9,25 @@
 #include "popupText.h"
 #include "lever.h"
 #include <functional>
+#include "door.h"
 
 bool Collision(Entity* entity_a, Entity* entity_b)
 {
-	float COLLISION_SIZE = 16;
+	vec sz_a = entity_a->size;
+	vec sz_b = entity_b->size;
 
-	vec a = entity_a->pos;
-	vec b = entity_b->pos;
+	vec a = entity_a->pos - vec(sz_a / 2);
+	vec b = entity_b->pos - vec(sz_b / 2);
 
 	//rectangle colision
-	return
-		(a.x < b.x + COLLISION_SIZE && a.x + COLLISION_SIZE > b.x &&
-			a.y < b.y + COLLISION_SIZE && a.y + COLLISION_SIZE > b.y);
+	return	(a.x < (b.x + sz_b.x)) && 
+			((a.x + sz_a.x) > b.x) &&
+			(a.y < (b.y + sz_b.y)) && 
+			((a.y + sz_a.y) > b.y);
 }
 
 bool Collision(Cintable* entity_a, Cinta* entity_b)
 {
-
 	float COLLISION_SIZE = 16;
 
 	vec a = entity_a->positionPlz();
@@ -165,6 +167,11 @@ void collision_stop_cleaner(Player* _, Cleaner* c) {
 
 }
 
+void coll_player_doorsensor(Player* p, DoorSensor* ds)
+{
+	ds->activated = true;
+}
+
 
 void UpdateCollisions(int dt) 
 {
@@ -210,6 +217,8 @@ void UpdateCollisions(int dt)
 	collide(EntS<Cadaver>::getAll(), EntS<Detector>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
 	collide(EntS<Cleaner>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
+
+	collide(EntS<Player>::getAll(), EntS<DoorSensor>::getAll(), coll_player_doorsensor);
 	
 
 

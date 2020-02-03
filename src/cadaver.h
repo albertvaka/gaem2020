@@ -256,10 +256,10 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 		{
 			spr.setRotation(-90);
 		}
-		else 
+		else //DrawEfectito() de la mesa (TODO: mover a la mesa)
 		{
 			sf::RectangleShape shape;
-			int color = std::min(1.0f, abs(sin(0.5f*isLetClock.getElapsedTime().asSeconds()))) * 255;
+			int color = std::max(std::min(1.0f, abs(sin(0.75f*isLetClock.getElapsedTime().asSeconds()))) * 255, 64.0f);
 			shape.setFillColor(sf::Color(0, (color*3)/4, color));
 			shape.setPosition(pos.x-4.f, pos.y - 6.5f);
 			shape.setSize(sf::Vector2f(15, 15));

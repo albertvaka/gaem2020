@@ -87,6 +87,11 @@ void UpdateEntities(int dt)
 		e->anim.Update(dt);
 	}
 
+	for (DoorSensor* e : EntS<DoorSensor>::getAll())
+	{
+		e->Update(dt);
+	}
+
 
 	int num_tacs = EntS<Taca>::getAll().size();
 	int num_rumbs = EntS<Cleaner>::getAll().size();
@@ -114,10 +119,11 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
-	EntS<SortedDrawable>::sort([](SortedDrawable* a, SortedDrawable* b) {
+	EntS<SortedDrawable>::sort([](SortedDrawable* a, SortedDrawable* b) 
+	{
 		return a->pos.y < b->pos.y;
 	});
-
+	 
 	for (SortedDrawable* e : EntS<SortedDrawable>::getAll())
 	{
 		e->Draw(spr, window);
