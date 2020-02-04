@@ -8,10 +8,6 @@
 #include "extremity.h"
 
 struct Mesa;
-struct Collector;
-struct Player;
-
-void UpdateCollector(Collector*, int);
 
 struct Collector : SortedDrawable, EntS<Collector>
 {
@@ -29,10 +25,7 @@ struct Collector : SortedDrawable, EntS<Collector>
 		anim.loopable = false;
 	}
 
-	void Update(int dt) 
-	{
-		UpdateCollector(this, dt);
-	}
+	void Update(int dt);
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
@@ -75,11 +68,11 @@ struct Mesa : SortedDrawable, EntS<Mesa>
 		wnd.draw(spr);
 		spr.setScale(1,1);
 
-		if (cadaver && lever->isFinished) 
+		if (cadaver && lever->isFinished)
 		{
-			if (collector->extremity) 
+			if (collector->extremity)
 			{
-				if (!cadaver->HasExtremity(type)) 
+				if (!cadaver->HasExtremity(type))
 				{
 					cadaver->AttachExtremity(collector->extremity);
 					collector->extremity = nullptr;
@@ -87,7 +80,7 @@ struct Mesa : SortedDrawable, EntS<Mesa>
 			}
 			else
 			{
-				if (cadaver->HasExtremity(type)) 
+				if (cadaver->HasExtremity(type))
 				{
 					Extremity* e = cadaver->DeatachExtremity(type, collector->pos);
 					collector->extremity = e;
@@ -100,9 +93,10 @@ struct Mesa : SortedDrawable, EntS<Mesa>
 };
 
 
-
-void UpdateCollector(Collector* c, int dt)
+inline void Collector::Update(int dt)
 {
+	Collector* c = this;
+
 	bool mesa_empty = !c->mesa->cadaver;
 
 	if (c->mesa_was_empty && (!mesa_empty || c->extremity))
