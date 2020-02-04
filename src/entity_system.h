@@ -21,11 +21,6 @@ void UpdateEntities(int dt)
 	UpdateCollisions(dt);
 
 
-	for (Taca* e : EntS<Taca>::getAll())
-	{
-		e->Update(dt);
-	}
-
 
 	for (Entity* e : EntS<Entity>::getAll())
 	{
@@ -34,6 +29,12 @@ void UpdateEntities(int dt)
 			e->anim.Update(dt);
 		}
 	}
+
+	for (Taca* e : EntS<Taca>::getAll())
+	{
+		e->Update(dt);
+	}
+
 	for (TextMolest* e : EntS<TextMolest>::getAll())
 	{
 		e->Update(dt);
