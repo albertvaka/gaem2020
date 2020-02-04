@@ -41,7 +41,10 @@ struct Lever : SortedDrawable, EntS<Lever>
 		if (leverCounter > 0)
 		{
 			leverCounter -= dt;
-			Mates::ClampMin(leverCounter, 0);
+			if (leverCounter < 0) {
+				leverCounter = 0;
+				is_pushed_down = false;
+			}
 		}
 		// Reset collision
 		player = nullptr;
