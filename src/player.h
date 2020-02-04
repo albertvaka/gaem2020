@@ -10,7 +10,7 @@
 #include "cadaver.h"
 #include "mesa.h"
 
-struct Player : public SortedDrawable, public EntS<Player>
+struct Player : SortedDrawable, EntS<Player>
 {
 
 	

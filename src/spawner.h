@@ -5,7 +5,7 @@
 #include "rand.h"
 #include "vector.h"
 
-struct Spawner : public Entity, public EntS<Spawner>
+struct Spawner : Entity, EntS<Spawner>
 {
 
 	const int INTERVAL = 3000;
@@ -34,7 +34,7 @@ struct Spawner : public Entity, public EntS<Spawner>
 	}
 
 };
-struct Detector : public Entity, public EntS<Detector>
+struct Detector : Entity, EntS<Detector>
 {
 	Spawner* spawner;
 	Detector(vec position, Spawner *s) {
@@ -47,7 +47,7 @@ struct Detector : public Entity, public EntS<Detector>
 	}
 
 };
-struct Despawner : public Entity, public EntS<Despawner>
+struct Despawner : Entity, EntS<Despawner>
 {
 	Despawner(vec position) {
 		pos = position;

@@ -2,8 +2,7 @@
 #include "animation.h"
 #include "rand.h"
 
-
-struct Taca : public Cintable, public EntS<Taca>
+struct Taca : Cintable, EntS<Taca>
 {
 
 	vec positionPlz() override {

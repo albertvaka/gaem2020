@@ -7,7 +7,7 @@
 #include "collider.h"
 #include "taca.h"
 
-struct SpawnAnim : public SortedDrawable, EntS<SpawnAnim>
+struct SpawnAnim : SortedDrawable, EntS<SpawnAnim>
 {
 	int timer = 0;
 
@@ -53,7 +53,7 @@ extern sf::Clock mainClock;
 
 bool withTaca = true;
 
-struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
+struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 { 
 	ExtremityColor rightLeg;
 	ExtremityColor leftLeg;

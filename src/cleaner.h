@@ -10,7 +10,7 @@
 #include "cadaver.h"
 #include "mesa.h"
 
-struct Cleaner : public SortedDrawable, public EntS<Cleaner>
+struct Cleaner : SortedDrawable, EntS<Cleaner>
 {
 	bool naixement = true;
 
@@ -327,7 +327,7 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 
 
 
-struct CleanerSpawner : public SortedDrawable, public EntS<CleanerSpawner>
+struct CleanerSpawner : SortedDrawable, EntS<CleanerSpawner>
 {
 	enum CleanerSpawnerState
 	{

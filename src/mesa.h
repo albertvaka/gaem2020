@@ -13,7 +13,7 @@ struct Player;
 
 void UpdateCollector(Collector*, int);
 
-struct Collector : public SortedDrawable, EntS<Collector>
+struct Collector : SortedDrawable, EntS<Collector>
 {
 	ExtremityType type;
 	Mesa* mesa = nullptr;
@@ -46,7 +46,7 @@ struct Collector : public SortedDrawable, EntS<Collector>
 
 };
 
-struct Mesa : public SortedDrawable, EntS<Mesa>
+struct Mesa : SortedDrawable, EntS<Mesa>
 {
 	bool canLet;
 	bool isEmpty;

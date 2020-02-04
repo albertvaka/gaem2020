@@ -2,7 +2,7 @@
 
 #include "entity.h"
 
-struct Lever : public SortedDrawable, public EntS<Lever>
+struct Lever : SortedDrawable, EntS<Lever>
 {
 	bool canPull = false;
 	bool engineIsFinished = false;

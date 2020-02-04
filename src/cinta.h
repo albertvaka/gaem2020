@@ -5,7 +5,7 @@
 #include "rand.h"
 
 
-struct Cinta : public Entity, public EntS<Cinta>
+struct Cinta : Entity, EntS<Cinta>
 {
 	
 	Cinta(vec position, EntityDirection direction) {
