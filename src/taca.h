@@ -9,14 +9,14 @@ struct Taca : Cintable, EntS<Taca>
 	vec pos;
 	vec speed;
 	sf::Color m_color = sf::Color(200,0,0);
-	sf::Vector2f m_offset;
+	vec m_offset;
 	float counter;
 
 	Taca(vec position, EntityDirection dir) {
 		currCintaDirection = dir;
 		counter = 7500 + Random::roll(5000);
 		pos = position;
-		
+
 		Random::CircularRoll(5, m_offset.x, m_offset.y);
 		m_offset.x += 3 + 5;
 		m_offset.y += 3 + 5;
@@ -31,8 +31,11 @@ struct Taca : Cintable, EntS<Taca>
 	sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(1, 1));
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
+		vec posfinal = pos + m_offset;
+		posfinal.x = int(posfinal.x);
+		posfinal.y = int(posfinal.y);
 		rectangle.setFillColor(m_color);
-		rectangle.setPosition(pos.x + m_offset.x, pos.y + m_offset.y);
+		rectangle.setPosition(posfinal);
 
 		window.draw(rectangle);
 	}
@@ -49,11 +52,6 @@ struct Taca : Cintable, EntS<Taca>
 		}
 		pos += speed * 0.8 * dt;
 		speed.Zero();
-	}
-
-	void Draw(sf::VertexArray &vertexArray)
-	{
-		
 	}
 
 	vec getFinalPos()
