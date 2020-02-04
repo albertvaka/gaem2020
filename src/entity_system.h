@@ -21,82 +21,21 @@ void UpdateEntities(int dt)
 	UpdateCollisions(dt);
 
 
-	for (Player* e : EntS<Player>::getAll())
-	{
-		e->Update(dt);
-		e->anim.Update(dt);
-		e->actionButton.Update(dt);
-	}
-	for (Cleaner* e : EntS<Cleaner>::getAll())
-	{
-		e->Update(dt);
-		e->anim.Update(dt);
-	}
-	for (Cadaver* e : EntS<Cadaver>::getAll())
-	{
-		e->Update(dt);
-		//e->anim.Update(dt);
-	}
-
-	for (Extremity* e : EntS<Extremity>::getAll())
-	{
-		e->Update(dt);
-		//e->anim.Update(dt);
-	}
-	for (Cinta* e : EntS<Cinta>::getAll())
-	{
-
-		e->anim.Update(dt);
-	}
-
-	for (Spawner* e : EntS<Spawner>::getAll())
-	{
-		e->Update(dt);
-	}
-
-	for (Mesa* e : EntS<Mesa>::getAll())
-	{
-		e->Update(dt);
-		e->anim.Update(dt);
-	}
-	for (Collector* e : EntS<Collector>::getAll())
-	{
-		e->Update(dt);
-		e->anim.Update(dt);
-	}
-
-	for (Lever * e : EntS<Lever>::getAll())
-	{
-		e->Update(dt);
-	}
-
 	for (Taca* e : EntS<Taca>::getAll())
 	{
 		e->Update(dt);
 	}
 
+
+	for (Entity* e : EntS<Entity>::getAll())
+	{
+		e->Update(dt);
+		e->anim.Update(dt);
+	}
 	for (TextMolest* e : EntS<TextMolest>::getAll())
 	{
 		e->Update(dt);
 	}
-
-	for (CleanerSpawner* e : EntS<CleanerSpawner>::getAll())
-	{
-		e->Update(dt);
-		e->anim.Update(dt);
-	}
-
-	for (SpawnAnim* e : EntS<SpawnAnim>::getAll())
-	{
-		e->Update(dt);
-		e->anim.Update(dt);
-	}
-
-	for (DoorSensor* e : EntS<DoorSensor>::getAll())
-	{
-		e->Update(dt);
-	}
-
 
 	int num_tacs = EntS<Taca>::getAll().size();
 	int num_rumbs = EntS<Cleaner>::getAll().size();

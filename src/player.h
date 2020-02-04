@@ -359,6 +359,7 @@ struct Player : SortedDrawable, EntS<Player>
 			}
 		}
 
+		actionButton.Update(dt);
 	}
 
 	Bounds bounds() {

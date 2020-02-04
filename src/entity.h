@@ -31,14 +31,14 @@ struct Entity : EntS<Entity>
 	bool alive = true;
 	//Entity* parent = NULL;
 	EntityDirection dir = EntityDirection::DOWN;
+
+	virtual void Update(int dt)
+	{
+	}
 };
 
 struct SortedDrawable : Entity, EntS<SortedDrawable> {
 	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window)
-	{
-
-	}
-	virtual void Draw(sf::VertexArray& vao)
 	{
 
 	}
