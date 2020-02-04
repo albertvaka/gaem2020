@@ -62,6 +62,10 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 	ExtremityColor head;
 	ExtremityColor body;
 
+	bool isCarried = false;
+	bool isLet = false;
+	float counterBloodTimeLeft = 100.f;
+
 	bool HasExtremity(ExtremityType et) {
 		switch (et) {
 		case ExtremityType::HEAD:
@@ -137,11 +141,6 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 		return e;
 	}
 
-	bool isCarried = false;
-	bool isLet = false;
-	float counterBloodTimeLeft = 100.f;
-
-	int currentPlayer;
 	Cadaver(vec _pos) {
 		pos = _pos;
 		
@@ -169,7 +168,7 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 	vec positionPlz() override { return pos; }
 	//vec sizePlz() override { return vec(16, 16); }
 
-	void carryCadaver(int x, int y, int player)
+	void carryCadaver(int x, int y)
 	{
 		isCarried = true;
 
@@ -177,7 +176,6 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 		pos.y = y + 3;
 
 		isLet = false;
-		currentPlayer = player;
 	}
 
 	void putCadaverOnTable(vec position)
@@ -189,8 +187,6 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 
 		pos.x = position.x + 4;
 		pos.y = position.y + 4;
-
-		currentPlayer = -1;
 	}
 
 
@@ -211,7 +207,6 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 			}
 		}
 		Move(dt);
-
 	}
 
 	void Move(int dt)

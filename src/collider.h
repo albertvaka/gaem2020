@@ -77,41 +77,26 @@ void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*ca
 void collision_player_extremity(Player* player, Extremity* extremity) {
 	if (!player->isCarrying && !extremity->isCarried && !extremity->isLet) {
 		player->extremity = extremity;
-		player->isExtremityCarriable = true;
 	}
 }
 
 void collision_player_cadaver(Player* player, Cadaver* cadaver) {
-	if (!player->isCarrying && !cadaver->isCarried) {
+	if (!player->isCarrying && !cadaver->isCarried && !cadaver->isLet) {
 		player->cadaver = cadaver;
-		player->isCadaverCarriable = true;
 	}
 }
 
 void collision_player_mesa(Player* player, Mesa* mesa) {
-	if (player->cadaver != NULL)
-	{
-		mesa->canLet = true;
-		mesa->cadaver = player->cadaver;
-		mesa->currentPlayer = player;
-		player->mesa = mesa;
-	}
+	player->mesa = mesa;
 }
 
 void collision_player_collector(Player* player, Collector* coll) {
-	if (player->collector == NULL)
-	{
-		coll->currentPlayer = player;
-		player->collector = coll;
-	}
+	player->collector = coll;
 }
 
 void collision_player_lever(Player* player, Lever* lever) {
-	if (lever->canPull)
-	{
-		player->isLeverPullable = true;
-		player->lever = lever;
-	}
+	player->lever = lever;
+	lever->player = player;
 }
 
 void collision_entity_cinta(Cintable *ent, Cinta* cinta) {
@@ -175,32 +160,17 @@ void coll_ent_doorsensor(Entity* _, DoorSensor* ds)
 
 void UpdateCollisions(int dt) 
 {
-
-	for (Player * player : EntS<Player>::getAll())
+	for (Player* player : EntS<Player>::getAll())
 	{
-		player->collector = NULL;
+		if (!player->isCarrying) {
+			player->cadaver = NULL;
+		}
 		if (!player->isCarrying) {
 			player->extremity = NULL;
-			player->cadaver = NULL;
-			player->mesa = NULL;
-			player->lever = NULL;
-
-			player->isCadaverCarriable = false;
-			player->isExtremityCarriable = false;
-			player->isLeverPullable = false;
-
 		}
-	}
-
-	for (Mesa * mesa : EntS<Mesa>::getAll())
-	{
-		mesa->canLet = false;
-		mesa->currentPlayer =  nullptr;
-	}
-
-	for (Collector* mesa : EntS<Collector>::getAll())
-	{
-		mesa->currentPlayer = nullptr;
+		player->collector = NULL;
+		player->mesa = NULL;
+		player->lever = NULL;
 	}
 
 	// If A collides with B, call collision_callback

@@ -12,23 +12,13 @@
 
 struct Player : SortedDrawable, EntS<Player>
 {
-
-	
 	Animation actionButton;
 
 	int player;
 	bool isCarrying;
-	bool isCadaverCarriable;
-	bool isExtremityCarriable;
 
-	const int LEVER_TIMER = 100;
-	const int LEVER_MAX_COUNTER = 24;
-	int leverTimer = LEVER_TIMER;
-	int leverCounter = 0;
-	bool isLeverPullable = false;
 	bool isPullingLever = false;
 
-	bool isCarryingBueno;
 	Extremity* extremity = nullptr;
 	Cadaver* cadaver = nullptr;
 	Mesa* mesa = nullptr;
@@ -40,8 +30,6 @@ struct Player : SortedDrawable, EntS<Player>
 		player = id;
 
 		isCarrying = false;
-		isCarryingBueno = false;
-		leverTimer = 0;
 
 		anim.Ensure((AnimationType::PLAYER_IDLE_DOWN));
 		actionButton.Ensure(AnimationType::BUTTON_A_PRESS);
@@ -56,108 +44,6 @@ struct Player : SortedDrawable, EntS<Player>
 	{
 		float deadZone = 20;
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, deadZone));
-		bool acabodecoger = false;
-
-		if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
-			&& !isCarrying && mesa != NULL)
-		{
-			if (mesa->cadaver != NULL)
-			{
-				cadaver = mesa->cadaver;
-				mesa->cadaver = NULL;
-
-				mesa->isEmpty = true;
-				mesa->canLet = true;
-
-				cadaver->isLet = false;
-				cadaver->carryCadaver(pos.x, pos.y, player);
-				
-			}
-		}
-
-		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
-			&& !isCarrying && collector != NULL)
-		{
-			if (extremity == NULL && collector->extremity)
-			{
-				extremity  = collector->extremity;
-				extremity->isLet = false;
-				collector->extremity = nullptr;
-				extremity->isCarried = true;
-				isCarrying = true;
-				acabodecoger = true;
-				extremity->carryExtremity(pos.x, pos.y);
-			}
-		}
-
-		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
-			&& isCarrying && collector != NULL)
-		{
-			if (extremity != NULL && !collector->extremity)
-			{
-				extremity->isLet = true;
-				extremity->pos = collector->pos;
-				collector->extremity = extremity;
-				extremity->isCarried = false;
-				extremity = nullptr;
-				isCarrying = false;
-				acabodecoger = true;
-			}
-		}
-
-		else if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
-			&& isCarrying && mesa != NULL)
-		{
-			if (cadaver != NULL && mesa->canLet && mesa->isEmpty) {
-				isCarrying = false;
-				cadaver->putCadaverOnTable(mesa->pos);
-
-				mesa->canLet = false;
-				mesa->isEmpty = false;
-				cadaver = NULL;
-			}
-		}
-
-		 if (((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
-			&& isLeverPullable)
-		{
-			leverCounter += 5;
-			isPullingLever = true;
-
-		}
-
-		if (!acabodecoger && ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && !isCarrying)
-		{
-			if (extremity != NULL)
-			{
-				isCarrying = true;
-				extremity->isCarried = true;
-				extremity->pos.x = pos.x;
-				extremity->pos.y = pos.y;
-			}
-			else if (cadaver != NULL)
-			{
-				isCarrying = true;
-				cadaver->carryCadaver(pos.x, pos.y, player);
-			}
-		}
-		else if (!acabodecoger && ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) && isCarrying)
-		{
-			if (extremity != NULL) {
-				isCarrying = false;
-				extremity->isCarried = false;
-				extremity = NULL;
-			}
-			if (cadaver != NULL) {
-				isCarrying = false;
-				cadaver->isCarried = false;
-				cadaver->pos.y -= 2;
-				cadaver->pos.x -= 4;
-				cadaver->pos.x = round(cadaver->pos.x / 16.f )*16;
-				cadaver = NULL;
-
-			}
-		}
 
 		//Player 0 can move with keyboard
 		if (player == 0)
@@ -173,7 +59,7 @@ struct Player : SortedDrawable, EntS<Player>
 			if (Keyboard::IsKeyPressed(GameKeys::RIGHT))
 			{
 				anal.x = 100;
-			}	
+			}
 			else if (Keyboard::IsKeyPressed(GameKeys::LEFT))
 			{
 				anal.x = -100;
@@ -182,7 +68,7 @@ struct Player : SortedDrawable, EntS<Player>
 
 
 		speed = anal * 0.0008f;
-		
+
 		if (anal.x > deadZone)
 		{
 			state = EntityState::MOVING;
@@ -193,7 +79,8 @@ struct Player : SortedDrawable, EntS<Player>
 			state = EntityState::MOVING;
 			dir = EntityDirection::LEFT;
 
-		} else if (anal.y > deadZone)
+		}
+		else if (anal.y > deadZone)
 		{
 			state = EntityState::MOVING;
 			dir = EntityDirection::DOWN;
@@ -208,39 +95,100 @@ struct Player : SortedDrawable, EntS<Player>
 			state = EntityState::IDLE;
 		}
 	}
-	void Move(int dt)
-	{
-		
 
-		auto oldPos = pos;
+	void ActionButtonPressed() {
 
-		SetSpeedWithPlayerInput();
-		//SetSpeedWithCinta(speed);
-		
-
-		bool moved = tryMove(dt/4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);
-
-
-		if (moved) 
-		{
-			for (Player* p : EntS<Player>::getAll()) 
-			{
-				if (p == this) continue;
-				if (Collide(p->bounds(),this->bounds())) 
-				{
-					pos = oldPos;
-					break;
-				}
-			}
-			for (Cleaner* p : EntS<Cleaner>::getAll())
-			{
-				if (Collide(p->bounds(), this->bounds()))
-				{
-					pos = oldPos;
-					break;
-				}
-			}
+		// Poner cadaver en mesa
+		if (isCarrying && cadaver && mesa && !mesa->cadaver) {
+			isCarrying = false;
+			mesa->cadaver = cadaver;
+			cadaver->putCadaverOnTable(mesa->pos);
+			cadaver = NULL;
+			return;
 		}
+
+		// Sacar cadaver de mesa
+		if (!isCarrying && mesa && mesa->cadaver) {
+			isCarrying = true;
+			cadaver = mesa->cadaver;
+			mesa->cadaver = NULL;
+			cadaver->isLet = false;
+			cadaver->carryCadaver(pos.x, pos.y);
+			extremity = NULL;
+			return;
+		}
+
+		// Poner extremity en collector
+		if (isCarrying && extremity && collector && !collector->extremity)
+		{
+			extremity->isLet = true;
+			extremity->pos = collector->pos + vec(0,0.5f);
+			collector->extremity = extremity;
+			extremity->isCarried = false;
+			extremity = nullptr;
+			isCarrying = false;
+			return;
+		}
+		// Sacar extremity de collector
+		if (!isCarrying && collector && collector->extremity)
+		{
+			extremity = collector->extremity;
+			extremity->isLet = false;
+			collector->extremity = nullptr;
+			extremity->isCarried = true;
+			isCarrying = true;
+			extremity->carryExtremity(pos.x, pos.y);
+			cadaver = NULL;
+			return;
+		}
+
+		
+		// Coger extremity del suelo
+		if (!isCarrying && extremity){
+			isCarrying = true;
+			extremity->isCarried = true;
+			extremity->pos.x = pos.x;
+			extremity->pos.y = pos.y;
+			cadaver = NULL;
+			return;
+		}
+		
+		// Coger cadaver del suelo
+		if (!isCarrying && cadaver) {
+			isCarrying = true;
+			cadaver->carryCadaver(pos.x, pos.y);
+			extremity = NULL;
+			return;
+		}
+
+		// Dejar extremity en suelo
+		if (isCarrying && extremity)
+		{
+			isCarrying = false;
+			extremity->isCarried = false;
+			extremity = NULL;
+			return;
+		}
+
+		// Dejar cadaver en suelo
+		 if (isCarrying && cadaver != NULL) {
+			isCarrying = false;
+			cadaver->isCarried = false;
+			cadaver->pos.y -= 2;
+			cadaver->pos.x -= 4;
+			cadaver->pos.x = round(cadaver->pos.x / 16.f )*16;
+			cadaver = NULL;
+			return;
+		}
+
+
+		// Boton
+		if (!isCarrying && lever && lever->isReady)
+		{
+			lever->Push();
+			return;
+		}
+
 	}
 
 	float boundingBoxSize = 10.f;
@@ -316,101 +264,100 @@ struct Player : SortedDrawable, EntS<Player>
 		};
 	}
 
-	void Update(int dt)
-	{
-		Move(dt);
+	void Move(int dt) {
 
-		if (isCarrying || isCarryingBueno)
+		auto oldPos = pos;
+
+		bool moved = tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);
+
+		if (moved)
 		{
-			if (extremity != NULL) 
+			for (Player* p : EntS<Player>::getAll())
 			{
-				extremity->carryExtremity(pos.x, pos.y);
+				if (p == this) continue;
+				if (Collide(p->bounds(), this->bounds()))
+				{
+					pos = oldPos;
+					break;
+				}
 			}
-			if (cadaver != NULL) 
+			for (Cleaner* p : EntS<Cleaner>::getAll())
 			{
-				cadaver->carryCadaver(pos.x, pos.y, player);
+				if (Collide(p->bounds(), this->bounds()))
+				{
+					pos = oldPos;
+					break;
+				}
 			}
 		}
 
 		switch (state)
 		{
-			case EntityState::IDLE:
-			{
-
-				if (dir == EntityDirection::UP)
-				{
-					anim.Ensure((AnimationType::PLAYER_IDLE_UP));
-				}
-				if (dir == EntityDirection::DOWN)
-				{
-					anim.Ensure((AnimationType::PLAYER_IDLE_DOWN));
-				}
-				if (dir == EntityDirection::LEFT)
-				{
-					anim.Ensure((AnimationType::PLAYER_IDLE_LEFT));
-				}
-				if (dir == EntityDirection::RIGHT)
-				{
-					anim.Ensure((AnimationType::PLAYER_IDLE_RIGHT));
-				}
-
-			} break;
-
-			case EntityState::MOVING:
-			{
-				if (dir == EntityDirection::UP)
-				{
-					anim.Ensure((AnimationType::PLAYER_WALKING_UP));
-				}
-				if (dir == EntityDirection::DOWN)
-				{
-					anim.Ensure((AnimationType::PLAYER_WALKING_DOWN));
-				}
-				if (dir == EntityDirection::LEFT)
-				{
-					anim.Ensure((AnimationType::PLAYER_WALKING_LEFT));
-				}
-				if (dir == EntityDirection::RIGHT)
-				{
-					anim.Ensure((AnimationType::PLAYER_WALKING_RIGHT));
-				}
-			} break;
-		}
-
-		if (isPullingLever)
+		case EntityState::IDLE:
 		{
-			leverTimer -= dt;
-			if (leverTimer <= 0)
+
+			if (dir == EntityDirection::UP)
 			{
-				leverCounter--;
-				leverTimer = LEVER_TIMER;
+				anim.Ensure((AnimationType::PLAYER_IDLE_UP));
 			}
-
-			if (lever != NULL && lever->engineIsFinished)
+			if (dir == EntityDirection::DOWN)
 			{
-				isLeverPullable = true;
+				anim.Ensure((AnimationType::PLAYER_IDLE_DOWN));
+			}
+			if (dir == EntityDirection::LEFT)
+			{
+				anim.Ensure((AnimationType::PLAYER_IDLE_LEFT));
+			}
+			if (dir == EntityDirection::RIGHT)
+			{
+				anim.Ensure((AnimationType::PLAYER_IDLE_RIGHT));
 			}
 
-			if (leverCounter < 0  || lever == NULL) {
-				leverCounter = 0;
-				isPullingLever = false;
-			}
-		}
-		
+		} break;
 
-		if (lever != NULL)
+		case EntityState::MOVING:
 		{
-			if (((Keyboard::IsKeyPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonPressed(player, GamePad::Button::A)) && isLeverPullable)
+			if (dir == EntityDirection::UP)
 			{
-				lever->is_pushed_down = true;
+				anim.Ensure((AnimationType::PLAYER_WALKING_UP));
 			}
-			else
+			if (dir == EntityDirection::DOWN)
 			{
-				lever->is_pushed_down = false;
+				anim.Ensure((AnimationType::PLAYER_WALKING_DOWN));
 			}
+			if (dir == EntityDirection::LEFT)
+			{
+				anim.Ensure((AnimationType::PLAYER_WALKING_LEFT));
+			}
+			if (dir == EntityDirection::RIGHT)
+			{
+				anim.Ensure((AnimationType::PLAYER_WALKING_RIGHT));
+			}
+		} break;
+		}
+	}
 
+	void Update(int dt)
+	{
+		SetSpeedWithPlayerInput();
+		//SetSpeedWithCinta(speed);
+
+		if ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) {
+			ActionButtonPressed();
 		}
 
+		Move(dt);
+
+		if (isCarrying) {
+			if (extremity != NULL)
+			{
+				extremity->carryExtremity(pos.x, pos.y);
+			}
+			if (cadaver != NULL)
+			{
+				cadaver->carryCadaver(pos.x, pos.y);
+			}
+		}
 
 	}
 
@@ -434,7 +381,7 @@ struct Player : SortedDrawable, EntS<Player>
 		window.draw(spr);
 		spr.setScale(a);
 
-		if (((isCadaverCarriable || isExtremityCarriable) && !isCarrying) || isLeverPullable || mesa != NULL || (collector && collector->extremity))
+		if (((cadaver || extremity) && !isCarrying) || lever && lever->isReady || (isCarrying && cadaver && mesa && !mesa->cadaver) || (collector && collector->extremity) || (isCarrying && extremity && collector && !collector->extremity))
 		{
 			spr.setTextureRect(actionButton.CurrentFrame());
 			spr.setPosition(pos.x + 13, pos.y - 10);
@@ -443,42 +390,6 @@ struct Player : SortedDrawable, EntS<Player>
 		else
 		{
 			actionButton.Reset();
-		}
-
-		if (isPullingLever && leverCounter > 0 && isLeverPullable)
-		{
-			sf::IntRect leverBckRect = sf::IntRect(pos.x, pos.y - 16, LEVER_MAX_COUNTER, 4);
-			sf::RectangleShape leverBckShape = sf::RectangleShape();
-			leverBckShape.setPosition(leverBckRect.left, leverBckRect.top);
-			leverBckShape.setSize(sf::Vector2f(leverBckRect.width, leverBckRect.height));
-			leverBckShape.setFillColor(sf::Color(73, 0, 0));
-
-			window.draw(leverBckShape);
-
-			int width;
-			if (leverCounter > LEVER_MAX_COUNTER)
-			{
-				lever->engineIsFinished = true;
-				lever->canPull = false;
-				isLeverPullable = false;
-				leverCounter = LEVER_MAX_COUNTER;
-				leverTimer = LEVER_TIMER;
-			}
-			else
-			{
-				width = leverCounter;
-
-			}
-
-
-			sf::IntRect leverFrontRect = sf::IntRect(pos.x, pos.y - 16, leverCounter, 4);
-			sf::RectangleShape leverFrontShape = sf::RectangleShape();
-			leverFrontShape.setPosition(leverFrontRect.left, leverFrontRect.top);
-			leverFrontShape.setSize(sf::Vector2f(leverFrontRect.width, leverFrontRect.height));
-			leverFrontShape.setFillColor(sf::Color(188, 0, 0));
-
-			window.draw(leverFrontShape);
-
 		}
 
 	}
