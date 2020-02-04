@@ -20,8 +20,6 @@ void UpdateEntities(int dt)
 	//Collisions are handled in collider.h
 	UpdateCollisions(dt);
 
-
-
 	for (Entity* e : EntS<Entity>::getAll())
 	{
 		e->Update(dt);
@@ -31,11 +29,6 @@ void UpdateEntities(int dt)
 	}
 
 	for (Taca* e : EntS<Taca>::getAll())
-	{
-		e->Update(dt);
-	}
-
-	for (TextMolest* e : EntS<TextMolest>::getAll())
 	{
 		e->Update(dt);
 	}
