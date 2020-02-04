@@ -20,7 +20,7 @@ enum class EntityDirection
 };
 
 
-struct Entity : public EntS<Entity>
+struct Entity : EntS<Entity>
 {
 	EntityState state;
 	vec pos;
@@ -33,7 +33,7 @@ struct Entity : public EntS<Entity>
 	EntityDirection dir = EntityDirection::DOWN;
 };
 
-struct SortedDrawable : public Entity, public EntS<SortedDrawable> {
+struct SortedDrawable : Entity, EntS<SortedDrawable> {
 	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 
@@ -44,12 +44,12 @@ struct SortedDrawable : public Entity, public EntS<SortedDrawable> {
 	}
 };
 
-struct Cintable : public EntS<Cintable> {
+struct Cintable : EntS<Cintable> {
 	EntityDirection prevCintaDirection = EntityDirection::NONE;
 	EntityDirection currCintaDirection = EntityDirection::NONE;
 
 	virtual vec positionPlz() = 0;
-	virtual vec sizePlz() = 0;
+	//virtual vec sizePlz() = 0;
 
 	void SetSpeedWithCinta(vec& speed)
 	{

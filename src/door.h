@@ -3,7 +3,7 @@
 #include "entity.h"
 #include "mates.h"
 
-struct Door : public SortedDrawable, public EntS<Door>
+struct Door : SortedDrawable, EntS<Door>
 {
 	enum class Panel
 	{
@@ -62,7 +62,7 @@ struct Door : public SortedDrawable, public EntS<Door>
 	}
 };
 
-struct DoorSensor : public Entity, public EntS<DoorSensor>
+struct DoorSensor : Entity, EntS<DoorSensor>
 {
 	Door* door;
 

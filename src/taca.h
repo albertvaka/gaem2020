@@ -4,21 +4,14 @@
 
 struct Taca : Cintable, EntS<Taca>
 {
-
-	vec positionPlz() override {
-		return pos;
-	}
-
-	vec sizePlz() override {
-		return vec(16,16);
-	}
-
+	//Note: need to re-define some attrs since it's not an entity
 	bool alive = true;
 	vec pos;
 	vec speed;
 	sf::Color m_color = sf::Color(200,0,0);
 	sf::Vector2f m_offset;
 	float counter;
+
 	Taca(vec position, EntityDirection dir) {
 		currCintaDirection = dir;
 		counter = 7500 + Random::roll(5000);
@@ -31,6 +24,9 @@ struct Taca : Cintable, EntS<Taca>
 		m_color.g += Random::roll(0, 50);
 		m_color.b += Random::roll(0, 50);
 	}
+
+	vec positionPlz() override { return pos; }
+	//vec sizePlz() override { return vec(16, 16); }
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
