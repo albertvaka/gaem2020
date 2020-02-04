@@ -38,6 +38,11 @@ void UpdateEntities(int dt)
 		//e->anim.Update(dt);
 	}
 
+	for (Extremity* e : EntS<Extremity>::getAll())
+	{
+		e->Update(dt);
+		//e->anim.Update(dt);
+	}
 	for (Cinta* e : EntS<Cinta>::getAll())
 	{
 

@@ -212,7 +212,6 @@ void UpdateCollisions(int dt)
 	collide(EntS<Player>::getAll(), EntS<Lever>::getAll(), collision_player_lever);
 	collide(EntS<Player>::getAll(), EntS<Collector>::getAll(), collision_player_collector);
 	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
-	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Detector>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);

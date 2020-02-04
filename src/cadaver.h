@@ -127,10 +127,9 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 			rightLeg = ExtremityColor::NONE_COLOR;
 			break;
 		}
-		Extremity* e = new Extremity(pos.x, pos.y, et, color);
+		Extremity* e = new Extremity(pos, et, color);
 		e->isLet = true;
 		e->isCarried = false;
-		e->PonBien();
 
 		new SpawnAnim(pos);
 		new SpawnAnim(this->pos, vec(0, 0));
@@ -143,12 +142,8 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 	float counterBloodTimeLeft = 100.f;
 
 	int currentPlayer;
-	Cadaver(vec pos) : Cadaver(pos.x, pos.y) { }
-
-	Cadaver(int x, int y) {
-		
-		pos.x = x;
-		pos.y = y;
+	Cadaver(vec _pos) {
+		pos = _pos;
 		
 		ExtremityColor color = RandomExtremityColor();
 
@@ -158,8 +153,8 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 		leftArm = color;
 		head = color;
 		body = color;
-		int noExtremity = Random::roll(0, 4);
 
+		int noExtremity = Random::roll(0, 4);
 		switch (noExtremity)
 		{
 		case 0: rightLeg = ExtremityColor::NONE_COLOR; break;
@@ -293,6 +288,8 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 			DrawCarriable(spr, wnd);
 		}*/
 		spr.setRotation(0);
+		
+		//Bounds(pos.x - 1, pos.y - 1, 2, 2).Draw(wnd);
 	}
 
 	const int xt = 4;

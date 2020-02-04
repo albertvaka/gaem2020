@@ -36,19 +36,22 @@ inline ExtremityColor RandomExtremityColor() {
 
 std::map<ExtremityColor, std::map<ExtremityType, sf::IntRect>> extremitySprPos;
 
-struct Extremity : public SortedDrawable, EntS<Extremity> 
+struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 {
 	ExtremityType type;
 	ExtremityColor color;
 	bool isCarried = false;
 	bool isLet = false;
 
-	Extremity(int x, int y, ExtremityType t, ExtremityColor c)
+	vec positionPlz() {
+		return pos;
+	}
+
+	Extremity(vec position, ExtremityType t, ExtremityColor c)
 	{
 		color = c;
 		type = t;
-		pos.x = x;
-		pos.y = y;
+		pos = position;
 	}
 
 	void carryExtremity(int x, int y)
@@ -57,53 +60,57 @@ struct Extremity : public SortedDrawable, EntS<Extremity>
 
 		pos.x = x;
 		pos.y = y+1;
-		PonBien();
 	}
 
 
 	void Update(int dt)
 	{
+		SetSpeedWithCinta(speed);
+		pos += speed * dt;
+		speed.Zero();
 	}
 
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
+		vec carriedOffset;
 		if (isCarried) {
-			//spr.setScale(1.2f, 1.2f);
+			carriedOffset.y = -2;
 		}
-		spr.setPosition(pos-vec(0,2));
+		spr.setPosition(pos+Offset()+carriedOffset);
 		spr.setTextureRect(extremitySprPos[color][type]);
 		wnd.draw(spr);
 		spr.setScale(1, 1);
+
+
+		//Bounds(pos.x , pos.y , 16, 16).Draw(wnd);
+		////Bounds(pos.x - 1, pos.y - 1, 2, 2).Draw(wnd);
+
 	}
 
-	void PonBien()
+	vec Offset()
 	{
 		if (type == ExtremityType::HEAD)
 		{
-			pos.x += 4;
-			pos.y += 5;
+			return vec(4,5);
 		}
 		if (type == ExtremityType::LEFT_ARM)
 		{
-			pos.x += 6;
-			pos.y += 3;
+			return vec(6, 3);
 		}
 		if (type == ExtremityType::LEFT_LEG)
 		{
-			pos.x += 4;
-			pos.y += 5;
+			return vec(2,6);
 		}
 		if (type == ExtremityType::RIGHT_ARM)
 		{
-			pos.x += 2;
-			pos.y += 3;
+			return vec(2,3);
 		}
 		if (type == ExtremityType::RIGHT_LEG)
 		{
-			pos.x += 3;
-			pos.y += 2;
+			return vec(3,2);
 		}
+		return vec(0, 0);
 	}
 
 };
