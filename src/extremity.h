@@ -3,7 +3,7 @@
 #include "entity.h"
 #include "entity_system.h"
 
-enum class ExtremityType 
+enum class ExtremityType
 {
 	BODY,
 	RIGHT_LEG,
@@ -100,7 +100,7 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 		}
 		if (type == ExtremityType::LEFT_LEG)
 		{
-			return vec(2,6);
+			return vec(4,2);
 		}
 		if (type == ExtremityType::RIGHT_ARM)
 		{
@@ -123,7 +123,7 @@ void loadExtremityMap()
 	extremitySprPos[ExtremityColor::WHITE][ExtremityType::LEFT_ARM] = sf::IntRect(24, 64, 8, 8);
 	extremitySprPos[ExtremityColor::WHITE][ExtremityType::HEAD] = sf::IntRect(32, 64, 8, 8);
 	extremitySprPos[ExtremityColor::WHITE][ExtremityType::BODY] = sf::IntRect(40, 64, 8, 8);
-																		
+
 	extremitySprPos[ExtremityColor::BLACK][ExtremityType::RIGHT_LEG] = sf::IntRect(0, 72, 8, 8);
 	extremitySprPos[ExtremityColor::BLACK][ExtremityType::LEFT_LEG] = sf::IntRect(8, 72, 8, 8);
 	extremitySprPos[ExtremityColor::BLACK][ExtremityType::RIGHT_ARM] = sf::IntRect(16, 72, 8, 8);
