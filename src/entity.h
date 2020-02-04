@@ -18,7 +18,7 @@ enum class EntityDirection
 	RIGHT,
 	NONE
 };
-
+float CINTA_SPEED = 8/320.f;
 
 struct Entity : EntS<Entity>
 {
@@ -48,6 +48,8 @@ struct Cintable : EntS<Cintable> {
 	EntityDirection prevCintaDirection = EntityDirection::NONE;
 	EntityDirection currCintaDirection = EntityDirection::NONE;
 
+
+
 	virtual vec positionPlz() = 0;
 	//virtual vec sizePlz() = 0;
 
@@ -55,10 +57,10 @@ struct Cintable : EntS<Cintable> {
 	{
 		if (currCintaDirection != EntityDirection::NONE)
 		{
-			speed.x += (EntityDirection::RIGHT == currCintaDirection) * 0.015f;
-			speed.x -= (EntityDirection::LEFT == currCintaDirection) * 0.015f;
-			speed.y -= (EntityDirection::UP == currCintaDirection) * 0.015f;
-			speed.y += (EntityDirection::DOWN == currCintaDirection) * 0.015f;
+			speed.x += (EntityDirection::RIGHT == currCintaDirection) * CINTA_SPEED;
+			speed.x -= (EntityDirection::LEFT == currCintaDirection) * CINTA_SPEED;
+			speed.y -= (EntityDirection::UP == currCintaDirection) * CINTA_SPEED;
+			speed.y += (EntityDirection::DOWN == currCintaDirection) * CINTA_SPEED;
 		}
 
 		//speed = newSpeed;

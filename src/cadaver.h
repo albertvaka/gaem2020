@@ -211,11 +211,9 @@ struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
 
 	void Move(int dt)
 	{
-
 		SetSpeedWithCinta(speed);
-		sf::Vector2f oldpos = pos;
 		pos += speed * dt;
-		
+
 		speed.x = 0;
 		speed.y = 0;
 
