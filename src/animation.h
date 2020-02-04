@@ -5,13 +5,13 @@
 
 struct Animation
 {
-	AnimationType anim_type;
+	AnimationType anim_type = AnimationType::NADA;
 	int anim_timer;
 	int current_frame;
 
 	bool loopable = true;
 
-	Animation() 
+	Animation()
 	{
 		Reset();
 	}
@@ -63,7 +63,7 @@ struct Animation
 			Reset();
 		}
 	}
-	
+
 	void EnsureNoReset(AnimationType type)
 	{
 		if (anim_type != type)

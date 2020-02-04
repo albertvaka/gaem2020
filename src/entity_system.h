@@ -30,7 +30,9 @@ void UpdateEntities(int dt)
 	for (Entity* e : EntS<Entity>::getAll())
 	{
 		e->Update(dt);
-		e->anim.Update(dt);
+		if (e->anim.anim_type != AnimationType::NADA) {
+			e->anim.Update(dt);
+		}
 	}
 	for (TextMolest* e : EntS<TextMolest>::getAll())
 	{
@@ -63,11 +65,11 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
-	EntS<SortedDrawable>::sort([](SortedDrawable* a, SortedDrawable* b) 
+	EntS<SortedDrawable>::sort([](SortedDrawable* a, SortedDrawable* b)
 	{
 		return a->pos.y < b->pos.y;
 	});
-	 
+
 	for (SortedDrawable* e : EntS<SortedDrawable>::getAll())
 	{
 		e->Draw(spr, window);
@@ -95,7 +97,7 @@ void DrawEntities(sf::Texture& texture, sf::RenderWindow& window)
 		e->Draw(vao);
 	}
 
-	
+
 
 	window.draw(vao,&texture);
 
