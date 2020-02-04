@@ -8,7 +8,7 @@
 struct Spawner : Entity, EntS<Spawner>
 {
 
-	const int INTERVAL = 3000;
+	const int INTERVAL = 6000;
 	bool empty = true;
 	int timer = INTERVAL;
 	Spawner(vec position) {
