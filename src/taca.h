@@ -28,10 +28,9 @@ struct Taca : Cintable, EntS<Taca>
 	vec positionPlz() override { return pos; }
 	//vec sizePlz() override { return vec(16, 16); }
 
+	sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(1, 1));
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
-		sf::RectangleShape rectangle;
-		rectangle.setSize(sf::Vector2f(1, 1));
 		rectangle.setFillColor(m_color);
 		rectangle.setPosition(pos.x + m_offset.x, pos.y + m_offset.y);
 
