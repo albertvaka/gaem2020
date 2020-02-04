@@ -51,6 +51,8 @@ struct Player : public SortedDrawable, public EntS<Player>
 		pos = position;
 		speed.x = 0;
 		speed.y = 0;
+
+		size = vec(10, 10);
 	}
 	void SetSpeedWithPlayerInput()
 	{
@@ -211,16 +213,16 @@ struct Player : public SortedDrawable, public EntS<Player>
 	}
 	void Move(int dt)
 	{
-		
-
 		auto oldPos = pos;
 
 		SetSpeedWithPlayerInput();
 		//SetSpeedWithCinta(speed);
 		
-
-		bool moved = tryMove(dt/4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);
-
+		bool moved = 
+			TryMoveCollidingWithTiles(dt/4.f) && 
+			TryMoveCollidingWithTiles(dt/4.f) && 
+			TryMoveCollidingWithTiles(dt/4.f) && 
+			TryMoveCollidingWithTiles(dt/4.f);
 
 		if (moved) 
 		{
@@ -244,14 +246,13 @@ struct Player : public SortedDrawable, public EntS<Player>
 		}
 	}
 
-	float boundingBoxSize = 10.f;
-	bool tryMove(float dt)
+	bool TryMoveCollidingWithTiles(float dt)
 	{
 		bool moved = false;
 
 		vec newPos = pos + speed * dt;
 		
-		float dd = boundingBoxSize/2;
+		float dd = size.x/2;
 
 		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
 		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
@@ -303,18 +304,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 			}
 		}
 
-
 		return moved;
-
-	}
-
-	static Mates::xy PosToTile(vec pos) 
-	{
-		return 
-		{ 
-			int((pos.x + 8) / 16), 
-			int((pos.y + 8) / 16) 
-		};
 	}
 
 	void Update(int dt)
@@ -337,7 +327,6 @@ struct Player : public SortedDrawable, public EntS<Player>
 		{
 			case EntityState::IDLE:
 			{
-
 				if (dir == EntityDirection::UP)
 				{
 					anim.Ensure((AnimationType::PLAYER_IDLE_UP));
@@ -415,12 +404,12 @@ struct Player : public SortedDrawable, public EntS<Player>
 
 	}
 
-	Bounds bounds() {
-
-		return Bounds(pos.x + (16 - boundingBoxSize)/2, pos.y + (16 - boundingBoxSize)/2, boundingBoxSize, boundingBoxSize);
+	Bounds bounds() 
+	{
+		return Bounds(pos.x + (16 - size.x)/2, pos.y + (16 - size.y)/2, size.x, size.y);
 	}
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
+	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		//bounds().Draw(window);
 
@@ -432,14 +421,14 @@ struct Player : public SortedDrawable, public EntS<Player>
 		frame.left += 4 * 16 * player; //offset
 		spr.setTextureRect(frame);
 
-		window.draw(spr);
+		wnd.draw(spr);
 		spr.setScale(a);
 
 		if (((isCadaverCarriable || isExtremityCarriable) && !isCarrying) || isLeverPullable || mesa != NULL || (collector && collector->extremity))
 		{
 			spr.setTextureRect(actionButton.CurrentFrame());
 			spr.setPosition(pos.x + 13, pos.y - 10);
-			window.draw(spr);
+			wnd.draw(spr);
 		}
 		else
 		{
@@ -454,7 +443,7 @@ struct Player : public SortedDrawable, public EntS<Player>
 			leverBckShape.setSize(sf::Vector2f(leverBckRect.width, leverBckRect.height));
 			leverBckShape.setFillColor(sf::Color(73, 0, 0));
 
-			window.draw(leverBckShape);
+			wnd.draw(leverBckShape);
 
 			int width;
 			if (leverCounter > LEVER_MAX_COUNTER)
@@ -478,10 +467,12 @@ struct Player : public SortedDrawable, public EntS<Player>
 			leverFrontShape.setSize(sf::Vector2f(leverFrontRect.width, leverFrontRect.height));
 			leverFrontShape.setFillColor(sf::Color(188, 0, 0));
 
-			window.draw(leverFrontShape);
+			wnd.draw(leverFrontShape);
 
 		}
 
+
+		//dbg_DrawBBox(wnd);
 	}
 
 

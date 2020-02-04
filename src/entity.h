@@ -25,12 +25,35 @@ struct Entity : public EntS<Entity>
 	EntityState state;
 	vec pos;
 	vec speed;
-	vec size = vec(16, 16);
+	vec size;
 	int timer = 0;
 	Animation anim;
 	bool alive = true;
 	//Entity* parent = NULL;
 	EntityDirection dir = EntityDirection::DOWN;
+
+	void dbg_DrawBBox(sf::RenderTarget& wnd, sf::Color outline = sf::Color::Red)
+	{
+		sf::RectangleShape dbg_bbox;
+		dbg_bbox.setPosition(pos - size/2);
+		dbg_bbox.setSize(size);
+		dbg_bbox.setFillColor(sf::Color::Transparent);
+		dbg_bbox.setOutlineColor(outline);
+		dbg_bbox.setOutlineThickness(1);
+		wnd.draw(dbg_bbox);
+	}
+
+	void dbg_DrawBBox_Tiled(sf::RenderTarget& wnd)
+	{
+		sf::RectangleShape dbg_bbox;
+		dbg_bbox.setPosition(pos);
+		dbg_bbox.setSize(size);
+		dbg_bbox.setFillColor(sf::Color::Transparent);
+		dbg_bbox.setOutlineColor(sf::Color::Cyan);
+		dbg_bbox.setOutlineThickness(1);
+		wnd.draw(dbg_bbox);
+	}
+
 };
 
 struct SortedDrawable : public Entity, public EntS<SortedDrawable> {
@@ -44,26 +67,7 @@ struct SortedDrawable : public Entity, public EntS<SortedDrawable> {
 	}
 };
 
-struct Cintable : public EntS<Cintable> {
-	EntityDirection prevCintaDirection = EntityDirection::NONE;
-	EntityDirection currCintaDirection = EntityDirection::NONE;
 
-	virtual vec positionPlz() = 0;
-	virtual vec sizePlz() = 0;
 
-	void SetSpeedWithCinta(vec& speed)
-	{
-		if (currCintaDirection != EntityDirection::NONE)
-		{
-			speed.x += (EntityDirection::RIGHT == currCintaDirection) * 0.015f;
-			speed.x -= (EntityDirection::LEFT == currCintaDirection) * 0.015f;
-			speed.y -= (EntityDirection::UP == currCintaDirection) * 0.015f;
-			speed.y += (EntityDirection::DOWN == currCintaDirection) * 0.015f;
-		}
 
-		//speed = newSpeed;
-		prevCintaDirection = currCintaDirection;
-		currCintaDirection = EntityDirection::NONE;
-	}
 
-};

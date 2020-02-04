@@ -17,9 +17,13 @@
 
 void UpdateEntities(int dt)
 {
-	//Collisions are handled in collider.h
 	UpdateCollisions(dt);
 
+	for (Cintable* c : EntS<Cintable>::getAll())
+	{
+		Entity* ent = (dynamic_cast<Entity*>(c));
+		ent->speed += c->cinta_speed;
+	}
 
 	for (Player* e : EntS<Player>::getAll())
 	{
@@ -40,11 +44,10 @@ void UpdateEntities(int dt)
 
 	for (Cinta* e : EntS<Cinta>::getAll())
 	{
-
 		e->anim.Update(dt);
 	}
 
-	for (Spawner* e : EntS<Spawner>::getAll())
+	for (CadaverSpawner* e : EntS<CadaverSpawner>::getAll())
 	{
 		e->Update(dt);
 	}
@@ -91,6 +94,7 @@ void UpdateEntities(int dt)
 	{
 		e->Update(dt);
 	}
+
 
 
 	int num_tacs = EntS<Taca>::getAll().size();

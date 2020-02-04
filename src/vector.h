@@ -274,6 +274,11 @@ inline float LengthSq(const vec& v)
 
 
 //------------------------------------------------------------------------operator overloads
+inline vec operator*(const vec &lhs, const vec &rhs)
+{
+	return vec(lhs.x*rhs.x, lhs.x*rhs.y);
+}
+
 inline vec operator*(const vec &lhs, float rhs)
 {
   vec result(lhs);

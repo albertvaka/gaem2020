@@ -166,6 +166,7 @@
     <ClInclude Include="src\mates.h" />
     <ClInclude Include="src\rand.h" />
     <ClInclude Include="src\spawner.h" />
+    <ClInclude Include="src\tile.h" />
     <ClInclude Include="src\vector.h" />
   </ItemGroup>
   <ItemGroup>

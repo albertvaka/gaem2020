@@ -17,8 +17,8 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 	vec sz_a = entity_a->size;
 	vec sz_b = entity_b->size;
 
-	vec a = entity_a->pos - vec(sz_a / 2);
-	vec b = entity_b->pos - vec(sz_b / 2);
+	vec a = entity_a->pos;
+	vec b = entity_b->pos;
 
 	//rectangle colision
 	return	(a.x < (b.x + sz_b.x)) && 
@@ -27,6 +27,38 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 			((a.y + sz_a.y) > b.y);
 }
 
+bool CollisionCorners(Entity* entity_a, Entity* entity_b)
+{
+	vec sz_a = entity_a->size;
+	vec sz_b = entity_b->size;
+
+	vec a = entity_a->pos;
+	vec b = entity_b->pos;
+
+	//rectangle colision
+
+	vec p[4] =
+	{
+		vec(a.x - sz_a.x / 2, a.y - sz_a.x / 2),
+		vec(a.x - sz_a.x / 2, a.y + sz_a.x / 2),
+		vec(a.x + sz_a.x / 2, a.y - sz_a.x / 2),
+		vec(a.x + sz_a.x / 2, a.y + sz_a.x / 2)
+	};
+
+	for (int i = 0; i < 4; ++i)
+	{
+		bool inside =
+			(p[i].x >= (b.x - sz_b.x / 2)) &&
+			(p[i].x <= b.x + sz_b.x / 2) &&
+			(p[i].y >= b.y - sz_b.y / 2) &&
+			(p[i].y <= b.y + sz_b.y / 2);
+
+		if (inside) return true;
+	}
+	
+	return false;
+}
+/*
 bool Collision(Cintable* entity_a, Cinta* entity_b)
 {
 	float COLLISION_SIZE = 16;
@@ -53,7 +85,7 @@ bool Collision(Cintable* entity_a, Cleaner* entity_b)
 		(a.x < b.x + 16 && a.x + COLLISION_SIZE > b.x &&
 			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
 }
-
+*/
 template <typename S, typename E, typename X, typename Y>
 void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*callback)(X*, Y*)) 
 {
@@ -70,6 +102,30 @@ void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*ca
 			{
 				callback(a, b);
 			}
+		}
+	}
+}
+
+template <typename S, typename E, typename X, typename Y>
+void collide_corners_vs_box(const std::vector<S*>& v_box_with_corners, const std::vector<E*>& v_boxes, void(*callback)(X*, Y*))
+{
+	size_t sa = v_box_with_corners.size();
+	for (size_t i = 0; i < sa; ++i)
+	{
+		S* a = v_box_with_corners[i];
+		size_t sb = v_boxes.size();
+		for (size_t j = 0; j < sb; ++j)
+		{
+			E* b = v_boxes[j];
+			if ((void*)a == (void*)b) continue;
+
+
+			if (CollisionCorners(a, b))
+			{
+				callback(a, b);
+			}
+
+
 		}
 	}
 }
@@ -114,13 +170,6 @@ void collision_player_lever(Player* player, Lever* lever) {
 	}
 }
 
-void collision_entity_cinta(Cintable *ent, Cinta* cinta) {
-
-	if (ent->prevCintaDirection == cinta->dir || ent->prevCintaDirection == EntityDirection::NONE) {
-		ent->currCintaDirection = cinta->dir;
-	}
-
-}
 
 void collision_cadaver_spawner(Cadaver* ent, Detector* detector) {
 	if (detector->spawner)
@@ -179,7 +228,8 @@ void UpdateCollisions(int dt)
 	for (Player * player : EntS<Player>::getAll())
 	{
 		player->collector = NULL;
-		if (!player->isCarrying) {
+		if (!player->isCarrying) 
+		{
 			player->extremity = NULL;
 			player->cadaver = NULL;
 			player->mesa = NULL;
@@ -212,8 +262,14 @@ void UpdateCollisions(int dt)
 	collide(EntS<Player>::getAll(), EntS<Lever>::getAll(), collision_player_lever);
 	collide(EntS<Player>::getAll(), EntS<Collector>::getAll(), collision_player_collector);
 	//collide(EntS<Player>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
-	collide(EntS<Cadaver>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
-	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
+
+	
+	for (Cintable* c : EntS<Cintable>::getAll())
+	{
+		c->cinta_speed = vec(0, 0);
+	}
+	collide_corners_vs_box(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), &Cintable::collision_entity_cinta);
+
 	collide(EntS<Cadaver>::getAll(), EntS<Detector>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
 	collide(EntS<Cleaner>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);

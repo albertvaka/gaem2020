@@ -9,6 +9,8 @@
 #include <cassert>
 #include <iomanip>
 
+#include <vector>
+
 namespace Mates
 {
 	struct xy

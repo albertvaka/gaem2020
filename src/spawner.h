@@ -5,39 +5,41 @@
 #include "rand.h"
 #include "vector.h"
 
-struct Spawner : public Entity, public EntS<Spawner>
+struct CadaverSpawner : public Entity, public EntS<CadaverSpawner>
 {
-
 	const int INTERVAL = 3000;
 	bool empty = true;
 	int timer = INTERVAL;
-	Spawner(vec position) {
+
+	CadaverSpawner(vec position) 
+	{
 		pos = position;
-		
 	}
 
 	void Update(int dt)
 	{
 		timer += dt;
-		if (timer > INTERVAL) {
-			if (empty) {
+		if (timer > INTERVAL) 
+		{
+			if (empty) 
+			{
 				timer = 0;
-				spawn();
+				//spawn();
 			}
 		}
 		empty = true;
 	}
 
-	void spawn() {
-		new Cadaver(pos);
-		
+	void spawn() 
+	{
+		new Cadaver(pos + vec(8, 8));
 	}
-
 };
+
 struct Detector : public Entity, public EntS<Detector>
 {
-	Spawner* spawner;
-	Detector(vec position, Spawner *s) {
+	CadaverSpawner* spawner;
+	Detector(vec position, CadaverSpawner *s) {
 		pos = position;
 		spawner = s;
 	}

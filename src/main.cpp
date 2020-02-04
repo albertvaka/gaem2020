@@ -171,7 +171,6 @@ void LoadGame(sf::RenderWindow& window)
 			passableCleaner[x][y] = (c < 'E' || c == 'Z');
 			mapita[x][y] = TileFromChar(c);
 
-
 			vec pos(16 * x, 16 * y);
 			switch (c) 
 			{
@@ -179,11 +178,11 @@ void LoadGame(sf::RenderWindow& window)
 				case '1': new Player(1, pos); break;
 				case '2': new Player(2, pos); break;
 				case '3': new Player(3, pos); break;
-				case 'A': new Cinta(pos, EntityDirection::UP); break;
-				case 'B': new Cinta(pos, EntityDirection::DOWN); break;
-				case 'T': new Cinta(pos, EntityDirection::DOWN); break;
-				case 'C': new Cinta(pos, EntityDirection::LEFT); break;
-				case 'D': new Cinta(pos, EntityDirection::RIGHT); break;
+				case 'A': new Cinta(pos, EntityDirection::UP); passable[x][y] = true; break;
+				case 'B': new Cinta(pos, EntityDirection::DOWN); passable[x][y] = true; break;
+				case 'T': new Cinta(pos, EntityDirection::DOWN); passable[x][y] = true; break;
+				case 'C': new Cinta(pos, EntityDirection::LEFT); passable[x][y] = true; break;
+				case 'D': new Cinta(pos, EntityDirection::RIGHT); passable[x][y] = true; break;
 				case 'G':
 				case 'K':
 				case 'L':
@@ -191,7 +190,6 @@ void LoadGame(sf::RenderWindow& window)
 				case 'M':
 					new Mesa(pos, letraToExtremity(c)); 
 					break;
-				
 				case 'g':
 				case 'k':
 				case 'l':
@@ -202,7 +200,7 @@ void LoadGame(sf::RenderWindow& window)
 					break;
 				case 'S':
 				{
-					Spawner *s = new Spawner(pos);
+					CadaverSpawner *s = new CadaverSpawner(pos + vec(8, 8));
 					new Detector(vec(pos.x - 16, pos.y + 16), s);
 					new Cinta(pos, EntityDirection::DOWN);
 				} break;
@@ -271,7 +269,7 @@ void LoadGame(sf::RenderWindow& window)
 	}
 
 #ifdef _DEBUG
-	new Cadaver(100, 100);
+	//new Cadaver(100, 100);
 #endif
 	loadExtremityMap();
 	
@@ -285,7 +283,8 @@ void DrawGui()
 	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
 	if (ImGui::Button("SPAWN CADAVER"))
 	{
-		for (Spawner* s : EntS<Spawner>::getAll()) {
+		for (CadaverSpawner* s : EntS<CadaverSpawner>::getAll()) 
+		{
 			s->spawn();
 		}
 	}

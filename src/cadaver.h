@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "collider.h"
 #include "taca.h"
+#include "tile.h"
 
 struct SpawnAnim : public SortedDrawable, EntS<SpawnAnim>
 {
@@ -19,7 +20,6 @@ struct SpawnAnim : public SortedDrawable, EntS<SpawnAnim>
 		pos = _pos;
 
 		pos.x = (((int)pos.x) / 16)*16.0f;
-		
 		pos.y = (((int)pos.y) / 16)*16.0f;
 		pos.y += 150;
 
@@ -38,14 +38,10 @@ struct SpawnAnim : public SortedDrawable, EntS<SpawnAnim>
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
-
 		spr.setPosition(pos + offset);
 		spr.setTextureRect(anim.CurrentFrame());
 		wnd.draw(spr);
-
 	}
-
-
 };
 
 
@@ -53,7 +49,7 @@ extern sf::Clock mainClock;
 
 bool withTaca = true;
 
-struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
+struct Cadaver : public Cintable, EntS<Cadaver>
 { 
 	ExtremityData rightLeg;
 	ExtremityData leftLeg;
@@ -145,11 +141,15 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	int currentPlayer;
 	Cadaver(vec pos) : Cadaver(pos.x, pos.y) { }
 
-	Cadaver(int x, int y) {
-		
-		pos.x = x;
-		pos.y = y;
-		
+	Cadaver(int x, int y) 
+	{
+	
+		size.x = 12;
+		size.y = 12;
+
+		pos.x = x - size.x/2;
+		pos.y = y - size.y/2;
+
 		int color = Random::roll(0, ExtremityData::BodyColor::SIZE_COLOR - 2);
 		int type = color * (ExtremityData::BodyColor::SIZE_COLOR - 1);
 
@@ -163,21 +163,13 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 		switch (noExtremity)
 		{
-		case 0: rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 1: leftLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 2: rightArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 3: leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
-		case 4: head.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+			case 0: rightLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+			case 1: leftLeg.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+			case 2: rightArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+			case 3: leftArm.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
+			case 4: head.colorType = ExtremityData::BodyColorType::NONE_TYPE; break;
 		}
 
-	}
-
-	vec positionPlz() {
-		return pos;
-	}
-
-	vec sizePlz() override {
-		return vec(16, 16);
 	}
 
 	void carryCadaver(int x, int y, int player)
@@ -207,10 +199,13 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 	void Update(int dt) 
 	{
+		Move(dt);
+		return;
+
 		counterBloodTimeLeft -= dt * Random::roll(0, 3);
 		if (counterBloodTimeLeft < 0 && withTaca)
 		{
-			Taca *t = new Taca(pos, currCintaDirection);
+			Taca *t = new Taca(pos);
 			counterBloodTimeLeft = 100;
 			for (Taca* p : EntS<Taca>::getAll())
 			{
@@ -221,20 +216,78 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 				}
 			}
 		}
-		Move(dt);
+	}
 
+	bool TryMoveCollidingWithTiles(float dt)
+	{
+		bool moved = false;
+
+		vec newPos = pos + speed * dt;
+
+		vec dd = size/2;
+
+		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + dd*vec(-1, -1));
+		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + dd*vec(1, -1));
+		Mates::xy BL_x = PosToTile(vec(newPos.x, pos.y) + dd*vec(-1, 1));
+		Mates::xy BR_x = PosToTile(vec(newPos.x, pos.y) + dd*vec(1, 1));
+
+		Mates::xy TL_y = PosToTile(vec(pos.x, newPos.y) + dd*vec(-1, -1));
+		Mates::xy TR_y = PosToTile(vec(pos.x, newPos.y) + dd*vec(1, -1));
+		Mates::xy BL_y = PosToTile(vec(pos.x, newPos.y) + dd*vec(-1, 1));
+		Mates::xy BR_y = PosToTile(vec(pos.x, newPos.y) + dd*vec(1, 1));
+
+		//Right
+		if (speed.x > 0)
+		{
+			if (passable[TR_x.x][TR_x.y] && passable[BR_x.x][BR_x.y])
+			{
+				pos.x = newPos.x;
+				moved = true;
+			}
+		}
+
+		//Left
+		if (speed.x < 0)
+		{
+			if (passable[TL_x.x][TL_x.y] && passable[BL_x.x][BL_x.y])
+			{
+				pos.x = newPos.x;
+				moved = true;
+			}
+		}
+
+		//Down
+		if (speed.y > 0)
+		{
+			if (passable[BL_y.x][BL_y.y] && passable[BR_y.x][BR_y.y])
+			{
+				pos.y = newPos.y;
+				moved = true;
+			}
+		}
+
+		//Up
+		if (speed.y < 0)
+		{
+			if (passable[TL_y.x][TL_y.y] && passable[TR_y.x][TR_y.y])
+			{
+				pos.y = newPos.y;
+				moved = true;
+			}
+		}
+
+		return moved;
 	}
 
 	void Move(int dt)
 	{
-
-		SetSpeedWithCinta(speed);
-		sf::Vector2f oldpos = pos;
-		pos += speed * dt;
+		TryMoveCollidingWithTiles(dt/4) &&
+		TryMoveCollidingWithTiles(dt/4) && 
+		TryMoveCollidingWithTiles(dt/4) && 
+		TryMoveCollidingWithTiles(dt/4);
 		
 		speed.x = 0;
 		speed.y = 0;
-
 	}
 
 	bool IsOk()
@@ -254,7 +307,7 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 		if (!isLet) 
 		{
-			spr.setRotation(-90);
+			//spr.setRotation(-90);
 		}
 		else //DrawEfectito() de la mesa (TODO: mover a la mesa)
 		{
@@ -299,6 +352,8 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 			DrawCarriable(spr, wnd);
 		}*/
 		spr.setRotation(0);
+
+		dbg_DrawBBox(wnd);
 	}
 
 	const int xt = 4;
@@ -307,9 +362,9 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 	const int xp = 5;
 	const int yp = 8;
 
-
 	const float xs = -0.5;
 	const float ys = -3;
+
 	void DrawRightLeg(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
 		if (isLet) {
@@ -387,18 +442,23 @@ struct Cadaver : public SortedDrawable, public Cintable, EntS<Cadaver>
 
 	void DrawBody(sf::Sprite& spr, sf::RenderTarget& wnd)
 	{
-		if (isLet) {
+		if (isLet) 
+		{
 			spr.setPosition(pos.x + xs, pos.y + ys);
 		}
-		else if (isCarried) {
+		else if (isCarried) 
+		{
 			spr.setPosition(pos.x + xp, pos.y + yp);
 		}
-		else {
-			spr.setPosition(pos.x + xt, pos.y + yt);
-
+		else 
+		{
+			spr.setPosition(pos);
 		}
 		spr.setTextureRect(extremitySprPos.find(body.colorType)->second);
+
+		spr.setOrigin(4, 4);
 		wnd.draw(spr);
+		spr.setOrigin(0, 0);
 	}
 
 	void DrawCarriable(sf::Sprite& spr, sf::RenderTarget& wnd)

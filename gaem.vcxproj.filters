@@ -36,6 +36,7 @@
     <ClInclude Include="src\vector.h" />
     <ClInclude Include="src\popupText.h" />
     <ClInclude Include="src\door.h" />
+    <ClInclude Include="src\tile.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\cinta.h" />

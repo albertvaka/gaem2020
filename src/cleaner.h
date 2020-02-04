@@ -9,6 +9,7 @@
 
 #include "cadaver.h"
 #include "mesa.h"
+#include "tile.h"
 
 struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 {
@@ -182,16 +183,6 @@ struct Cleaner : public SortedDrawable, public EntS<Cleaner>
 		return moved;
 
 	}
-
-	static Mates::xy PosToTile(vec pos) 
-	{
-		return 
-		{ 
-			int((pos.x + 8) / 16), 
-			int((pos.y + 8) / 16) 
-		};
-	}
-
 
 	int timer_naixement = 0;
 	bool stuck = false;
