@@ -466,7 +466,9 @@ int main()
 		//Camera::ChangeZoomWithPlusAndMinus(0.5f, time.asSeconds());
 		//#endif
 
-		UpdateEntities(time.asMilliseconds());
+		int dt = time.asMilliseconds();
+		Mates::ClampMax(dt, 90); //Slow game down instead of epic jumps
+		UpdateEntities(dt);
 
 
 		window.clear(sf::Color(64, 64, 64));
