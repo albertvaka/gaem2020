@@ -23,7 +23,7 @@ ifeq ($(strip $(PROFILE)),1)
 endif
 ifeq ($(strip $(DEBUG)),1)
 	#DEBUGFLAGS=-DDEBUG -ggdb3
-	DEBUGFLAGS=-DDEBUG -g
+	DEBUGFLAGS=-D_DEBUG -g
 endif
 
 $(EXEC): $(OBJ) $(IMGUI_OBJ)
