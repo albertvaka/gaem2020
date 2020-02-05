@@ -100,11 +100,11 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 		}
 		if (type == ExtremityType::LEFT_LEG)
 		{
-			return vec(4,2);
+			return vec(5,2);
 		}
 		if (type == ExtremityType::RIGHT_ARM)
 		{
-			return vec(2,3);
+			return vec(2,2);
 		}
 		if (type == ExtremityType::RIGHT_LEG)
 		{

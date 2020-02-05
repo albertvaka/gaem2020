@@ -3,6 +3,7 @@
 #include <set>
 #include <cassert>
 #include <iostream>
+#include <vector>
 #include <functional>
 using namespace std;
 
@@ -40,14 +41,14 @@ public:
 	}
 	static void deleteNotAlive() 
 	{
-		for (int i = getAll().size() - 1; i >= 0; i--) 
+		/*for (int i = getAll().size() - 1; i >= 0; i--) 
 		{
 			T* e = getAll()[i];
-			//if (e->parent && !e->parent->alive) 
-				//{
-				//	e->parent = NULL;
-			//}
-		}
+			if (e->parent && !e->parent->alive) 
+			{
+					e->parent = NULL;
+			}
+		}*/
 		for (int i = getAll().size()-1; i >= 0; i--) 
 		{
 			T* e = getAll()[i];

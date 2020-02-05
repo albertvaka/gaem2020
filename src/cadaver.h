@@ -4,7 +4,6 @@
 
 #include "extremity.h"
 #include "entity.h"
-#include "collider.h"
 #include "taca.h"
 
 struct SpawnAnim : SortedDrawable, EntS<SpawnAnim>
@@ -53,7 +52,7 @@ extern sf::Clock mainClock;
 
 bool withTaca = true;
 
-struct Cadaver : SortedDrawable, public Cintable, EntS<Cadaver>
+struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 { 
 	ExtremityColor rightLeg;
 	ExtremityColor leftLeg;
