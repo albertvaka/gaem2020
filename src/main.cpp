@@ -40,8 +40,8 @@ void LoadGame(sf::RenderWindow& window)
 	ImGui::SFML::Init(window);
 
 	Input::Init(window);
-	Camera::SetZoom(4.f);
-	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / 8, GameData::WINDOW_HEIGHT/8));
+	Camera::SetZoom(GameData::GAME_ZOOM);
+	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / (2*GameData::GAME_ZOOM), GameData::WINDOW_HEIGHT/(2*GameData::GAME_ZOOM)));
 
 	LoadMap();
 
