@@ -7,7 +7,6 @@ struct Player;
 struct Lever : SortedDrawable, EntS<Lever>
 {
 	bool is_connected = false;
-	bool is_ready = false;
 
 	int is_pushed_timer = -1;
 
@@ -42,10 +41,6 @@ struct Lever : SortedDrawable, EntS<Lever>
 	void Update(int dt)
 	{
 
-		if (!player)
-		{
-			is_ready = false;
-		}
 		if (push >= PUSH_MAX)
 		{
 			if (ent_connected) ent_connected->Operate();
