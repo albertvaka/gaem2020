@@ -8,11 +8,6 @@ enum class TileType
 {
 	SIGN_GOOD,
 	SIGN_BAD,
-	SIGN_RIGHT_LEG,
-	SIGN_LEFT_LEG,
-	SIGN_LEFT_ARM,
-	SIGN_RIGHT_ARM,
-	SIGN_HEAD,
 	WALL,
 	BELT_RIGHT,
 	BELT_LEFT,
@@ -26,7 +21,7 @@ std::vector< std::vector<TileType> > mapita;
 std::vector< std::vector<bool> > passable;
 std::vector< std::vector<bool> > passableCleaner;
 
-const std::vector< std::string > mapita_inicial = 
+const std::vector< std::string > mapita_inicial =
 {
 	"XXYYYYYYYXwSXXYYYYYYYXX",
 	"XX       XDDBX       XX",
@@ -50,16 +45,6 @@ TileType TileFromChar(char c)
 {
 	switch (c)
 	{
-		case 'y':
-			return TileType::SIGN_HEAD;
-		case 'u':
-			return TileType::SIGN_RIGHT_ARM;
-		case 'U':
-			return TileType::SIGN_LEFT_ARM;
-		case 'p':
-			return TileType::SIGN_RIGHT_LEG;
-		case 'P':
-			return TileType::SIGN_LEFT_LEG;
 		case 'h':
 			return TileType::SIGN_GOOD;
 		case 'w':
@@ -96,9 +81,9 @@ TileType TileFromChar(char c)
 	return TileType::FLOOR;
 }
 
-ExtremityType letraToExtremity(char c) 
+ExtremityType letraToExtremity(char c)
 {
-	switch (c) 
+	switch (c)
 	{
 		case 'G':
 		case 'g':
