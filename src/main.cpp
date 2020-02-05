@@ -302,7 +302,7 @@ void DrawGui()
 	{
 		int spawners_count = EntS<CleanerSpawner>::getAll().size();
 
-		int sp = Random::roll(0, spawners_count);
+		int sp = Random::roll(0, spawners_count - 1);
 
 		EntS<CleanerSpawner>::getAll()[sp]->TreuElGos();
 
