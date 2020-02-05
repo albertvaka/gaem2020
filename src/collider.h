@@ -139,11 +139,13 @@ void collision_cadaver_despawner(Cadaver* e, Despawner* _)
 	
 }
 
-void collision_clean_taques(Taca* t, Cleaner* c) {
-	t->alive = false;
+void collision_clean_taques(Taca* t, Cleaner* c) 
+{
+	t->AbsorbByRoomba(c);
 }
 
-void collision_stop_cleaner(Player* _, Cleaner* c) {
+void collision_stop_cleaner(Player* _, Cleaner* c) 
+{
 	c->speed.x = 0;
 	c->speed.y = 0;
 

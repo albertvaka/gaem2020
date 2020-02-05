@@ -12,7 +12,13 @@ struct Taca : Cintable, EntS<Taca>
 	vec m_offset;
 	float counter;
 
-	Taca(vec position, EntityDirection dir) {
+	Entity* roomba_absorbing = nullptr;
+	int timer_absorb = 0;
+	int TIMER_ABSORB_MAX = 500;
+
+
+	Taca(vec position, EntityDirection dir) 
+	{
 		currCintaDirection = dir;
 		counter = 7500 + Random::roll(5000);
 		pos = position;
@@ -31,26 +37,70 @@ struct Taca : Cintable, EntS<Taca>
 	sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(1, 1));
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
-		vec posfinal = pos + m_offset;
+		vec posfinal = pos;
+
+		float progress = float(timer_absorb) / float(TIMER_ABSORB_MAX);
+
+		if (roomba_absorbing)
+		{
+			posfinal = pos + (roomba_absorbing->pos + vec(8,8) - pos).Normalized() * progress;
+		}
+		
+
+		
+		posfinal += m_offset;
+
 		posfinal.x = int(posfinal.x);
 		posfinal.y = int(posfinal.y);
+
+		if (roomba_absorbing)
+		{
+			m_color.a = (1.0f - progress) * 255;
+		}
+
 		rectangle.setFillColor(m_color);
 		rectangle.setPosition(posfinal);
+
+		if (roomba_absorbing)
+		{
+			float sc = 1.25f + float(timer_absorb / TIMER_ABSORB_MAX)*0.75f;
+			rectangle.setScale(sc, sc);
+		}
 
 		window.draw(rectangle);
 	}
 
-	void Update(float dt)
+	void AbsorbByRoomba(Entity* roomba)
 	{
-		SetSpeedWithCinta(speed);
-		counter -= dt;
-		if (counter < 0) {
-			if (currCintaDirection != EntityDirection::NONE  || prevCintaDirection != EntityDirection::NONE)
+		roomba_absorbing = roomba;
+	}
+
+	void Update(int dt)
+	{
+		if (roomba_absorbing)
+		{
+			timer_absorb += dt;
+			if (timer_absorb > TIMER_ABSORB_MAX)
 			{
 				alive = false;
 			}
 		}
-		pos += speed * 0.8 * dt;
+		else
+		{
+			SetSpeedWithCinta(speed);
+			speed = speed * 0.8f;
+			counter -= dt;
+			if (counter < 0)
+			{
+				if (currCintaDirection != EntityDirection::NONE || prevCintaDirection != EntityDirection::NONE)
+				{
+					alive = false;
+				}
+			}
+		}
+
+		
+		pos += speed * dt;
 		speed.Zero();
 		if (pos.y > GameData::WINDOW_HEIGHT/GameData::GAME_ZOOM) {
 			alive = false;

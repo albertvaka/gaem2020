@@ -40,6 +40,7 @@ struct vec : public sf::Vector2f
   inline float    LengthSq()const;
 
   inline void      Normalize();
+  inline vec      Normalized();
 
   inline float    Dot(const vec& v2) const;
 
@@ -224,6 +225,20 @@ inline void vec::Normalize()
     this->y /= vector_length;
   }
 }
+inline vec vec::Normalized()
+{
+	float vector_length = this->Length();
+
+	vec res;
+
+	if (vector_length > std::numeric_limits<float>::epsilon())
+	{
+		res.x = this->x / vector_length;
+		res.y = this->y / vector_length;
+	}
+
+	return res;
+}
 
 
 //------------------------------------------------------------------------non member functions
@@ -286,6 +301,14 @@ inline vec operator*(float lhs, const vec &rhs)
   vec result(rhs);
   result *= lhs;
   return result;
+}
+
+inline vec operator*(const vec &lhs, const vec &rhs)
+{
+	vec result(rhs);
+	result.x = lhs.x * rhs.x;
+	result.y = lhs.y * rhs.y;
+	return result;
 }
 
 inline vec operator-(const vec &lhs, const vec &rhs)
