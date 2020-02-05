@@ -98,10 +98,12 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 	}
 
-	void ActionButtonPressed() {
+	void ActionButtonJustPressed() 
+	{
 
 		// Poner cadaver en mesa
-		if (isCarrying && cadaver && mesa && !mesa->cadaver) {
+		if (isCarrying && cadaver && mesa && !mesa->cadaver) 
+		{
 			isCarrying = false;
 			mesa->cadaver = cadaver;
 			cadaver->putCadaverOnTable(mesa->pos);
@@ -110,7 +112,8 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 
 		// Sacar cadaver de mesa
-		if (!isCarrying && mesa && mesa->cadaver) {
+		if (!isCarrying && mesa && mesa->cadaver) 
+		{
 			isCarrying = true;
 			cadaver = mesa->cadaver;
 			mesa->cadaver = NULL;
@@ -146,7 +149,8 @@ struct Player : SortedDrawable, EntS<Player>
 
 		
 		// Coger extremity del suelo
-		if (!isCarrying && extremity){
+		if (!isCarrying && extremity)
+		{
 			isCarrying = true;
 			extremity->isCarried = true;
 			extremity->pos.x = pos.x;
@@ -156,7 +160,8 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 		
 		// Coger cadaver del suelo
-		if (!isCarrying && cadaver) {
+		if (!isCarrying && cadaver) 
+		{
 			isCarrying = true;
 			cadaver->carryCadaver(pos.x, pos.y);
 			extremity = NULL;
@@ -173,7 +178,8 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 
 		// Dejar cadaver en suelo
-		 if (isCarrying && cadaver != NULL) {
+		 if (isCarrying && cadaver != NULL) 
+		 {
 			isCarrying = false;
 			cadaver->isCarried = false;
 			cadaver->pos.y -= 2;
@@ -181,16 +187,24 @@ struct Player : SortedDrawable, EntS<Player>
 			cadaver->pos.x = round(cadaver->pos.x / 16.f )*16;
 			cadaver = NULL;
 			return;
-		}
+		 }
 
+		 // Boton
+		 if (!isCarrying && lever)
+		 {
+			 lever->Push();
+			 return;
+		 }
+	}
 
+	void ActionButtonHold()
+	{
 		// Boton
-		if (!isCarrying && lever && lever->isReady)
+		if (!isCarrying && lever)
 		{
-			lever->Push();
+			lever->Hold();
 			return;
 		}
-
 	}
 
 	float boundingBoxSize = 10.f;
@@ -344,8 +358,14 @@ struct Player : SortedDrawable, EntS<Player>
 		SetSpeedWithPlayerInput();
 		//SetSpeedWithCinta(speed);
 
-		if ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) {
-			ActionButtonPressed();
+		if ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) 
+		{
+			ActionButtonJustPressed();
+		}
+
+		if ((Keyboard::IsKeyPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonPressed(player, GamePad::Button::A))
+		{
+			ActionButtonHold();
 		}
 
 		Move(dt);
@@ -384,7 +404,7 @@ struct Player : SortedDrawable, EntS<Player>
 		window.draw(spr);
 		spr.setScale(a);
 
-		if (((cadaver || extremity) && !isCarrying) || lever && lever->isReady || (isCarrying && cadaver && mesa && !mesa->cadaver) || (collector && collector->extremity) || (isCarrying && extremity && collector && !collector->extremity))
+		if (((cadaver || extremity) && !isCarrying) || lever && lever->is_connected || (isCarrying && cadaver && mesa && !mesa->cadaver) || (collector && collector->extremity) || (isCarrying && extremity && collector && !collector->extremity))
 		{
 			spr.setTextureRect(actionButton.CurrentFrame());
 			spr.setPosition(pos.x + 13, pos.y - 10);

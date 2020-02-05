@@ -38,7 +38,7 @@ struct Collector : SortedDrawable, EntS<Collector>
 
 };
 
-struct Mesa : SortedDrawable, EntS<Mesa>
+struct Mesa : SortedDrawable, EntS<Mesa>, Buttonable
 {
 	Cadaver* cadaver = nullptr;
 	Lever* lever = nullptr;
@@ -53,11 +53,12 @@ struct Mesa : SortedDrawable, EntS<Mesa>
 
 		anim.Ensure(AnimationType::POKEMON);
 		lever = new Lever(pos-vec(16, 42));
+		lever->ent_connected = this;
 	}
 
 	void Update(int dt)
 	{
-		lever->isReady = (collector->extremity && cadaver && !cadaver->HasExtremity(type)) && collector->extremity->type == type || (!collector->extremity && cadaver && cadaver->HasExtremity(type));
+		lever->is_connected = (collector->extremity && cadaver && !cadaver->HasExtremity(type)) && collector->extremity->type == type || (!collector->extremity && cadaver && cadaver->HasExtremity(type));
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
@@ -68,7 +69,12 @@ struct Mesa : SortedDrawable, EntS<Mesa>
 		wnd.draw(spr);
 		spr.setScale(1,1);
 
-		if (cadaver && lever->isFinished)
+		
+	}
+
+	void Operate()
+	{
+		if (cadaver)
 		{
 			if (collector->extremity)
 			{
@@ -86,7 +92,6 @@ struct Mesa : SortedDrawable, EntS<Mesa>
 					collector->extremity = e;
 				}
 			}
-			lever->isFinished = false;
 		}
 	}
 

@@ -37,6 +37,11 @@ struct Entity : EntS<Entity>
 	}
 };
 
+struct Buttonable
+{
+	virtual void Operate() = 0;
+};
+
 struct SortedDrawable : Entity, EntS<SortedDrawable> {
 	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{

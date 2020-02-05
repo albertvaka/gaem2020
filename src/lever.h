@@ -6,46 +6,60 @@ struct Player;
 
 struct Lever : SortedDrawable, EntS<Lever>
 {
+	bool is_connected = false;
+	bool is_ready = false;
 
-	const int LEVER_MAX_COUNTER = 2000;
-	int leverCounter = 0;
+	int is_pushed_timer = -1;
 
-	bool isFinished = false;
-	bool isReady = false;
+	int push = 0;
+	const int PUSH_MAX = 2000;
 
 	Player* player = nullptr;
-
-	bool is_pushed_down = false;
+	Buttonable* ent_connected = nullptr;
 
 	Lever(vec position)
 	{
 		pos = position;
 	}
 
-	void Push() {
-		leverCounter += 250;
-		is_pushed_down = !is_pushed_down;
+	void Push()
+	{
+		push += 300;
+		is_pushed_timer = 20;
+	}
+
+	void Hold()
+	{
+		is_pushed_timer = 20;
 	}
 
 	void Update(int dt)
 	{
+
 		if (!player)
 		{
-			is_pushed_down = false;
+			is_ready = false;
 		}
-		if (leverCounter >= LEVER_MAX_COUNTER)
+		if (push >= PUSH_MAX)
 		{
-			isFinished = true;
-			leverCounter = 0;
+			if (ent_connected) ent_connected->Operate();
+			push = 0;
 		}
-		if (leverCounter > 0)
+		if (push > 0)
 		{
-			leverCounter -= dt;
-			if (leverCounter < 0) {
-				leverCounter = 0;
-				is_pushed_down = false;
+			push -= dt;
+			if (push < 0)
+			{
+				push = 0;
 			}
 		}
+
+
+		if (is_pushed_timer > 0)
+		{
+			is_pushed_timer -= dt;
+		}
+		
 		// Reset collision
 		player = nullptr;
 	}
@@ -55,10 +69,14 @@ struct Lever : SortedDrawable, EntS<Lever>
 		//Bounds(pos.x - 1, pos.y - 1, 2, 2).Draw(wnd);
 
 		//Cablesitos
-		spr.setTextureRect(sf::IntRect(0, 11 * 16, 16, 16));
+
+		int lvl = std::max(0, push);
+		int cable_spr_dx = (int)(std::min(8.0f, float(push / (PUSH_MAX/8.0f)))) * 32;
+		
+		spr.setTextureRect(sf::IntRect(cable_spr_dx, 11 * 16, 16, 16));
 		spr.setPosition(pos.x - 1.5f, pos.y + 10);
 		wnd.draw(spr);
-		spr.setTextureRect(sf::IntRect(16, 11 * 16, 16, 16));
+		spr.setTextureRect(sf::IntRect(16 + cable_spr_dx, 11 * 16, 16, 16));
 		spr.setPosition(pos.x + 14.5f, pos.y + 10);
 		wnd.draw(spr);
 
@@ -69,23 +87,25 @@ struct Lever : SortedDrawable, EntS<Lever>
 
 		const int TIMER_FLASH_LEVER = 250;
 		int t = mainClock.getElapsedTime().asMilliseconds() % (TIMER_FLASH_LEVER*2);
-		if (isReady && (t > TIMER_FLASH_LEVER))
-		{
-			spr.setTextureRect(sf::IntRect(16 * 3, 112, 16, 16));
-		}
-		else 
-		{
-			spr.setTextureRect(sf::IntRect(16, 112, 16, 16));
-		}
 
-		if (is_pushed_down)
+		int dx_flash_effect = 0;
+		int dx_pushed_effect = 0;
+
+		if (is_pushed_timer > 0)
 		{
-			spr.setTextureRect(sf::IntRect(16 + 16, 112, 16, 16));
+			dx_pushed_effect = 16;
 		}
+		if (is_connected && (t > TIMER_FLASH_LEVER))
+		{
+			dx_flash_effect = 32;
+		}
+		
+		spr.setTextureRect(sf::IntRect(16 + dx_flash_effect + dx_pushed_effect, 112, 16, 16));
 
 		wnd.draw(spr);
 		spr.setScale(1.f, 1.f);
 
+		/*
 		if (leverCounter > 0)
 		{
 			const int size = 25;
@@ -107,6 +127,7 @@ struct Lever : SortedDrawable, EntS<Lever>
 
 			wnd.draw(leverFrontShape);
 		}
+		*/
 	}
 
 };
