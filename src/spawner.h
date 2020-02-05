@@ -29,13 +29,12 @@ struct Spawner : Entity, EntS<Spawner>
 	}
 
 	void spawn() {
-		if (Random::roll_1d4() > 2) {
+		//if (Random::roll_1d4() > 2) {
 			new Cadaver(pos);
-		}
-		else {
-			new Extremity(pos, RandomExtremityType(), RandomExtremityColor());
-		}
-		
+		//}
+		//else {
+		//	new Extremity(pos, RandomExtremityType(), RandomExtremityColor());
+		//}
 	}
 
 };
