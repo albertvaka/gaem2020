@@ -172,7 +172,7 @@ struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 		isCarried = true;
 
 		pos.x = x;
-		pos.y = y + 3;
+		pos.y = y + 2;
 
 		isLet = false;
 	}
@@ -288,7 +288,7 @@ struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 	const int yt = 12;
 
 	const int xp = 5;
-	const int yp = 8;
+	const int yp = 9;
 
 
 	const float xs = -0.5;
