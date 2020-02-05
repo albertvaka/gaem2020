@@ -28,8 +28,6 @@ sf::Clock mainClock;
 int countGoods = 0;
 int countBads = 0;
 
-TileMap game_map;
-
 void LoadGame(sf::RenderWindow& window)
 {
 	texture.loadFromFile("data/spritesheet.png");
@@ -45,7 +43,7 @@ void LoadGame(sf::RenderWindow& window)
 	Camera::SetZoom(4.f);
 	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / 8, GameData::WINDOW_HEIGHT/8));
 
-	LoadMap(game_map);
+	LoadMap();
 
 	for (Collector* c : EntS<Collector>::getAll()) 
 	{
@@ -81,7 +79,6 @@ void DrawGui()
 	}
 
 	ImGui::Checkbox("Blood", &withTaca);
-	ImGui::Text(std::to_string(!!collectDebug->extremity).c_str());
 
 	ImGui::Text(std::to_string(EntS<Cadaver>::getAll().size()).c_str());
 
@@ -104,7 +101,7 @@ void DrawGui()
 void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 {
 	int time = mainClock.getElapsedTime().asMilliseconds();
-	TileType type = game_map.tiles[i][j];
+	TileType type = mapita[i][j];
 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
 
 	switch (type) {
@@ -198,9 +195,9 @@ int main()
 		window.clear(sf::Color(64, 64, 64));
 
 
-		for (int i = 0; i < game_map.tiles.size(); ++i)
+		for (int i = 0; i < mapita.size(); ++i)
 		{
-			for (int j = 0; j < game_map.tiles[i].size(); ++j)
+			for (int j = 0; j < mapita[i].size(); ++j)
 			{
 				drawTile(sprite, window, i, j);
 

@@ -10,6 +10,8 @@
 #include "cadaver.h"
 #include "mesa.h"
 
+extern std::vector< std::vector<bool> > passable;
+
 struct Player : SortedDrawable, EntS<Player>
 {
 	Animation actionButton;

@@ -2,8 +2,6 @@
 
 #include <vector>
 
-Collector* collectDebug = nullptr; //????????????? que es esta mierda
-
 const int TILE_SIZE = 16;
 
 enum class TileType
@@ -24,6 +22,10 @@ enum class TileType
 	ROOMBA_HOME
 };
 
+std::vector< std::vector<TileType> > mapita;
+std::vector< std::vector<bool> > passable;
+std::vector< std::vector<bool> > passableCleaner;
+
 const std::vector< std::string > mapita_inicial = 
 {
 	"XXYYYYYYYXwSXXYYYYYYYXX",
@@ -43,14 +45,6 @@ const std::vector< std::string > mapita_inicial =
 	"XXXXXXXXXXBBBhXXXXXXXXX",
 	"XXXXXXXXXXZZZXXXXXXXXXX",
 };
-
-struct TileMap
-{
-	std::vector< std::vector<TileType> > tiles;
-	std::vector< std::vector<bool> > passable;
-	std::vector< std::vector<bool> > passableCleaner;
-};
-
 
 TileType TileFromChar(char c)
 {
@@ -125,12 +119,8 @@ ExtremityType letraToExtremity(char c)
 }
 
 
-void LoadMap(TileMap& map)
+void LoadMap()
 {
-
-	auto& mapita = map.tiles;
-	auto& passable = map.passable;
-	auto& passableCleaner = map.passableCleaner;
 
 	passable.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
 	passableCleaner.resize(mapita_inicial[0].size(), std::vector<bool>(mapita_inicial.size()));
@@ -171,8 +161,7 @@ void LoadMap(TileMap& map)
 			case 'l':
 			case 'r':
 			case 'm':
-				if (c == 'k') collectDebug = new Collector(pos, letraToExtremity(c));
-				else new Collector(pos, letraToExtremity(c));;
+				new Collector(pos, letraToExtremity(c));
 				break;
 			case 'S':
 			{
@@ -184,31 +173,31 @@ void LoadMap(TileMap& map)
 			case 'U': //Door: Left Arm
 			{
 				Door* d = new Door(pos, Door::Panel::LEFT_ARM);
-				DoorSensor* ds = new DoorSensor(d);
+				new DoorSensor(d);
 				passable[x][y] = true;
 			} break;
 			case 'y': //Door: Head
 			{
 				Door* d = new Door(pos, Door::Panel::HEAD);
-				DoorSensor* ds = new DoorSensor(d);
+				new DoorSensor(d);
 				passable[x][y] = true;
 			} break;
 			case 'P': //Door: Left Leg
 			{
 				Door* d = new Door(pos, Door::Panel::LEFT_LEG);
-				DoorSensor* ds = new DoorSensor(d);
+				new DoorSensor(d);
 				passable[x][y] = true;
 			} break;
 			case 'p': //Door: Right Leg
 			{
 				Door* d = new Door(pos, Door::Panel::RIGHT_LEG);
-				DoorSensor* ds = new DoorSensor(d);
+				new DoorSensor(d);
 				passable[x][y] = true;
 			} break;
 			case 'u': //Door: Right Arm
 			{
 				Door* d = new Door(pos, Door::Panel::RIGHT_ARM);
-				DoorSensor* ds = new DoorSensor(d);
+				new DoorSensor(d);
 				passable[x][y] = true;
 			} break;
 
