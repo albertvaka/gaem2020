@@ -73,13 +73,40 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
+		
 		vec carriedOffset;
-		if (isCarried) {
+		if (isCarried) 
+		{
 			carriedOffset.y = -2;
 		}
 		spr.setPosition(pos+Offset()+carriedOffset);
 		spr.setTextureRect(extremitySprPos[color][type]);
+
+
+		//if (!isCarried)
+		{
+			spr.setColor(sf::Color::Black);
+			spr.move(0, 1);
+			wnd.draw(spr);
+			
+			spr.move(-1, -1);
+			wnd.draw(spr);
+
+			spr.move(2, 0);
+			wnd.draw(spr);
+
+			spr.move(-1, -1);
+			wnd.draw(spr);
+
+			spr.move(0, 1);
+			spr.setColor(sf::Color::White);
+		}
+
+
 		wnd.draw(spr);
+
+		
+
 		spr.setScale(1, 1);
 
 
