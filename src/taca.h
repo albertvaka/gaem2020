@@ -1,6 +1,7 @@
 #include "entity.h"
 #include "animation.h"
 #include "rand.h"
+#include "cleaner.h"
 
 struct Taca : Cintable, EntS<Taca>
 {
@@ -14,7 +15,7 @@ struct Taca : Cintable, EntS<Taca>
 
 	Entity* roomba_absorbing = nullptr;
 	int timer_absorb = 0;
-	int TIMER_ABSORB_MAX = 500;
+	int TIMER_ABSORB_MAX = 1000;
 
 
 	Taca(vec position, EntityDirection dir) 
@@ -43,7 +44,7 @@ struct Taca : Cintable, EntS<Taca>
 
 		if (roomba_absorbing)
 		{
-			posfinal = pos + (roomba_absorbing->pos + vec(8,8) - pos).Normalized() * progress;
+			posfinal = pos + (roomba_absorbing->pos - pos) * progress;
 		}
 		
 
@@ -63,11 +64,12 @@ struct Taca : Cintable, EntS<Taca>
 
 		if (roomba_absorbing)
 		{
-			float sc = 1.25f + float(timer_absorb / TIMER_ABSORB_MAX)*0.75f;
+			float sc = 1.25f + float(timer_absorb / TIMER_ABSORB_MAX)*1.5f;
 			rectangle.setScale(sc, sc);
 		}
 
 		window.draw(rectangle);
+		
 	}
 
 	void AbsorbByRoomba(Entity* roomba)

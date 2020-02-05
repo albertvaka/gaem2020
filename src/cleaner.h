@@ -199,8 +199,17 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 	bool stuck = false;
 	bool ya_va = false;
 
+
+	int just_absorbed_timer = -1;
+	int JUST_ABSORBED_TIMER_MAX = 200;
+
 	void Update(int dt)
 	{
+		if (just_absorbed_timer > 0)
+		{
+			just_absorbed_timer -= dt;
+		}
+
 		oldPos = pos;
 		if (stuck) {
 			stuck = false;
@@ -293,9 +302,26 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		
 		spr.setTextureRect(anim.CurrentFrame());
 
-		window.draw(spr);
 
-		if (timer_naixement < 2400) {
+		if (just_absorbed_timer > 0)
+		{
+			float sc = 1.0f + 0.1f*((just_absorbed_timer)/float(JUST_ABSORBED_TIMER_MAX));
+			spr.setOrigin(8, 8);
+			spr.setScale(sc, sc);
+			spr.move(8, 8);
+			window.draw(spr);
+			spr.setOrigin(0, 0);
+
+			spr.setScale(1, 1);
+		}
+		else
+		{
+			window.draw(spr);
+		}
+		
+
+		if (timer_naixement < 2400) 
+		{
 			parent->Draw(spr, window);
 		}
 
@@ -323,6 +349,15 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		
 		
 		//window.draw(spr);
+	}
+
+
+	void Absorbed()
+	{
+		if (just_absorbed_timer <= 0)
+		{
+			just_absorbed_timer = JUST_ABSORBED_TIMER_MAX;
+		}
 	}
 
 };

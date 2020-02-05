@@ -141,6 +141,7 @@ void collision_cadaver_despawner(Cadaver* e, Despawner* _)
 
 void collision_clean_taques(Taca* t, Cleaner* c) 
 {
+	c->Absorbed();
 	t->AbsorbByRoomba(c);
 }
 
