@@ -24,13 +24,19 @@ struct Lever : SortedDrawable, EntS<Lever>
 
 	void Push()
 	{
-		push += 300;
-		is_pushed_timer = 20;
+		if (is_connected)
+		{
+			push += 300;
+			is_pushed_timer = 20;
+		}
 	}
 
 	void Hold()
 	{
-		is_pushed_timer = 20;
+		if (is_connected)
+		{
+			is_pushed_timer = 20;
+		}
 	}
 
 	void Update(int dt)
@@ -84,7 +90,6 @@ struct Lever : SortedDrawable, EntS<Lever>
 		spr.setScale(0.75f, 0.75f);
 		spr.setPosition(pos.x, pos.y);
 
-
 		const int TIMER_FLASH_LEVER = 250;
 		int t = mainClock.getElapsedTime().asMilliseconds() % (TIMER_FLASH_LEVER*2);
 
@@ -104,30 +109,6 @@ struct Lever : SortedDrawable, EntS<Lever>
 
 		wnd.draw(spr);
 		spr.setScale(1.f, 1.f);
-
-		/*
-		if (leverCounter > 0)
-		{
-			const int size = 25;
-			sf::IntRect leverBckRect = sf::IntRect(pos.x, pos.y - 16, size, 4);
-			sf::RectangleShape leverBckShape = sf::RectangleShape();
-			leverBckShape.setPosition(leverBckRect.left, leverBckRect.top);
-			leverBckShape.setSize(sf::Vector2f(leverBckRect.width, leverBckRect.height));
-			leverBckShape.setFillColor(sf::Color(73, 0, 0));
-
-			wnd.draw(leverBckShape);
-
-			int width = (leverCounter* size)/ LEVER_MAX_COUNTER;
-
-			sf::IntRect leverFrontRect = sf::IntRect(pos.x, pos.y - 16, width, 4);
-			sf::RectangleShape leverFrontShape = sf::RectangleShape();
-			leverFrontShape.setPosition(leverFrontRect.left, leverFrontRect.top);
-			leverFrontShape.setSize(sf::Vector2f(leverFrontRect.width, leverFrontRect.height));
-			leverFrontShape.setFillColor(sf::Color(188, 0, 0));
-
-			wnd.draw(leverFrontShape);
-		}
-		*/
 	}
 
 };
