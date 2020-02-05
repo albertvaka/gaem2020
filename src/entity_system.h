@@ -20,6 +20,10 @@ void UpdateEntities(int dt)
 	//Collisions are handled in collider.h
 	UpdateCollisions(dt);
 
+	if (EntS<Entity>::getAll().size() * 2 > EntS<Entity>::getAll().capacity()) {
+		// Hack to make sure the vector of Entities doesn't grow while we iterate it
+		EntS<Entity>::getAll().reserve(EntS<Entity>::getAll().size() * 2);
+	}
 	for (Entity* e : EntS<Entity>::getAll())
 	{
 		e->Update(dt);
