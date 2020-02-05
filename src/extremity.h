@@ -58,8 +58,8 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 	{
 		isCarried = true;
 
-		pos.x = x;
-		pos.y = y+1;
+		pos.x = static_cast<float>(x);
+		pos.y = static_cast<float>(y+1);
 	}
 
 
