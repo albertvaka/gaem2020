@@ -67,12 +67,17 @@ struct Lever : SortedDrawable, EntS<Lever>
 		spr.setPosition(pos.x, pos.y);
 
 
-		if (isReady && int(mainClock.getElapsedTime().asSeconds()) % 2){
+		const int TIMER_FLASH_LEVER = 250;
+		int t = mainClock.getElapsedTime().asMilliseconds() % (TIMER_FLASH_LEVER*2);
+		if (isReady && (t > TIMER_FLASH_LEVER))
+		{
 			spr.setTextureRect(sf::IntRect(16 * 3, 112, 16, 16));
 		}
-		else {
-				spr.setTextureRect(sf::IntRect(16, 112, 16, 16));
+		else 
+		{
+			spr.setTextureRect(sf::IntRect(16, 112, 16, 16));
 		}
+
 		if (is_pushed_down)
 		{
 			spr.setTextureRect(sf::IntRect(16 + 16, 112, 16, 16));
