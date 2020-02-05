@@ -52,6 +52,9 @@ struct Taca : Cintable, EntS<Taca>
 		}
 		pos += speed * 0.8 * dt;
 		speed.Zero();
+		if (pos.y > GameData::WINDOW_HEIGHT/GameData::GAME_ZOOM) {
+			alive = false;
+		}
 	}
 
 	vec getFinalPos()

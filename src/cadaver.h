@@ -6,6 +6,10 @@
 #include "entity.h"
 #include "taca.h"
 
+extern sf::Clock mainClock;
+
+bool withTaca = true;
+
 struct SpawnAnim : SortedDrawable, EntS<SpawnAnim>
 {
 	int timer = 0;
@@ -46,11 +50,6 @@ struct SpawnAnim : SortedDrawable, EntS<SpawnAnim>
 
 
 };
-
-
-extern sf::Clock mainClock;
-
-bool withTaca = true;
 
 struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 {

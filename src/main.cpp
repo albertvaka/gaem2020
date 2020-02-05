@@ -115,23 +115,6 @@ void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 	case TileType::SIGN_BAD:
 		sprite.setTextureRect(sf::IntRect(6 * 16, 10 * 16, 16, 16));
 		break;
-		/* DEPRECATED
-	case TileType::SIGN_HEAD:
-		sprite.setTextureRect(sf::IntRect(0 * 16, 10 * 16, 16, 16));
-		break;
-	case TileType::SIGN_LEFT_ARM:
-		sprite.setTextureRect(sf::IntRect(1 * 16, 10 * 16, 16, 16));
-		break;
-	case TileType::SIGN_RIGHT_ARM:
-		sprite.setTextureRect(sf::IntRect(2 * 16, 10 * 16, 16, 16));
-		break;
-	case TileType::SIGN_LEFT_LEG:
-		sprite.setTextureRect(sf::IntRect(3 * 16, 10 * 16, 16, 16));
-		break;
-	case TileType::SIGN_RIGHT_LEG:
-		sprite.setTextureRect(sf::IntRect(4 * 16, 10 * 16, 16, 16));
-		break;
-		*/
 	case TileType::FLOOR:
 		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
 		break;

@@ -185,8 +185,8 @@ void UpdateCollisions(int dt)
 	collide(EntS<Cintable>::getAll(), EntS<Cinta>::getAll(), collision_entity_cinta);
 	collide(EntS<Cadaver>::getAll(), EntS<Detector>::getAll(), collision_cadaver_spawner);
 	collide(EntS<Cadaver>::getAll(), EntS<Despawner>::getAll(), collision_cadaver_despawner);
+	collide(EntS<Extremity>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
 	collide(EntS<Cleaner>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
-
 	collide(EntS<Player>::getAll(), EntS<DoorSensor>::getAll(), coll_ent_doorsensor);
 	collide(EntS<Cleaner>::getAll(), EntS<DoorSensor>::getAll(), coll_ent_doorsensor);
 

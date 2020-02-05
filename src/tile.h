@@ -38,6 +38,7 @@ const std::vector< std::string > mapita_inicial =
 	"XX YYPYY       YYuYY  X",
 	"XX                   XX",
 	"XXXXXXXXXXBBBhXXXXXXXXX",
+	"XXXXXXXXXXBBBXXXXXXXXXX",
 	"XXXXXXXXXXZZZXXXXXXXXXX",
 };
 
@@ -59,11 +60,10 @@ TileType TileFromChar(char c)
 		} break;
 		case 'S':
 		case 'B':
-		case 'T':
+		case 'Z':
 		{
 			return TileType::BELT_DOWN;
 		} break;
-		case 'Z':
 		case 'C':
 		{
 			return TileType::BELT_LEFT;
