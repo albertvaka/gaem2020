@@ -83,7 +83,7 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 		spr.setTextureRect(extremitySprPos[color][type]);
 
 
-		//if (!isCarried)
+		
 		{
 			spr.setColor(sf::Color::Black);
 			spr.move(0, 1);
@@ -106,6 +106,13 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 		wnd.draw(spr);
 
 		
+		if (!isLet)
+		{
+			spr.setTextureRect(sf::IntRect(54, 86, 12, 12));
+			spr.move(-1, -1);
+		}
+		wnd.draw(spr);
+
 
 		spr.setScale(1, 1);
 
