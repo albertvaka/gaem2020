@@ -25,7 +25,7 @@ struct Collector : SortedDrawable, EntS<Collector>
 		anim.loopable = false;
 	}
 
-	void Update(int dt);
+	void Update(int dt) override;
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
