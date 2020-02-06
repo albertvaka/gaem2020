@@ -35,20 +35,20 @@ endif
 $(EXEC): $(OBJ) $(IMGUI_OBJ)
 	$(CXX) $(LDFLAGS) $(OBJ) $(IMGUI_OBJ) -o $(EXEC)
 
-obj/main.cpp.o: src/main.cpp src/*.h
+obj/main.cpp.o: src/main.cpp src/*.h Makefile
 	@mkdir -p obj
 	$(CXX) $(CFLAGS) -c $< -o $@
 
-obj/imgui_sfml/%.cpp.o: imgui_sfml/%.cpp imgui_sfml/*.h
+obj/%.cpp.o: src/%.cpp src/*.h Makefile
+	@mkdir -p obj/
+	$(CXX) $(CFLAGS) -c $< -o $@
+
+obj/imgui_sfml/%.cpp.o: imgui_sfml/%.cpp imgui_sfml/*.h Makefile
 	@mkdir -p obj/imgui_sfml
 	$(CXX) $(CFLAGS) -c $< -o $@
 
-obj/imgui/%.cpp.o: imgui/%.cpp imgui/*.h
+obj/imgui/%.cpp.o: imgui/%.cpp imgui/*.h Makefile
 	@mkdir -p obj/imgui
-	$(CXX) $(CFLAGS) -c $< -o $@
-
-obj/%.cpp.o: src/%.cpp imgui/*.h
-	@mkdir -p obj/
 	$(CXX) $(CFLAGS) -c $< -o $@
 
 clean:
