@@ -35,7 +35,7 @@ void LoadGame(sf::RenderWindow& window)
 
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(16, 16, 16, 16));
-	
+
 	window.setFramerateLimit(60);
 	ImGui::SFML::Init(window);
 
@@ -45,11 +45,11 @@ void LoadGame(sf::RenderWindow& window)
 
 	LoadMap();
 
-	for (Collector* c : EntS<Collector>::getAll()) 
+	for (Collector* c : EntS<Collector>::getAll())
 	{
-		for (Mesa* m : EntS<Mesa>::getAll()) 
+		for (Mesa* m : EntS<Mesa>::getAll())
 		{
-			if (m->type == c->type) 
+			if (m->type == c->type)
 			{
 				m->collector = c;
 				c->mesa = m;
@@ -62,7 +62,7 @@ void LoadGame(sf::RenderWindow& window)
 	new Cadaver(vec(100, 100));
 	new Extremity(vec(120, 120), RandomExtremityType(), RandomExtremityColor());
 #endif
-	
+
 }
 
 void DrawGui()
@@ -98,54 +98,6 @@ void DrawGui()
 #endif
 }
 
-void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
-{
-	int time = mainClock.getElapsedTime().asMilliseconds();
-	TileType type = mapita[i][j];
-	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
-
-	switch (type) {
-	case TileType::ROOMBA_HOME:
-	{
-		sprite.setTextureRect(sf::IntRect(0, 13 * TILE_SIZE, TILE_SIZE, TILE_SIZE));
-	} break;
-	case TileType::SIGN_GOOD:
-		sprite.setTextureRect(sf::IntRect(5*16, 10 * 16, 16, 16));
-		break;
-	case TileType::SIGN_BAD:
-		sprite.setTextureRect(sf::IntRect(6 * 16, 10 * 16, 16, 16));
-		break;
-	case TileType::FLOOR:
-		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
-		break;
-	case TileType::WALL:
-	{
-		sprite.setTextureRect((sf::IntRect(64 + 16, 48, 16, 16)));
-	} break;
-	case TileType::BELT_DOWN:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		sprite.setOrigin(0, 16);
-		sprite.setRotation(90);
-		break;
-	case TileType::BELT_UP:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		sprite.setOrigin(16, 0);
-		sprite.setRotation(-90);
-		break;
-	case TileType::BELT_LEFT:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		sprite.setOrigin(16, 16);
-		sprite.setRotation(180);
-		break;
-	case TileType::BELT_RIGHT:
-		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
-		break;
-	}
-	window.draw(sprite);
-	sprite.setRotation(0);
-	sprite.setOrigin(0, 0);
-}
-
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT), GameData::GAME_TITLE);
@@ -159,7 +111,7 @@ int main()
 	txt_fps.setPosition(10, 10);
 	txt_fps.setFont(font);
 
-	while (window.isOpen()) 
+	while (window.isOpen())
 	{
 		sf::Time time = dtClock.restart();
 
@@ -195,7 +147,7 @@ int main()
 		ImGui::SFML::Render(window);
 #ifdef _DEBUG
 		fps_counter++;
-		if (fpsClock.getElapsedTime().asSeconds() > 0.5f) 
+		if (fpsClock.getElapsedTime().asSeconds() > 0.5f)
 		{
 			txt_fps.setString(std::to_string(static_cast<int>(fps_counter / fpsClock.restart().asSeconds())));
 			fps_counter = 0;
@@ -203,7 +155,7 @@ int main()
 		window.draw(txt_fps);
 #endif
 		Camera::EndGuiDraw();
-		
+
 		window.display();
 	}
 
