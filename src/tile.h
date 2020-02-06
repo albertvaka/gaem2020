@@ -14,7 +14,8 @@ enum class TileType
 	BELT_UP,
 	BELT_DOWN,
 	FLOOR,
-	ROOMBA_HOME
+	ROOMBA_HOME,
+	FRAME_PUERTA
 };
 
 std::vector< std::vector<TileType> > mapita;
@@ -76,7 +77,14 @@ TileType TileFromChar(char c)
 		{
 			return TileType::ROOMBA_HOME;
 		} break;
-
+		case 'u':
+		case 'P':
+		case 'p':
+		case 'y':
+		case 'U':
+		{
+			return TileType::FRAME_PUERTA;
+		} break;
 	}
 	return TileType::FLOOR;
 }
@@ -103,6 +111,59 @@ ExtremityType letraToExtremity(char c)
 	}
 }
 
+void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
+{
+	int time = mainClock.getElapsedTime().asMilliseconds();
+	TileType type = mapita[i][j];
+	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
+
+	switch (type) {
+	case TileType::ROOMBA_HOME:
+	{
+		sprite.setTextureRect(sf::IntRect(0, 13 * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+	} break;
+	case TileType::SIGN_GOOD:
+		sprite.setTextureRect(sf::IntRect(5*16, 10 * 16, 16, 16));
+		break;
+	case TileType::SIGN_BAD:
+		sprite.setTextureRect(sf::IntRect(6 * 16, 10 * 16, 16, 16));
+		break;
+	case TileType::FLOOR:
+		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
+		break;
+	case TileType::WALL:
+	{
+		sprite.setTextureRect((sf::IntRect(64 + 16, 48, 16, 16)));
+	} break;
+	case TileType::FRAME_PUERTA:
+	{
+		sprite.setTextureRect(sf::IntRect(64, 48, 16, 16));
+		window.draw(sprite);
+		sprite.setTextureRect(sf::IntRect(7*16, 10 * 16, 16, 16));
+	} break;
+	case TileType::BELT_DOWN:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		sprite.setOrigin(0, 16);
+		sprite.setRotation(90);
+		break;
+	case TileType::BELT_UP:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		sprite.setOrigin(16, 0);
+		sprite.setRotation(-90);
+		break;
+	case TileType::BELT_LEFT:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		sprite.setOrigin(16, 16);
+		sprite.setRotation(180);
+		break;
+	case TileType::BELT_RIGHT:
+		sprite.setTextureRect(Animation::AnimFrame(AnimationType::BELT_RIGHT, time));
+		break;
+	}
+	window.draw(sprite);
+	sprite.setRotation(0);
+	sprite.setOrigin(0, 0);
+}
 
 void LoadMap()
 {
