@@ -48,7 +48,7 @@ struct Player : SortedDrawable, EntS<Player>
 		sf::Vector2f anal = vec(GamePad::AnalogStick::Left.get(player, deadZone));
 
 		//Player 0 can move with keyboard
-		if (player == 0)
+		if (player == 3)
 		{
 			if (Keyboard::IsKeyPressed(GameKeys::UP))
 			{
@@ -358,12 +358,12 @@ struct Player : SortedDrawable, EntS<Player>
 		SetSpeedWithPlayerInput();
 		//SetSpeedWithCinta(speed);
 
-		if ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) 
+		if ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 3) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) 
 		{
 			ActionButtonJustPressed();
 		}
 
-		if ((Keyboard::IsKeyPressed(GameKeys::ACTION) && player == 0) || GamePad::IsButtonPressed(player, GamePad::Button::A))
+		if ((Keyboard::IsKeyPressed(GameKeys::ACTION) && player == 3) || GamePad::IsButtonPressed(player, GamePad::Button::A))
 		{
 			ActionButtonHold();
 		}
