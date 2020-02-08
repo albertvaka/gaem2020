@@ -117,7 +117,7 @@ void LoadMap()
 		for (char c : row)
 		{
 			passable[x][y] = (c < 'A');
-			passableCleaner[x][y] = (c < 'E' || c == 'Z');
+			passableCleaner[x][y] = (c < 'E' || c == 'Z' || c == 'u' || c == 'U' || c == 'p' || c == 'P' || c == 'y');
 			mapita[x][y] = TileFromChar(c);
 
 
