@@ -18,7 +18,17 @@ enum class EntityDirection
 	RIGHT,
 	NONE
 };
-float CINTA_SPEED = 8/320.f;
+
+const float CINTA_SPEED = 8/320.f;
+
+inline Mates::xy PosToTile(vec pos)
+{
+	return
+	{
+		int((pos.x) / 16),
+		int((pos.y) / 16)
+	};
+}
 
 struct Entity : EntS<Entity>
 {
@@ -32,9 +42,7 @@ struct Entity : EntS<Entity>
 	//Entity* parent = NULL;
 	EntityDirection dir = EntityDirection::DOWN;
 
-	virtual void Update(int dt)
-	{
-	}
+	virtual void Update(int dt) { }
 };
 
 struct Buttonable
@@ -42,18 +50,15 @@ struct Buttonable
 	virtual void Operate() = 0;
 };
 
-struct SortedDrawable : Entity, EntS<SortedDrawable> {
-	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window)
-	{
-
-	}
+struct SortedDrawable : Entity, EntS<SortedDrawable>
+{
+	virtual void Draw(sf::Sprite& spr, sf::RenderTarget& window) { }
 };
 
-struct Cintable : EntS<Cintable> {
+struct Cintable : EntS<Cintable>
+{
 	EntityDirection prevCintaDirection = EntityDirection::NONE;
 	EntityDirection currCintaDirection = EntityDirection::NONE;
-
-
 
 	virtual vec positionPlz() = 0;
 	virtual vec sizePlz() = 0;
@@ -69,8 +74,6 @@ struct Cintable : EntS<Cintable> {
 			speed.y += (EntityDirection::DOWN == currCintaDirection) * CINTA_SPEED;
 			onCinta = true;
 		}
-
-		//speed = newSpeed;
 		prevCintaDirection = currCintaDirection;
 		currCintaDirection = EntityDirection::NONE;
 		return onCinta;

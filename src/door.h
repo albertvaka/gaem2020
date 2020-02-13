@@ -28,7 +28,7 @@ struct Door : SortedDrawable, EntS<Door>
 
 	}
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 		switch (sign)
 		{
@@ -58,7 +58,7 @@ struct Door : SortedDrawable, EntS<Door>
 		spr.setPosition(pos);
 		pos.y += 2;
 
-		wnd.draw(spr);
+		window.draw(spr);
 	}
 };
 

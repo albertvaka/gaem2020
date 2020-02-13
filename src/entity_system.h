@@ -57,6 +57,7 @@ void UpdateEntities(int dt)
 
 void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 {
+	spr.setOrigin(8, 8);
 
 	for (Taca* e : EntS<Taca>::getAll())
 	{

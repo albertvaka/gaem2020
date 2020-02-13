@@ -5,13 +5,16 @@
 #include "rand.h"
 
 
-struct Cinta : Entity, EntS<Cinta>
+struct Cinta : SortedDrawable, EntS<Cinta>
 {
 
 	Cinta(vec position, EntityDirection direction) {
-		pos = position+vec(8,8);
+		pos = position;
 		anim.Ensure(AnimationType::BELT_RIGHT);
 		dir = direction;
 	}
-
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
+	{
+		//Bounds(pos,size, true).Draw(window);
+	}
 };

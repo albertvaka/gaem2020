@@ -27,12 +27,12 @@ struct Collector : SortedDrawable, EntS<Collector>
 
 	void Update(int dt) override;
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window) override
 	{
 		spr.setScale(1, 1);
 		spr.setTextureRect(anim.CurrentFrame());
 		spr.setPosition(pos.x, pos.y);
-		wnd.draw(spr);
+		window.draw(spr);
 		spr.setScale(1, 1);
 	}
 
@@ -61,15 +61,15 @@ struct Mesa : SortedDrawable, EntS<Mesa>, Buttonable
 		lever->is_connected = (collector->extremity && cadaver && !cadaver->HasExtremity(type)) && collector->extremity->type == type || (!collector->extremity && cadaver && cadaver->HasExtremity(type));
 	}
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window) override
 	{
 		spr.setScale(1.25f, 1.25f);
 		spr.setTextureRect(anim.CurrentFrame());
-		spr.setPosition(pos.x - 11.2f, pos.y - 22.5f);
-		wnd.draw(spr);
+		spr.setPosition(pos.x - 8.75f, pos.y - 18.5f);
+		window.draw(spr);
 		spr.setScale(1,1);
 
-		
+
 	}
 
 	void Operate()

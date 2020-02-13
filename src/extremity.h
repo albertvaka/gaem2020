@@ -51,15 +51,15 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 		size = vec(8,8);
 		color = c;
 		type = t;
-		pos = position;
+		pos = position+vec(1,1);
 	}
 
-	void carryExtremity(int x, int y)
+	void carryExtremity(float x, float y)
 	{
 		isCarried = true;
 
-		pos.x = static_cast<float>(x);
-		pos.y = static_cast<float>(y+1);
+		pos.x = x+4;
+		pos.y = y+1;
 	}
 
 
@@ -71,12 +71,12 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 	}
 
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window) override
 	{
 
-		//Bounds(positionPlz(),sizePlz()).Draw(wnd);
+		//Bounds(positionPlz(),sizePlz()).Draw(window);
 		vec carriedOffset;
-		if (isCarried) 
+		if (isCarried)
 		{
 			carriedOffset.y = -2;
 		}
@@ -84,42 +84,39 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 		spr.setTextureRect(extremitySprPos[color][type]);
 
 
-		
+
 		{
 			spr.setColor(sf::Color::Black);
 			spr.move(0, 1);
-			wnd.draw(spr);
-			
+			window.draw(spr);
+
 			spr.move(-1, -1);
-			wnd.draw(spr);
+			window.draw(spr);
 
 			spr.move(2, 0);
-			wnd.draw(spr);
+			window.draw(spr);
 
 			spr.move(-1, -1);
-			wnd.draw(spr);
+			window.draw(spr);
 
 			spr.move(0, 1);
 			spr.setColor(sf::Color::White);
 		}
 
 
-		wnd.draw(spr);
+		window.draw(spr);
 
-		
+
 		if (!isLet)
 		{
+			// Tarrito de mermelada
+			spr.setPosition(pos+carriedOffset);
 			spr.setTextureRect(sf::IntRect(54, 86, 12, 12));
-			spr.move(-1, -1);
+			window.draw(spr);
 		}
-		wnd.draw(spr);
 
-
-		spr.setScale(1, 1);
-
-
-		//Bounds(pos.x , pos.y , 16, 16).Draw(wnd);
-		////Bounds(pos.x - 1, pos.y - 1, 2, 2).Draw(wnd);
+		//Bounds(pos.x , pos.y , 16, 16).Draw(window);
+		//Bounds(pos.x - 1, pos.y - 1, 2, 2).Draw(window);
 
 	}
 
@@ -127,23 +124,23 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 	{
 		if (type == ExtremityType::HEAD)
 		{
-			return vec(4,5);
+			return vec(2,3);
 		}
 		if (type == ExtremityType::LEFT_ARM)
 		{
-			return vec(6, 3);
+			return vec(4, 1);
 		}
 		if (type == ExtremityType::LEFT_LEG)
 		{
-			return vec(5,2);
+			return vec(3,1);
 		}
 		if (type == ExtremityType::RIGHT_ARM)
 		{
-			return vec(2,2);
+			return vec(0,1);
 		}
 		if (type == ExtremityType::RIGHT_LEG)
 		{
-			return vec(3,2);
+			return vec(1,1);
 		}
 		return vec(0, 0);
 	}

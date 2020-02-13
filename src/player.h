@@ -26,7 +26,7 @@ struct Player : SortedDrawable, EntS<Player>
 	Mesa* mesa = nullptr;
 	Lever* lever = nullptr;
 	Collector* collector = nullptr;
-
+	vec sizeToCollideWithTilemap;
 	Player(int id, vec position)
 	{
 		player = id;
@@ -41,6 +41,8 @@ struct Player : SortedDrawable, EntS<Player>
 		pos = position;
 		speed.x = 0;
 		speed.y = 0;
+		sizeToCollideWithTilemap = vec(10.f, 10.f);
+		size = vec(16.f,16.f); //Bigger than the previous one so we can interact with objects further away
 	}
 	void SetSpeedWithPlayerInput()
 	{
@@ -98,11 +100,11 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 	}
 
-	void ActionButtonJustPressed() 
+	void ActionButtonJustPressed()
 	{
 
 		// Poner cadaver en mesa
-		if (isCarrying && cadaver && mesa && !mesa->cadaver) 
+		if (isCarrying && cadaver && mesa && !mesa->cadaver)
 		{
 			isCarrying = false;
 			mesa->cadaver = cadaver;
@@ -112,7 +114,7 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 
 		// Sacar cadaver de mesa
-		if (!isCarrying && mesa && mesa->cadaver) 
+		if (!isCarrying && mesa && mesa->cadaver)
 		{
 			isCarrying = true;
 			cadaver = mesa->cadaver;
@@ -127,7 +129,7 @@ struct Player : SortedDrawable, EntS<Player>
 		if (isCarrying && extremity && collector && !collector->extremity)
 		{
 			extremity->isLet = true;
-			extremity->pos = collector->pos + vec(0,0.5f);
+			extremity->pos = collector->pos + vec(2,2);
 			collector->extremity = extremity;
 			extremity->isCarried = false;
 			extremity = nullptr;
@@ -147,7 +149,7 @@ struct Player : SortedDrawable, EntS<Player>
 			return;
 		}
 
-		
+
 		// Coger extremity del suelo
 		if (!isCarrying && extremity)
 		{
@@ -158,9 +160,9 @@ struct Player : SortedDrawable, EntS<Player>
 			cadaver = NULL;
 			return;
 		}
-		
+
 		// Coger cadaver del suelo
-		if (!isCarrying && cadaver) 
+		if (!isCarrying && cadaver)
 		{
 			isCarrying = true;
 			cadaver->carryCadaver(pos.x, pos.y);
@@ -178,13 +180,13 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 
 		// Dejar cadaver en suelo
-		 if (isCarrying && cadaver != NULL) 
+		 if (isCarrying && cadaver != NULL)
 		 {
 			isCarrying = false;
 			cadaver->isCarried = false;
 			cadaver->pos.y -= 2;
 			cadaver->pos.x -= 4;
-			cadaver->pos.x = round(cadaver->pos.x / 16.f )*16;
+			cadaver->pos.x = round(cadaver->pos.x / 16.f )*16 + 8;
 			cadaver = NULL;
 			return;
 		 }
@@ -207,14 +209,13 @@ struct Player : SortedDrawable, EntS<Player>
 		}
 	}
 
-	float boundingBoxSize = 10.f;
 	bool tryMove(float dt)
 	{
 		bool moved = false;
 
 		vec newPos = pos + speed * dt;
-		
-		float dd = boundingBoxSize/2;
+
+		float dd = sizeToCollideWithTilemap.x/2;
 
 		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
 		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
@@ -269,15 +270,6 @@ struct Player : SortedDrawable, EntS<Player>
 
 		return moved;
 
-	}
-
-	static Mates::xy PosToTile(vec pos) 
-	{
-		return 
-		{ 
-			int((pos.x + 8) / 16), 
-			int((pos.y + 8) / 16) 
-		};
 	}
 
 	void Move(int dt) {
@@ -358,7 +350,7 @@ struct Player : SortedDrawable, EntS<Player>
 		SetSpeedWithPlayerInput();
 		//SetSpeedWithCinta(speed);
 
-		if ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 3) || GamePad::IsButtonJustPressed(player, GamePad::Button::A)) 
+		if ((Keyboard::IsKeyJustPressed(GameKeys::ACTION) && player == 3) || GamePad::IsButtonJustPressed(player, GamePad::Button::A))
 		{
 			ActionButtonJustPressed();
 		}
@@ -385,17 +377,17 @@ struct Player : SortedDrawable, EntS<Player>
 	}
 
 	Bounds bounds() {
-
-		return Bounds(pos.x + (16 - boundingBoxSize)/2, pos.y + (16 - boundingBoxSize)/2, boundingBoxSize, boundingBoxSize);
+		return Bounds(pos, sizeToCollideWithTilemap, true);
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
-		//bounds().Draw(window);
+		//bounds().Draw(window, sf::Color::Magenta);
+		//Bounds(pos, size, true).Draw(window);
 
 		auto a = spr.getScale();
 		spr.setScale(1.25, 1.25);
-		spr.setPosition(pos.x + 1.5f, pos.y - 7.f);
+		spr.setPosition(pos.x + 5.f, pos.y - 5.f);
 
 		auto frame = anim.CurrentFrame();
 		frame.left += 4 * 16 * player; //offset
@@ -406,8 +398,9 @@ struct Player : SortedDrawable, EntS<Player>
 
 		if (((cadaver || extremity) && !isCarrying) || lever && lever->is_connected || (isCarrying && cadaver && mesa && !mesa->cadaver) || (collector && collector->extremity) || (isCarrying && extremity && collector && !collector->extremity))
 		{
+			// Action button
 			spr.setTextureRect(actionButton.CurrentFrame());
-			spr.setPosition(pos.x + 13, pos.y - 10);
+			spr.setPosition(pos.x, pos.y - 15);
 			window.draw(spr);
 		}
 		else
@@ -429,15 +422,15 @@ struct Player : SortedDrawable, EntS<Player>
 		sf::Vector2u sizeSprite(rect.width,rect.height);
 		sf::Vector2u scale(5, 5);
 
-	
-		
+
+
 		vertexArray.append(sf::Vertex(sf::Vector2f(x, y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y)));
 		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y)));
 		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y + sizeSprite.y)));
 		vertexArray.append(sf::Vertex(sf::Vector2f(x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y + sizeSprite.y)));
-		
-		
-		
+
+
+
 		//window.draw(spr);
 	}
 

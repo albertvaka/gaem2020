@@ -21,16 +21,14 @@ bool Collision(Entity* entity_a, Entity* entity_b)
 	vec b = entity_b->pos - vec(sz_b / 2);
 
 	//rectangle colision
-	return	(a.x < (b.x + sz_b.x)) && 
+	return	(a.x < (b.x + sz_b.x)) &&
 			((a.x + sz_a.x) > b.x) &&
-			(a.y < (b.y + sz_b.y)) && 
+			(a.y < (b.y + sz_b.y)) &&
 			((a.y + sz_a.y) > b.y);
 }
 
 bool Collision(Cintable* entity_a, Cinta* entity_b)
 {
-	float COLLISION_SIZE = 16;
-
 	vec sz_a = entity_a->sizePlz();
 	vec sz_b = entity_b->size;
 
@@ -46,20 +44,21 @@ bool Collision(Cintable* entity_a, Cinta* entity_b)
 
 bool Collision(Cintable* entity_a, Cleaner* entity_b)
 {
+	vec sz_a = entity_a->sizePlz();
+	vec sz_b = entity_b->size;
 
-	float COLLISION_SIZE = 16;
-
-	vec a = entity_a->positionPlz();
-	vec b = entity_b->pos;
+	vec a = entity_a->positionPlz() - vec(sz_a / 2);
+	vec b = entity_b->pos - vec(sz_b / 2);
 
 	//rectangle colision
-	return
-		(a.x < b.x + 16 && a.x + COLLISION_SIZE > b.x &&
-			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
+	return	(a.x < (b.x + sz_b.x)) &&
+			((a.x + sz_a.x) > b.x) &&
+			(a.y < (b.y + sz_b.y)) &&
+			((a.y + sz_a.y) > b.y);
 }
 
 template <typename S, typename E, typename X, typename Y>
-void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*callback)(X*, Y*)) 
+void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*callback)(X*, Y*))
 {
 	size_t sa = setA.size();
 	for (size_t i = 0; i < sa; ++i)
@@ -70,7 +69,7 @@ void collide(const std::vector<S*>& setA, const std::vector<E*>& setB, void (*ca
 		{
 			E* b = setB[j];
 			if ((void*)a == (void*)b) continue;
-			if (Collision(a, b)) 
+			if (Collision(a, b))
 			{
 				callback(a, b);
 			}
@@ -116,7 +115,7 @@ void collision_cadaver_spawner(Cadaver* ent, Detector* detector) {
 	{
 		detector->spawner->empty = false;
 	}
-	
+
 
 }
 
@@ -124,32 +123,32 @@ void collision_entity_despawner(Entity* e, Despawner* _) {
 	e->alive = false;
 }
 
-void collision_cadaver_despawner(Cadaver* e, Despawner* _) 
+void collision_cadaver_despawner(Cadaver* e, Despawner* _)
 {
-	if (e->alive) 
+	if (e->alive)
 	{
 		if(e->IsOk())
 		{
 			new TextMolest(vec(GameData::WINDOW_WIDTH/2, GameData::WINDOW_HEIGHT/2), TextMolest::GOOD);
 			countGoods += 1;
 		}
-		else 
+		else
 		{
 			new TextMolest(vec(GameData::WINDOW_WIDTH / 2, GameData::WINDOW_HEIGHT / 2), TextMolest::BAD);
 			countBads += 1;
 		}
 	}
 	e->alive = false;
-	
+
 }
 
-void collision_clean_taques(Taca* t, Cleaner* c) 
+void collision_clean_taques(Taca* t, Cleaner* c)
 {
 	c->Absorbed();
 	t->AbsorbByRoomba(c);
 }
 
-void collision_stop_cleaner(Player* _, Cleaner* c) 
+void collision_stop_cleaner(Player* _, Cleaner* c)
 {
 	c->speed.x = 0;
 	c->speed.y = 0;
@@ -165,7 +164,7 @@ void coll_ent_doorsensor(Entity* _, DoorSensor* ds)
 }
 
 
-void UpdateCollisions(int dt) 
+void UpdateCollisions(int dt)
 {
 	for (Player* player : EntS<Player>::getAll())
 	{

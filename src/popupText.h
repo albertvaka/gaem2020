@@ -7,7 +7,7 @@
 
 struct TextMolest : SortedDrawable, EntS<TextMolest>
 {
-	enum Type 
+	enum Type
 	{
 		GOOD,
 		BAD
@@ -16,7 +16,7 @@ struct TextMolest : SortedDrawable, EntS<TextMolest>
 	int timer = 0;
 	Type m_type = BAD;
 
-	TextMolest(vec position, Type type) 
+	TextMolest(vec position, Type type)
 	{
 		pos = vec(16*13.5f, 16*14);
 		m_type = type;
@@ -59,7 +59,7 @@ struct TextMolest : SortedDrawable, EntS<TextMolest>
 		}
 	}
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 		float scx = 4 + cos(timer/200.0f)*2;
 		float scy = 4 + sin(timer/200.0f)*2;
@@ -86,15 +86,15 @@ struct TextMolest : SortedDrawable, EntS<TextMolest>
 
 		spr.setRotation(rot);
 
-		
+
 		switch (m_type)
 		{
 			case Type::GOOD:
 			{
 				spr.setTextureRect(sf::IntRect(128, 192, 16*4, 16));
-			
+
 				spr.setPosition(pos);
-				wnd.draw(spr);
+				window.draw(spr);
 			} break;
 
 			case Type::BAD:
@@ -103,12 +103,12 @@ struct TextMolest : SortedDrawable, EntS<TextMolest>
 
 				//spr.setTextureRect(anim.CurrentFrame());
 				spr.setPosition(pos);
-				wnd.draw(spr);
+				window.draw(spr);
 			} break;
 		}
 
 		spr.setScale(1, 1);
-		spr.setOrigin(0, 0);
+		spr.setOrigin(8, 8);
 		spr.setRotation(0);
 	}
 

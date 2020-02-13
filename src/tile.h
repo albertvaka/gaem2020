@@ -24,7 +24,7 @@ std::vector< std::vector<bool> > passableCleaner;
 const std::vector< std::string > mapita_inicial =
 {
 	"XXYYYYYYYXwSXXYYYYYYYXX",
-	"XX       XDDBX       XX",
+	"XX +     XDDBX       XX",
 	"XY XXXXX XAXBX XXXXX XX",
 	"X  k   X XAXBX X   g XX",
 	"X  XFKFX YACCY XFGFX XX",
@@ -83,6 +83,7 @@ TileType TileFromChar(char c)
 
 void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 {
+	sprite.setOrigin(0,0);
 	int time = mainClock.getElapsedTime().asMilliseconds();
 	TileType type = mapita[i][j];
 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
@@ -126,7 +127,7 @@ void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 	}
 	window.draw(sprite);
 	sprite.setRotation(0);
-	sprite.setOrigin(0, 0);
+	sprite.setOrigin(8, 8);
 }
 
 ExtremityType letraToExtremity(char c)
@@ -168,12 +169,21 @@ void LoadMap()
 			mapita[x][y] = TileFromChar(c);
 
 
-			vec pos(16 * x, 16 * y);
+			vec pos(16 * x + 8, 16 * y + 8);
 			switch (c)
 			{
-			case '0': new Player(0, pos); break;
-			case '1': new Player(1, pos); break;
-			case '2': new Player(2, pos); break;
+#ifdef _DEBUG
+			case '+':
+				new Extremity(pos, ExtremityType::HEAD,  RandomExtremityColor());
+				new Extremity(pos + vec(16,0), ExtremityType::LEFT_ARM, RandomExtremityColor());
+				new Extremity(pos + 2*vec(16,0), ExtremityType::RIGHT_ARM, RandomExtremityColor());
+				new Extremity(pos + 3*vec(16,0), ExtremityType::LEFT_LEG, RandomExtremityColor());
+				new Extremity(pos + 4*vec(16,0), ExtremityType::RIGHT_LEG, RandomExtremityColor());
+			break;
+#endif
+			//case '0': new Player(0, pos); break;
+			//case '1': new Player(1, pos); break;
+			//case '2': new Player(2, pos); break;
 			case '3': new Player(3, pos); break;
 			case 'A': new Cinta(pos, EntityDirection::UP); break;
 			case 'B': new Cinta(pos, EntityDirection::DOWN); break;

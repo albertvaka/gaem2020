@@ -59,8 +59,7 @@ void LoadGame(sf::RenderWindow& window)
 	loadExtremityMap();
 
 #ifdef _DEBUG
-	new Cadaver(vec(100, 100));
-	new Extremity(vec(120, 120), RandomExtremityType(), RandomExtremityColor());
+	new Cadaver(vec(100, 120));
 #endif
 
 }

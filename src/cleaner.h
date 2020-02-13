@@ -19,12 +19,13 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 	float pos_y_spawn;
 	SortedDrawable* parent;
 	vec oldPos;
-	AnimationType animForCleaner(AnimationType anim) 
+
+	AnimationType animForCleaner(AnimationType anim)
 	{
 		int animint = int(anim);
 		return AnimationType(animint);
 	}
-	
+
 	Animation actionButton;
 
 	float decisionCounter = 1000.f;
@@ -41,6 +42,7 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 
 		parent = _parent;
 		pos_y_spawn = pos.y;
+		size = vec(13.f,13.f);
 	}
 	void DecideNextAction() {
 		decisionCounter = 1000.f;
@@ -67,16 +69,16 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 	}
 	void Move(int dt)
 	{
-		
+
 		decisionCounter -= dt;
 		if (decisionCounter < 0) {
 			DecideNextAction();
-			
-			
+
+
 		}
 		oldPos = pos;
 
-		
+
 
 		bool moved = tryMove(dt/4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f) && tryMove(dt / 4.f);
 
@@ -106,12 +108,12 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 			state = EntityState::IDLE;
 		}
 
-		if (moved) 
+		if (moved)
 		{
 			for (Cleaner* p : EntS<Cleaner>::getAll())
 			{
 				if (p == this) continue;
-				if (Collide(p->bounds(),this->bounds())) 
+				if (Collide(p->bounds(),this->bounds()))
 				{
 					pos = oldPos;
 					DecideNextAction();
@@ -121,14 +123,13 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		}
 	}
 
-	float boundingBoxSize = 13.f;
 	bool tryMove(float dt)
 	{
 		bool moved = false;
 
 		vec newPos = pos + speed * dt;
-		
-		float dd = boundingBoxSize/2;
+
+		float dd = size.x/2;
 
 		Mates::xy TL_x = PosToTile(vec(newPos.x, pos.y) + vec(-dd, -dd));
 		Mates::xy TR_x = PosToTile(vec(newPos.x, pos.y) + vec(dd, -dd));
@@ -185,16 +186,6 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 
 	}
 
-	static Mates::xy PosToTile(vec pos) 
-	{
-		return 
-		{ 
-			int((pos.x + 8) / 16), 
-			int((pos.y + 8) / 16) 
-		};
-	}
-
-
 	int timer_naixement = 0;
 	bool stuck = false;
 	bool ya_va = false;
@@ -224,7 +215,7 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		}
 		else if (timer_naixement < 2400)
 		{
-			
+
 			pos.y += dt*0.01f;
 			for (Cleaner* p : EntS<Cleaner>::getAll())
 			{
@@ -288,39 +279,30 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		}
 	}
 
-	Bounds bounds() {
-
-		return Bounds(pos.x + (16 - boundingBoxSize)/2, pos.y + (16 - boundingBoxSize)/2, boundingBoxSize, boundingBoxSize);
+	Bounds bounds()
+	 {
+		return Bounds(pos, size, true);
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
-		//bounds().Draw(window);
+		bounds().Draw(window);
 
 
 		spr.setPosition(pos.x+1, pos.y+1);
-		
+
 		spr.setTextureRect(anim.CurrentFrame());
 
 
 		if (just_absorbed_timer > 0)
 		{
 			float sc = 1.0f + 0.1f*((just_absorbed_timer)/float(JUST_ABSORBED_TIMER_MAX));
-			spr.setOrigin(8, 8);
 			spr.setScale(sc, sc);
-			spr.move(8, 8);
-			window.draw(spr);
-			spr.setOrigin(0, 0);
-
-			spr.setScale(1, 1);
 		}
-		else
-		{
-			window.draw(spr);
-		}
-		
+		window.draw(spr);
+		spr.setScale(1, 1);
 
-		if (timer_naixement < 2400) 
+		if (timer_naixement < 2400)
 		{
 			parent->Draw(spr, window);
 		}
@@ -339,15 +321,15 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		sf::Vector2u sizeSprite(rect.width,rect.height);
 		sf::Vector2u scale(5, 5);
 
-	
-		
+
+
 		vertexArray.append(sf::Vertex(sf::Vector2f(x, y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y)));
 		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y)));
 		vertexArray.append(sf::Vertex(sf::Vector2f(x + sizeSprite.x*scale.x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x + sizeSprite.x, posStartInSpritesheet.y + sizeSprite.y)));
 		vertexArray.append(sf::Vertex(sf::Vector2f(x, y + sizeSprite.y*scale.y), sf::Vector2f(posStartInSpritesheet.x, posStartInSpritesheet.y + sizeSprite.y)));
-		
-		
-		
+
+
+
 		//window.draw(spr);
 	}
 
@@ -437,7 +419,7 @@ struct CleanerSpawner : SortedDrawable, EntS<CleanerSpawner>
 
 	}
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd)
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
 
 		switch (state)
@@ -446,14 +428,14 @@ struct CleanerSpawner : SortedDrawable, EntS<CleanerSpawner>
 		{
 			spr.setTextureRect(Animation::AnimFrame(AnimationType::ROOMBA_DOOR_OPEN, 0));
 			spr.setPosition(pos);
-			wnd.draw(spr);
+			window.draw(spr);
 		} break;
 
 		default:
 		{
 			spr.setTextureRect(anim.CurrentFrame());
 			spr.setPosition(pos);
-			wnd.draw(spr);
+			window.draw(spr);
 		} break;
 		}
 

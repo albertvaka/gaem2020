@@ -60,30 +60,30 @@ struct Lever : SortedDrawable, EntS<Lever>
 		{
 			is_pushed_timer -= dt;
 		}
-		
+
 		// Reset collision
 		player = nullptr;
 	}
 
-	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window) override
 	{
-		//Bounds(pos.x - 1, pos.y - 1, 2, 2).Draw(wnd);
+		//Bounds(pos.x - 1, pos.y - 1, 2, 2).Draw(window);
 
 		//Cablesitos
 
 		int lvl = std::max(0, push);
 		int cable_spr_dx = (int)(std::min(8.0f, float(push / (PUSH_MAX/8.0f)))) * 32;
-		
+
 		spr.setTextureRect(sf::IntRect(cable_spr_dx, 11 * 16, 16, 16));
 		spr.setPosition(pos.x - 1.5f, pos.y + 10);
-		wnd.draw(spr);
+		window.draw(spr);
 		spr.setTextureRect(sf::IntRect(16 + cable_spr_dx, 11 * 16, 16, 16));
 		spr.setPosition(pos.x + 14.5f, pos.y + 10);
-		wnd.draw(spr);
+		window.draw(spr);
 
 		//Button Lever
 		spr.setScale(0.75f, 0.75f);
-		spr.setPosition(pos.x, pos.y);
+		spr.setPosition(pos.x-2, pos.y-2);
 
 		const int TIMER_FLASH_LEVER = 250;
 		int t = mainClock.getElapsedTime().asMilliseconds() % (TIMER_FLASH_LEVER*2);
@@ -99,10 +99,10 @@ struct Lever : SortedDrawable, EntS<Lever>
 		{
 			dx_flash_effect = 32;
 		}
-		
+
 		spr.setTextureRect(sf::IntRect(16 + dx_flash_effect + dx_pushed_effect, 112, 16, 16));
 
-		wnd.draw(spr);
+		window.draw(spr);
 		spr.setScale(1.f, 1.f);
 	}
 
