@@ -18,7 +18,6 @@ struct Taca : Cintable, EntS<Taca>
 	int timer_absorb = 0;
 	int TIMER_ABSORB_MAX = 1000;
 
-
 	Taca(vec position, EntityDirection dir)
 	{
 		prevCintaDirection = dir;

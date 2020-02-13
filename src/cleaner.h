@@ -3,7 +3,6 @@
 #include "entity.h"
 #include "animation.h"
 #include "rand.h"
-#include "player.h"
 
 #include "input.h"
 
@@ -286,8 +285,7 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
 	{
-		bounds().Draw(window);
-
+		//bounds().Draw(window);
 
 		spr.setPosition(pos.x+1, pos.y+1);
 

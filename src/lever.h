@@ -38,7 +38,7 @@ struct Lever : SortedDrawable, EntS<Lever>
 		}
 	}
 
-	void Update(int dt)
+	void Update(int dt) override
 	{
 
 		if (push >= PUSH_MAX)

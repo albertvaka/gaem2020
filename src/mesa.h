@@ -72,7 +72,7 @@ struct Mesa : SortedDrawable, EntS<Mesa>, Buttonable
 
 	}
 
-	void Operate()
+	void Operate() override
 	{
 		if (cadaver)
 		{

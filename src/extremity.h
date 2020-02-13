@@ -1,7 +1,6 @@
 #pragma once
 
 #include "entity.h"
-#include "entity_system.h"
 
 enum class ExtremityType
 {
