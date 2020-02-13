@@ -12,6 +12,7 @@ struct Taca : Cintable, EntS<Taca>
 	sf::Color m_color = sf::Color(200,0,0);
 	vec m_offset;
 	float counter;
+	bool onCinta = false;
 
 	Entity* roomba_absorbing = nullptr;
 	int timer_absorb = 0;
@@ -32,8 +33,8 @@ struct Taca : Cintable, EntS<Taca>
 		m_color.b += Random::roll(0, 50);
 	}
 
-	vec positionPlz() override { return pos + m_offset; }
-	vec sizePlz() override { return vec(1, 1); }
+	vec positionPlz() override { return onCinta ? pos+vec(8,8) : pos + m_offset; }
+	vec sizePlz() override { return onCinta ? vec(16, 16) : vec(1,1); }
 
 	sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(1, 1));
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
@@ -89,7 +90,7 @@ struct Taca : Cintable, EntS<Taca>
 		}
 		else
 		{
-			SetSpeedWithCinta(speed);
+			onCinta = SetSpeedWithCinta(speed);
 			speed = speed * 0.8f;
 			counter -= dt;
 			if (counter < 0)
