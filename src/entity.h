@@ -56,7 +56,7 @@ struct Cintable : EntS<Cintable> {
 
 
 	virtual vec positionPlz() = 0;
-	//virtual vec sizePlz() = 0;
+	virtual vec sizePlz() = 0;
 
 	void SetSpeedWithCinta(vec& speed)
 	{

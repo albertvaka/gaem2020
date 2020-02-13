@@ -31,13 +31,17 @@ bool Collision(Cintable* entity_a, Cinta* entity_b)
 {
 	float COLLISION_SIZE = 16;
 
-	vec a = entity_a->positionPlz();
-	vec b = entity_b->pos;
+	vec sz_a = entity_a->sizePlz();
+	vec sz_b = entity_b->size;
+
+	vec a = entity_a->positionPlz() - vec(sz_a / 2);
+	vec b = entity_b->pos - vec(sz_b / 2);
 
 	//rectangle colision
-	return
-		(a.x < b.x + 16 && a.x + COLLISION_SIZE > b.x &&
-			a.y < b.y + 16 && a.y + COLLISION_SIZE > b.y);
+	return	(a.x < (b.x + sz_b.x)) &&
+			((a.x + sz_a.x) > b.x) &&
+			(a.y < (b.y + sz_b.y)) &&
+			((a.y + sz_a.y) > b.y);
 }
 
 bool Collision(Cintable* entity_a, Cleaner* entity_b)

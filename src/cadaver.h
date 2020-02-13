@@ -164,8 +164,8 @@ struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 
 	}
 
-	vec positionPlz() override { return pos; }
-	//vec sizePlz() override { return vec(16, 16); }
+	vec positionPlz() override { return pos+vec(8,8); }
+	vec sizePlz() override { return vec(16, 16); }
 
 	void carryCadaver(int x, int y)
 	{

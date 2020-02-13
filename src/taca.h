@@ -20,7 +20,7 @@ struct Taca : Cintable, EntS<Taca>
 
 	Taca(vec position, EntityDirection dir) 
 	{
-		currCintaDirection = dir;
+		prevCintaDirection = dir;
 		counter = 7500 + Random::roll(5000);
 		pos = position;
 
@@ -32,8 +32,8 @@ struct Taca : Cintable, EntS<Taca>
 		m_color.b += Random::roll(0, 50);
 	}
 
-	vec positionPlz() override { return pos; }
-	//vec sizePlz() override { return vec(16, 16); }
+	vec positionPlz() override { return pos + m_offset; }
+	vec sizePlz() override { return vec(1, 1); }
 
 	sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(1, 1));
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window)

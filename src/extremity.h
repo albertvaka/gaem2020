@@ -43,12 +43,12 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 	bool isCarried = false;
 	bool isLet = false;
 
-	vec positionPlz() {
-		return pos;
-	}
+	vec positionPlz() override { return pos+vec(4,4); }
+	vec sizePlz() override { return size; }
 
 	Extremity(vec position, ExtremityType t, ExtremityColor c)
 	{
+		size = vec(8,8);
 		color = c;
 		type = t;
 		pos = position;
@@ -73,7 +73,8 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& wnd) override
 	{
-		
+
+		//Bounds(positionPlz(),sizePlz()).Draw(wnd);
 		vec carriedOffset;
 		if (isCarried) 
 		{
