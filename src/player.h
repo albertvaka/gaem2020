@@ -25,6 +25,12 @@ struct Bullet : Entity, EntS<Bullet>
 
 	void Update(int dt)
 	{
+
+		auto tile = PosToTile(pos);
+		if (!passableCleaner[tile.x][tile.y]) {
+			alive = false;
+		}
+
 		if (explode) {
 			speed = vec(0,0);
 			timer_explosion += dt;
