@@ -1,8 +1,7 @@
 #pragma once
 
+#include "game_data.h"
 #include <vector>
-
-const int TILE_SIZE = 16;
 
 enum class TileType
 {
@@ -83,7 +82,6 @@ TileType TileFromChar(char c)
 
 void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 {
-	sprite.setOrigin(0,0);
 	int time = mainClock.getElapsedTime().asMilliseconds();
 	TileType type = mapita[i][j];
 	sprite.setPosition(i * TILE_SIZE, j * TILE_SIZE);
@@ -127,7 +125,7 @@ void drawTile(sf::Sprite& sprite, sf::RenderTarget& window, int i, int j)
 	}
 	window.draw(sprite);
 	sprite.setRotation(0);
-	sprite.setOrigin(8, 8);
+	sprite.setOrigin(0, 0);
 }
 
 ExtremityType letraToExtremity(char c)

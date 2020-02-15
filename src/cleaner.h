@@ -42,6 +42,10 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		parent = _parent;
 		pos_y_spawn = pos.y;
 		size = vec(13.f,13.f);
+
+		if (_parent == nullptr) {
+			timer_naixement = 100000;
+		}
 	}
 	void DecideNextAction() {
 		decisionCounter = 1000.f;
@@ -241,15 +245,15 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_UP));
 				}
-				if (dir == EntityDirection::DOWN)
+				else if (dir == EntityDirection::DOWN)
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
-				if (dir == EntityDirection::LEFT)
+				else if (dir == EntityDirection::LEFT)
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
-				if (dir == EntityDirection::RIGHT)
+				else if (dir == EntityDirection::RIGHT)
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
@@ -262,15 +266,15 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_UP));
 				}
-				if (dir == EntityDirection::DOWN)
+				else if (dir == EntityDirection::DOWN)
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_DOWN));
 				}
-				if (dir == EntityDirection::LEFT)
+				else if (dir == EntityDirection::LEFT)
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_LEFT));
 				}
-				if (dir == EntityDirection::RIGHT)
+				else if (dir == EntityDirection::RIGHT)
 				{
 					anim.EnsureNoReset(animForCleaner(AnimationType::ROOMBA_RIGHT));
 				}
