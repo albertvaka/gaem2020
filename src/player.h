@@ -184,8 +184,8 @@ struct Player : SortedDrawable, EntS<Player>
 		 {
 			isCarrying = false;
 			cadaver->isCarried = false;
-			cadaver->pos.y -= 2;
-			cadaver->pos.x -= 4;
+			cadaver->pos.y -= 3;
+			cadaver->pos.x -= 8;
 			cadaver->pos.x = round(cadaver->pos.x / 16.f )*16 + 8;
 			cadaver = NULL;
 			return;
