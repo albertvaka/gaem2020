@@ -68,6 +68,7 @@ void DrawGui()
 {
 #ifdef _DEBUG
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
+	ImGui::SetWindowFontScale( GameData::GUI_ZOOM);
 
 	ImGui::Text(EntS<Player>::getAll()[0]->pos.ToString().c_str());
 	if (ImGui::Button("SPAWN CADAVER"))

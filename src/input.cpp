@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 #include "imgui-SFML.h"
+#include "game_data.h"
 
 int GamePad::player_to_joystick[GamePad::JoystickCountMax];
 
@@ -70,6 +71,7 @@ namespace Window
 namespace Camera
 {
     sf::View gameView;
+    sf::View guiView;
     float zoom;
 
 
@@ -123,6 +125,14 @@ namespace Camera
         _ProcessWindowEvents();
     }
 
+    void ResetGuiCamera()
+	{
+        guiView.setSize(sf::Vector2f(Window::window->getSize()));
+        guiView.setCenter(vec(Window::window->getSize()) / (2*GameData::GUI_ZOOM));
+        guiView.zoom(1.f / GameData::GUI_ZOOM);
+        guiView.setViewport(sf::FloatRect(0, 0, 1, 1));
+    }
+
     void SetZoom(float z)
 	{
         gameView.zoom(zoom);
@@ -139,7 +149,7 @@ namespace Camera
 
     void StartGuiDraw()
 	{
-        Window::window->setView(Window::window->getDefaultView());
+        Window::window->setView(guiView);
     }
 
     void EndGuiDraw()
@@ -377,6 +387,7 @@ namespace Input
 
         Window::window = &renderwindow;
         Camera::ResetCamera();
+        Camera::ResetGuiCamera();
         RemapInput();
         for (int i = 0; i < int(GameKeys::COUNT); i++) Keyboard::key_states[i] = RELEASED;
         for (int i = 0; i < sf::Mouse::ButtonCount; i++) Mouse::button_states[i] = RELEASED;
