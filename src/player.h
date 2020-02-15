@@ -12,6 +12,46 @@
 
 extern std::vector< std::vector<bool> > passable;
 
+struct Bullet : SortedDrawable, EntS<Bullet>
+{
+	bool explode = false;
+	int timer_explosion = 0;
+
+	Bullet(vec position, vec velocity) {
+		pos = position;
+		speed = velocity;
+		size = vec(1,1);
+	}
+
+	void Update(int dt)
+	{
+		if (explode) {
+			speed = vec(0,0);
+			timer_explosion += dt;
+			if (timer_explosion > 1000) {
+				alive = false;
+			}
+			return;
+		}
+
+		pos += speed * dt * 0.1f;
+		if (OutOfScreen(pos)) {
+			alive = false;
+		}
+	}
+
+	void Draw(sf::Sprite& spr, sf::RenderTarget& window)
+	{
+		int frame = 0;
+		if (timer_explosion > 0) {
+			frame += (timer_explosion*6)/1000;
+		}
+		spr.setTextureRect(sf::IntRect((9+frame) * 16, 10 * 16, 16, 16));
+		spr.setPosition(pos.x, pos.y);
+		window.draw(spr);
+	}
+};
+
 struct Player : SortedDrawable, EntS<Player>
 {
 	Animation actionButton;
@@ -360,6 +400,9 @@ struct Player : SortedDrawable, EntS<Player>
 			ActionButtonHold();
 		}
 
+		if (Keyboard::IsKeyJustPressed(GameKeys::SHOOT)) {
+			new Bullet(pos, DirToVec(dir));
+		}
 		Move(dt);
 
 		if (isCarrying) {

@@ -6,7 +6,7 @@
 #include "bounds.h"
 
 
-// Static stuff here: 
+// Static stuff here:
 //
 // - Keyboard
 // - Mouse
@@ -18,7 +18,7 @@
 enum GameKeys
 {
 	UP = 0, DOWN, LEFT, RIGHT,
-	ACTION, START,
+	ACTION, START, SHOOT,
 	DEBUG_ZOOM_IN, DEBUG_ZOOM_OUT,
 	COUNT
 };
@@ -31,6 +31,7 @@ inline void RemapInput()
 	key_map[GameKeys::LEFT] = sf::Keyboard::Key::A;
 	key_map[GameKeys::RIGHT] = sf::Keyboard::Key::D;
 	key_map[GameKeys::ACTION] = sf::Keyboard::Key::P;
+	key_map[GameKeys::SHOOT] = sf::Keyboard::Key::O;
 	key_map[GameKeys::START] = sf::Keyboard::Key::Enter;
 	key_map[GameKeys::DEBUG_ZOOM_IN] = sf::Keyboard::Add;
 	key_map[GameKeys::DEBUG_ZOOM_OUT] = sf::Keyboard::Subtract;
@@ -66,9 +67,9 @@ public:
 		Start = 7
 	};
 
-	struct Trigger 
+	struct Trigger
 	{
-		struct TriggerBase 
+		struct TriggerBase
 		{
 			friend struct GamePad;
 			bool IsPressed(int player) { return (state[player] == PRESSED || state[player] == JUST_PRESSED); }
@@ -78,9 +79,9 @@ public:
 		private:
 			KeyStates state[JoystickCountMax];
 		};
-		struct LeftTrigger : public TriggerBase 
+		struct LeftTrigger : public TriggerBase
 		{
-			float get(int player) const 
+			float get(int player) const
 			{ //Pos between 0 and 100
 				int joystick = player_to_joystick[player];
 				if (joystick < 0) return 0;
@@ -88,9 +89,9 @@ public:
 				return a > 0.1 ? a : 0;
 			}
 		};
-		struct RightTrigger : public TriggerBase 
+		struct RightTrigger : public TriggerBase
 		{
-			float get(int player) const 
+			float get(int player) const
 			{ //Pos between 0 and 100
 				int joystick = player_to_joystick[player];
 				if (joystick < 0) return 0;
@@ -102,14 +103,14 @@ public:
 		static RightTrigger Right;
 	};
 
-	struct AnalogStick 
+	struct AnalogStick
 	{
 		const static AnalogStick Left;
 		const static AnalogStick Right;
-		sf::Vector2f get(int player, float dead_area = 0) const 
+		sf::Vector2f get(int player, float dead_area = 0) const
 		{ //Pos between -100 and 100
 			if (player > GamePad::JoystickCountMax) {
-				return sf::Vector2f(); 
+				return sf::Vector2f();
 			}
 			int joystick = player_to_joystick[player];
 			if (joystick < 0) return sf::Vector2f();
@@ -126,7 +127,7 @@ public:
 	static bool IsButtonJustPressed(int player, GamePad::Button b) { return (button_states[player][b] == JUST_PRESSED); }
 	static bool IsButtonReleased(int player, GamePad::Button b) { return (button_states[player][b] == RELEASED || button_states[player][b] == JUST_RELEASED); }
 	static bool IsButtonJustReleased(int player, GamePad::Button b) { return (button_states[player][b] == JUST_RELEASED); }
-	
+
 	static void _UpdateInputState__MandoSteam(int joy, int player);
 	static void _UpdateInputState__XboxNormal(int joy, int player);
 	static void _UpdateInputState();
@@ -136,7 +137,7 @@ public:
 //WINDOW MANAGEMENT
 //=================
 
-namespace Window 
+namespace Window
 {
 	void SetWindowCaption(const std::string& s);
 	bool WindowHasFocus();
@@ -151,11 +152,11 @@ namespace Window
 //KEYBOARD ACCESS
 //===============
 
-struct Keyboard 
+struct Keyboard
 {
 
 	static KeyStates key_states[int(GameKeys::COUNT)];
-	
+
 	static bool IsKeyPressed(GameKeys k) {
 		return (key_states[k] == PRESSED || key_states[k] == JUST_PRESSED);
 	}
@@ -177,7 +178,7 @@ struct Keyboard
 
 //CAMERA MANAGEMENT
 //=================
-namespace Camera 
+namespace Camera
 {
 
 	void SetCameraCenter(const vec& center);
@@ -196,32 +197,32 @@ namespace Camera
 	inline void MoveCameraWithArrows(float velocity, float dt) {
 		vec c = GetCameraCenter();
 		float zoom = GetZoom();
-		if (Keyboard::IsKeyPressed(GameKeys::RIGHT)) 
+		if (Keyboard::IsKeyPressed(GameKeys::RIGHT))
 		{
 			c.x += velocity * dt * 10 / zoom;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::LEFT)) 
+		if (Keyboard::IsKeyPressed(GameKeys::LEFT))
 		{
 			c.x -= velocity * dt * 10 / zoom;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::DOWN)) 
+		if (Keyboard::IsKeyPressed(GameKeys::DOWN))
 		{
 			c.y += velocity * dt * 10 / zoom;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::UP)) 
+		if (Keyboard::IsKeyPressed(GameKeys::UP))
 		{
 			c.y -= velocity * dt * 10 / zoom;
 		}
 		SetCameraCenter(c);
 	}
-	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt) 
+	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt)
 	{
 		float zoom = GetZoom();
-		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_IN)) 
+		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_IN))
 		{
 			zoom += zoomVel * dt;
 		}
-		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_OUT)) 
+		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_OUT))
 		{
 			zoom -= zoomVel * dt;
 		}
@@ -240,28 +241,28 @@ struct Mouse
 
 	static void _UpdateInputState();
 
-	static bool IsPressed(sf::Mouse::Button b = sf::Mouse::Left) 
+	static bool IsPressed(sf::Mouse::Button b = sf::Mouse::Left)
 	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == PRESSED || button_states[b] == JUST_PRESSED);
 	}
 
-	static bool IsJustPressed(sf::Mouse::Button b = sf::Mouse::Left) 
+	static bool IsJustPressed(sf::Mouse::Button b = sf::Mouse::Left)
 	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == JUST_PRESSED);
 	}
 
-	static bool IsReleased(sf::Mouse::Button b = sf::Mouse::Left) 
+	static bool IsReleased(sf::Mouse::Button b = sf::Mouse::Left)
 	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == RELEASED || button_states[b] == JUST_RELEASED);
 	}
 
-	static bool IsJustReleased(sf::Mouse::Button b = sf::Mouse::Left) 
+	static bool IsJustReleased(sf::Mouse::Button b = sf::Mouse::Left)
 	{
 		if (!Window::WindowHasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
@@ -274,7 +275,7 @@ struct Mouse
 	static vec GetPositionInWorld();
 };
 
-namespace Input 
+namespace Input
 {
 
 	void Init(sf::RenderWindow& renderwindow);

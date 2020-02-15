@@ -187,22 +187,25 @@ struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 		pos.y = position.y+0.1f;
 	}
 
+	void SpawnBlood() {
+		Taca *t = new Taca(pos, currCintaDirection);
+		counterBloodTimeLeft = 100;
+		for (Taca* p : EntS<Taca>::getAll())
+		{
+			if (p == t) continue;
+			if (p->getFinalPos() == t->getFinalPos())
+			{
+				t->alive = false;
+			}
+		}
+	}
 
 	void Update(int dt) override
 	{
 		counterBloodTimeLeft -= dt * Random::roll(0, 3);
 		if (counterBloodTimeLeft < 0 && withTaca)
 		{
-			Taca *t = new Taca(pos, currCintaDirection);
-			counterBloodTimeLeft = 100;
-			for (Taca* p : EntS<Taca>::getAll())
-			{
-				if (p == t) continue;
-				if (p->getFinalPos() == t->getFinalPos())
-				{
-					t->alive = false;
-				}
-			}
+			SpawnBlood();
 		}
 		Move(dt);
 	}
@@ -233,6 +236,7 @@ struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 	{
 
 		//Bounds(pos, size, true).Draw(window, sf::Color::Green);
+
 		if (!isLet)
 		{
 			spr.setRotation(-90);

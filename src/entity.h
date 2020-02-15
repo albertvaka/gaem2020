@@ -30,6 +30,21 @@ inline Mates::xy PosToTile(vec pos)
 	};
 }
 
+
+vec DirToVec(EntityDirection dir) {
+	switch(dir) {
+		case  EntityDirection::RIGHT: return vec(1,0);
+		case  EntityDirection::LEFT: return vec(-1,0);
+		case  EntityDirection::UP: return vec(0,-1);
+		case  EntityDirection::DOWN: return vec(0,1);
+	}
+	return vec(0,0);
+}
+
+bool OutOfScreen(vec pos) {
+	return (pos.x < 0 || pos.y < 0 || pos.x > GameData::WINDOW_WIDTH/GameData::GAME_ZOOM || pos.y > GameData::WINDOW_HEIGHT/GameData::GAME_ZOOM);
+}
+
 struct Entity : EntS<Entity>
 {
 	EntityState state;

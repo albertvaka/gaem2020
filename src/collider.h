@@ -163,6 +163,14 @@ void coll_ent_doorsensor(Entity* _, DoorSensor* ds)
 	ds->activated = true;
 }
 
+void coll_bullet_cadaver(Bullet* b, Cadaver* c) {
+	c->alive = false;
+	b->explode = true;
+	b->pos = c->pos;
+	for (int i = 0; i < 100; i++) {
+		c->SpawnBlood();
+	}
+}
 
 void UpdateCollisions(int dt)
 {
@@ -195,6 +203,7 @@ void UpdateCollisions(int dt)
 	collide(EntS<Cleaner>::getAll(), EntS<Despawner>::getAll(), collision_entity_despawner);
 	collide(EntS<Player>::getAll(), EntS<DoorSensor>::getAll(), coll_ent_doorsensor);
 	collide(EntS<Cleaner>::getAll(), EntS<DoorSensor>::getAll(), coll_ent_doorsensor);
+	collide(EntS<Bullet>::getAll(), EntS<Cadaver>::getAll(), coll_bullet_cadaver);
 
 
 }
