@@ -12,7 +12,7 @@
 
 extern std::vector< std::vector<bool> > passable;
 
-struct Bullet : SortedDrawable, EntS<Bullet>
+struct Bullet : Entity, EntS<Bullet>
 {
 	bool explode = false;
 	int timer_explosion = 0;

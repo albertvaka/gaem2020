@@ -74,6 +74,11 @@ void DrawEntities(sf::Sprite& spr, sf::RenderWindow& window)
 		e->Draw(spr, window);
 	}
 
+	for (Bullet* e : EntS<Bullet>::getAll())
+	{
+		e->Draw(spr, window);
+	}
+
 	for (TextMolest* e : EntS<TextMolest>::getAll())
 	{
 		e->Draw(spr, window);
