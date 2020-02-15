@@ -6,6 +6,10 @@
 #include "entity.h"
 #include "taca.h"
 
+extern sf::Clock mainClock;
+
+bool withTaca = true;
+
 struct SpawnAnim : SortedDrawable, EntS<SpawnAnim>
 {
 	int timer = 0;
@@ -41,24 +45,50 @@ struct SpawnAnim : SortedDrawable, EntS<SpawnAnim>
 
 };
 
-
-extern sf::Clock mainClock;
-
-bool withTaca = true;
-
 struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 {
-	ExtremityColor rightLeg;
-	ExtremityColor leftLeg;
-	ExtremityColor rightArm;
-	ExtremityColor leftArm;
-	ExtremityColor head;
-	ExtremityColor body;
+	ExtremityColor rightLeg = ExtremityColor::NONE_COLOR;
+	ExtremityColor leftLeg = ExtremityColor::NONE_COLOR;
+	ExtremityColor rightArm = ExtremityColor::NONE_COLOR;
+	ExtremityColor leftArm = ExtremityColor::NONE_COLOR;
+	ExtremityColor head = ExtremityColor::NONE_COLOR;
+	ExtremityColor body = ExtremityColor::NONE_COLOR;
 
 	bool isCarried = false;
 	bool isLet = false;
 	float counterBloodTimeLeft = 100.f;
 
+	Cadaver(vec _pos) {
+		pos = _pos;
+
+		ExtremityColor color = RandomExtremityColor();
+
+		SetExtremityColor(RandomExtremityType(), color);
+		SetExtremityColor(RandomExtremityType(), color);
+		SetExtremityColor(RandomExtremityType(), color);
+		SetExtremityColor(RandomExtremityType(), color);
+		body = color;
+	}
+
+	void SetExtremityColor(ExtremityType type, ExtremityColor color) {
+		switch (type) {
+		case ExtremityType::HEAD:
+			head = color;
+			break;
+		case ExtremityType::LEFT_ARM:
+			leftArm = color;
+			break;
+		case ExtremityType::RIGHT_ARM:
+			rightArm = color;
+			break;
+		case ExtremityType::LEFT_LEG:
+			leftLeg = color;
+			break;
+		case ExtremityType::RIGHT_LEG:
+			rightLeg = color;
+			break;
+		}
+	}
 	bool HasExtremity(ExtremityType et) {
 		switch (et) {
 		case ExtremityType::HEAD:
@@ -76,23 +106,7 @@ struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 	}
 
 	void AttachExtremity(Extremity* e) {
-		switch (e->type) {
-		case ExtremityType::HEAD:
-			head = e->color;
-			break;
-		case ExtremityType::LEFT_ARM:
-			leftArm = e->color;
-			break;
-		case ExtremityType::RIGHT_ARM:
-			rightArm = e->color;
-			break;
-		case ExtremityType::LEFT_LEG:
-			leftLeg = e->color;
-			break;
-		case ExtremityType::RIGHT_LEG:
-			rightLeg = e->color;
-			break;
-		}
+		SetExtremityColor(e->type, e->color);
 		e->alive = false;
 
 		new SpawnAnim(e->pos);
@@ -132,30 +146,6 @@ struct Cadaver : SortedDrawable, Cintable, EntS<Cadaver>
 		new SpawnAnim(this->pos, vec(0, 0));
 
 		return e;
-	}
-
-	Cadaver(vec _pos) {
-		pos = _pos;
-
-		ExtremityColor color = RandomExtremityColor();
-
-		rightLeg = color;
-		leftLeg = color;
-		rightArm = color;
-		leftArm = color;
-		head = color;
-		body = color;
-
-		int noExtremity = Random::roll(0, 4);
-		switch (noExtremity)
-		{
-		case 0: rightLeg = ExtremityColor::NONE_COLOR; break;
-		case 1: leftLeg = ExtremityColor::NONE_COLOR; break;
-		case 2: rightArm = ExtremityColor::NONE_COLOR; break;
-		case 3: leftArm = ExtremityColor::NONE_COLOR; break;
-		case 4: head = ExtremityColor::NONE_COLOR; break;
-		}
-
 	}
 
 	vec positionPlz() override { return pos; }
