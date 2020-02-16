@@ -90,10 +90,9 @@ struct Taca : Cintable, EntS<Taca>
 		{
 			onCinta = SetSpeedWithCinta(speed);
 			speed = speed * 0.8f;
-			counter -= dt;
-			if (counter < 0)
-			{
-				if (currCintaDirection != EntityDirection::NONE || prevCintaDirection != EntityDirection::NONE)
+			if (onCinta) {
+				counter -= dt;
+				if (counter < 0)
 				{
 					alive = false;
 				}
