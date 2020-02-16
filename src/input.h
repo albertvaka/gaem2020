@@ -3,8 +3,10 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include "bounds.h"
+#include "magic_enum.h"
 
+#include "game_data.h"
+#include "bounds.h"
 
 // Static stuff here:
 //
@@ -21,9 +23,8 @@ enum GameKeys
 	ACTION, START, SHOOT,
 	DEBUG_ZOOM_IN, DEBUG_ZOOM_OUT,
 	RESTART,
-	COUNT
 };
-extern sf::Keyboard::Key key_map[GameKeys::COUNT];
+extern sf::Keyboard::Key key_map[magic_enum::enum_count<GameKeys>()];
 
 inline void RemapInput()
 {
@@ -155,7 +156,7 @@ namespace Window
 struct Keyboard
 {
 
-	static KeyStates key_states[int(GameKeys::COUNT)];
+	static KeyStates key_states[magic_enum::enum_count<GameKeys>()];
 
 	static bool IsKeyPressed(GameKeys k) {
 		return (key_states[k] == PRESSED || key_states[k] == JUST_PRESSED);

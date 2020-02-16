@@ -55,7 +55,7 @@ struct IntroScene : Scene {
 
 	}
 
-	void Leave() {
+	void Leave() override {
 		EntS<Entity>::deleteAll();
 	}
 

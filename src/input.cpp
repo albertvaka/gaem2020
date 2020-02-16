@@ -2,7 +2,6 @@
 
 #include "imgui.h"
 #include "imgui-SFML.h"
-#include "game_data.h"
 
 int GamePad::player_to_joystick[GamePad::JoystickCountMax];
 
@@ -14,8 +13,8 @@ GamePad::Trigger::RightTrigger GamePad::Trigger::Right;
 
 KeyStates GamePad::button_states[GamePad::JoystickCountMax][sf::Joystick::ButtonCount];
 KeyStates Mouse::button_states[sf::Mouse::ButtonCount];
-KeyStates Keyboard::key_states[int(GameKeys::COUNT)];
-sf::Keyboard::Key key_map[GameKeys::COUNT];
+KeyStates Keyboard::key_states[magic_enum::enum_count<GameKeys>()];
+sf::Keyboard::Key key_map[magic_enum::enum_count<GameKeys>()];
 
 
 
@@ -308,7 +307,7 @@ void GamePad::_UpdateInputState()
 
 void Keyboard::_UpdateInputState()
 {
-    for (int i = 0; i < int(GameKeys::COUNT); i++)
+    for (int i = 0; i < magic_enum::enum_count<GameKeys>(); i++)
 	{
         if (sf::Keyboard::isKeyPressed(key_map[i]) && Window::WindowHasFocus())
 		{
@@ -389,7 +388,7 @@ namespace Input
         Camera::ResetCamera();
         Camera::ResetGuiCamera();
         RemapInput();
-        for (int i = 0; i < int(GameKeys::COUNT); i++) Keyboard::key_states[i] = RELEASED;
+        for (int i = 0; i < magic_enum::enum_count<GameKeys>(); i++) Keyboard::key_states[i] = RELEASED;
         for (int i = 0; i < sf::Mouse::ButtonCount; i++) Mouse::button_states[i] = RELEASED;
 
     }

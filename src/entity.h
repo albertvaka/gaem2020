@@ -37,8 +37,8 @@ vec DirToVec(EntityDirection dir) {
 		case  EntityDirection::LEFT: return vec(-1,0);
 		case  EntityDirection::UP: return vec(0,-1);
 		case  EntityDirection::DOWN: return vec(0,1);
+		case EntityDirection::NONE: return vec(0,0);
 	}
-	return vec(0,0);
 }
 
 bool OutOfScreen(vec pos) {

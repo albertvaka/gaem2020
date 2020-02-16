@@ -148,6 +148,7 @@ ExtremityType letraToExtremity(char c)
 		case 'm':
 			return ExtremityType::RIGHT_ARM;
 	}
+	return ExtremityType::BODY; // should not happen
 }
 
 void LoadMap()

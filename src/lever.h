@@ -71,7 +71,6 @@ struct Lever : SortedDrawable, EntS<Lever>
 
 		//Cablesitos
 
-		int lvl = std::max(0, push);
 		int cable_spr_dx = (int)(std::min(8.0f, float(push / (PUSH_MAX/8.0f)))) * 32;
 
 		spr.setTextureRect(sf::IntRect(cable_spr_dx, 11 * 16, 16, 16));

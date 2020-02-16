@@ -56,9 +56,9 @@ struct Mesa : SortedDrawable, EntS<Mesa>, Buttonable
 		lever->ent_connected = this;
 	}
 
-	void Update(int dt)
+	void Update(int dt) override
 	{
-		lever->is_connected = (collector->extremity && cadaver && !cadaver->HasExtremity(type)) && collector->extremity->type == type || (!collector->extremity && cadaver && cadaver->HasExtremity(type));
+		lever->is_connected = (collector->extremity && cadaver && !cadaver->HasExtremity(type) && collector->extremity->type == type) || (!collector->extremity && cadaver && cadaver->HasExtremity(type));
 	}
 
 	void Draw(sf::Sprite& spr, sf::RenderTarget& window) override

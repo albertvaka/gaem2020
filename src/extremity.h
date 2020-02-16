@@ -10,7 +10,6 @@ enum class ExtremityType
 	RIGHT_ARM,
 	LEFT_ARM,
 	HEAD,
-	COUNT,
 };
 
 enum class ExtremityColor
@@ -22,15 +21,15 @@ enum class ExtremityColor
 	GREEN,
 	BLUE,
 	RED,
-	SIZE_COLOR
 };
 
 inline ExtremityType RandomExtremityType() {
-	return ExtremityType(Random::roll(int(ExtremityType::COUNT) - 2) + 1);
+
+	return ExtremityType(Random::roll(magic_enum::enum_count<ExtremityType>() - 2) + 1);
 };
 
 inline ExtremityColor RandomExtremityColor() {
-	return ExtremityColor(Random::roll(int(ExtremityColor::SIZE_COLOR) - 2) + 1);
+	return ExtremityColor(Random::roll(magic_enum::enum_count<ExtremityColor>() - 2) + 1);
 };
 
 std::map<ExtremityColor, std::map<ExtremityType, sf::IntRect>> extremitySprPos;
@@ -62,7 +61,7 @@ struct Extremity : SortedDrawable, Cintable, EntS<Extremity>
 	}
 
 
-	void Update(int dt)
+	void Update(int dt) override
 	{
 		SetSpeedWithCinta(speed);
 		pos += speed * dt;

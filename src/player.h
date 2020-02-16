@@ -445,7 +445,7 @@ struct Player : SortedDrawable, EntS<Player>
 		window.draw(spr);
 		spr.setScale(a);
 
-		if (((cadaver || extremity) && !isCarrying) || lever && lever->is_connected || (isCarrying && cadaver && mesa && !mesa->cadaver) || (collector && collector->extremity) || (isCarrying && extremity && collector && !collector->extremity))
+		if (((cadaver || extremity) && !isCarrying) || (lever && lever->is_connected) || (isCarrying && cadaver && mesa && !mesa->cadaver) || (collector && collector->extremity) || (isCarrying && extremity && collector && !collector->extremity))
 		{
 			// Action button
 			spr.setTextureRect(actionButton.CurrentFrame());
