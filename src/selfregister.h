@@ -5,14 +5,13 @@
 #include <iostream>
 #include <vector>
 #include <functional>
-using namespace std;
 
 /**
  * Inheriting from this class gives you a static method getAll()
  * that returns a set with all the current instances of the class.
  */
 template <typename T>
-class EntS 
+class EntS
 {
 public:
 	EntS()
@@ -39,24 +38,23 @@ public:
 	static void sort(std::function<bool(T*,T*)> sortBy) {
 		std::sort(getAll().begin(), getAll().end(), sortBy);
 	}
-	static void deleteNotAlive() 
+	static void deleteNotAlive()
 	{
-		/*for (int i = getAll().size() - 1; i >= 0; i--) 
+		for (int i = getAll().size()-1; i >= 0; i--)
 		{
 			T* e = getAll()[i];
-			if (e->parent && !e->parent->alive) 
-			{
-					e->parent = NULL;
-			}
-		}*/
-		for (int i = getAll().size()-1; i >= 0; i--) 
-		{
-			T* e = getAll()[i];
-			if (!e->alive) 
+			if (!e->alive)
 			{
 				delete e;
 			}
 		}
 	}
-
+	static void deleteAll()
+	{
+		for (int i = getAll().size()-1; i >= 0; i--)
+		{
+			T* e = getAll()[i];
+			delete e;
+		}
+	}
 };

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+const int TILE_SIZE = 16;
 
 namespace GameData
 {
@@ -20,5 +21,3 @@ namespace GameData
 	const std::string GAME_TITLE = "GGJ 2020";
 }
 
-extern int countBads;
-extern int countGoods;

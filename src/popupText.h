@@ -5,7 +5,7 @@
 #include "rand.h"
 #include "vector.h"
 
-struct TextMolest : SortedDrawable, EntS<TextMolest>
+struct TextMolest : Entity, EntS<TextMolest>
 {
 	enum Type
 	{

@@ -42,6 +42,10 @@ struct Cleaner : SortedDrawable, EntS<Cleaner>
 		parent = _parent;
 		pos_y_spawn = pos.y;
 		size = vec(13.f,13.f);
+
+		if (_parent == nullptr) {
+			timer_naixement = 100000;
+		}
 	}
 	void DecideNextAction() {
 		decisionCounter = 1000.f;

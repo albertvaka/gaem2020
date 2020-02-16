@@ -20,6 +20,7 @@ enum GameKeys
 	UP = 0, DOWN, LEFT, RIGHT,
 	ACTION, START, SHOOT,
 	DEBUG_ZOOM_IN, DEBUG_ZOOM_OUT,
+	RESTART,
 	COUNT
 };
 extern sf::Keyboard::Key key_map[GameKeys::COUNT];
@@ -35,9 +36,8 @@ inline void RemapInput()
 	key_map[GameKeys::START] = sf::Keyboard::Key::Enter;
 	key_map[GameKeys::DEBUG_ZOOM_IN] = sf::Keyboard::Add;
 	key_map[GameKeys::DEBUG_ZOOM_OUT] = sf::Keyboard::Subtract;
+	key_map[GameKeys::RESTART] = sf::Keyboard::Escape;
 }
-
-
 
 enum KeyStates { JUST_RELEASED, RELEASED, JUST_PRESSED, PRESSED };
 
