@@ -41,14 +41,14 @@ int main()
 
 	Scene* currentScene = new IntroScene();
 	SceneManager::SetScene(currentScene);
-	currentScene->Init();
+	currentScene->EnterScene();
 	while (window.isOpen())
 	{
 		if (SceneManager::CurrentScene() != currentScene) {
-			currentScene->Leave();
+			currentScene->ExitScene();
 			delete currentScene;
 			currentScene = SceneManager::CurrentScene();
-			currentScene->Init();
+			currentScene->EnterScene();
 		}
 
 		sf::Time time = dtClock.restart();

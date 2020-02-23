@@ -21,7 +21,7 @@ struct MainScene : Scene {
 	sf::Texture texture;
 	sf::Sprite sprite;
 
-	void Init() override
+	void EnterScene() override
 	{
 		Camera::SetZoom(GameData::GAME_ZOOM);
 		Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / (2*GameData::GAME_ZOOM), GameData::WINDOW_HEIGHT/(2*GameData::GAME_ZOOM)));
@@ -51,7 +51,7 @@ struct MainScene : Scene {
 	#endif
 	}
 
-	void Leave() override {
+	void ExitScene() override {
 		EntS<Entity>::deleteAll();
 		EntS<Cintable>::deleteAll();
 	}

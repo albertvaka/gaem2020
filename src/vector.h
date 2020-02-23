@@ -415,3 +415,15 @@ inline std::ifstream& operator>>(std::ifstream& is, vec& lhs)
     return is;
 }
 
+
+
+inline Mates::xy PosToTile(vec pos)
+{
+	return
+	{
+		int((pos.x) / 16),
+		int((pos.y) / 16)
+	};
+}
+
+

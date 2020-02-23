@@ -46,8 +46,6 @@ struct Taca : Cintable, EntS<Taca>
 			posfinal = pos + (roomba_absorbing->pos - pos) * progress;
 		}
 
-
-
 		posfinal += m_offset;
 
 		posfinal.x = int(posfinal.x);

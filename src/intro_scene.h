@@ -15,7 +15,7 @@ struct IntroScene : Scene {
 	sf::Font font;
 	sf::Text text;
 
-	void Init() override
+	void EnterScene() override
 	{
 		Camera::SetZoom(GameData::GAME_ZOOM);
 		Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / (2*GameData::GAME_ZOOM), GameData::WINDOW_HEIGHT/(2*GameData::GAME_ZOOM)));
@@ -55,7 +55,7 @@ struct IntroScene : Scene {
 
 	}
 
-	void Leave() override {
+	void ExitScene() override {
 		EntS<Entity>::deleteAll();
 	}
 

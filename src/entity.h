@@ -21,16 +21,6 @@ enum class EntityDirection
 
 const float CINTA_SPEED = 8/320.f;
 
-inline Mates::xy PosToTile(vec pos)
-{
-	return
-	{
-		int((pos.x) / 16),
-		int((pos.y) / 16)
-	};
-}
-
-
 vec DirToVec(EntityDirection dir) {
 	switch(dir) {
 		case  EntityDirection::RIGHT: return vec(1,0);
@@ -41,7 +31,7 @@ vec DirToVec(EntityDirection dir) {
 	}
 }
 
-bool OutOfScreen(vec pos) {
+bool IsOutOfScreen(vec pos) {
 	return (pos.x < 0 || pos.y < 0 || pos.x > GameData::WINDOW_WIDTH/GameData::GAME_ZOOM || pos.y > GameData::WINDOW_HEIGHT/GameData::GAME_ZOOM);
 }
 

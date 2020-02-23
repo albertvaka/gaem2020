@@ -41,7 +41,7 @@ struct Bullet : Entity, EntS<Bullet>
 		}
 
 		pos += speed * dt * 0.1f;
-		if (OutOfScreen(pos)) {
+		if (IsOutOfScreen(pos)) {
 			alive = false;
 		}
 	}
