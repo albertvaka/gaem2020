@@ -166,7 +166,7 @@ namespace Mates
 
 	//clamps the first argument between the second two
 	template <class T, class U, class V>
-	inline void Clamp(T& arg, const U& minVal, const V& maxVal)
+	inline bool Clamp(T& arg, const U& minVal, const V& maxVal)
 	{
 #if _DEBUG
 		assert(((double)minVal < (double)maxVal) && "<Clamp>MaxVal < MinVal!");
@@ -175,12 +175,16 @@ namespace Mates
 		if (arg < (T)minVal)
 		{
 			arg = (T)minVal;
+			return true;
 		}
 
 		if (arg > (T)maxVal)
 		{
 			arg = (T)maxVal;
+			return true;
 		}
+
+		return false;
 	}
 
 	template <class T, class V>

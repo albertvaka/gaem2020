@@ -154,18 +154,29 @@ void JumpMan::Update(float dt)
 		}
 
 	}
+	if (abs(vel.x)+ 0.01f >= vel_max.x) {
+		acc.x = 0;
+	}
+	if (abs(vel.y)+0.01f >= vel_max.y) {
+		acc.y = 0;
+	}
 
-	vel = vel + acc * dt;
-
-	//Hacemos clamp de las velocidades
-	if (vel.x > vel_max.x) vel.x = vel_max.x;
-	if (vel.x < -vel_max.x) vel.x = -vel_max.x;
-	if (vel.y > vel_max.y) vel.y = vel_max.y;
-	if (vel.y < -vel_max.y) vel.y = -vel_max.y;
+	// Clamp velocity (and stop accel when at max vel)
+	vec velf = vel + acc * dt;
+	if (Mates::Clamp(velf.x, -vel_max.x, vel_max.x)) {
+		vel.x = velf.x;
+		acc.x = 0;
+	}
+	if (Mates::Clamp(velf.y, -vel_max.y, vel_max.y)) {
+		vel.y = velf.y;
+		acc.y = 0;
+	}
 
 	//uniformly accelerated linear motion
 	vec pos0 = pos;
-	vec posf = pos0 + vel * dt; //posicion final
+	vec posf = pos0 + vel*dt + acc*dt*dt*0.5f; //(on mean, accel adds to vel 0.5 times the final increase)
+	//std::cout << abs(pos.x - posf.x)/dt << std::endl;
+	vel = velf;
 
 	//Obtenemos el vector direccion para saber hacia donde nos dirigimos
 
