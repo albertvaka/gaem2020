@@ -35,6 +35,7 @@ JumpMan::JumpMan(TileMap* _map)
 }
 
 void JumpMan::Draw(sf::Sprite& spr, sf::RenderTarget& window) {
+	polvito.Draw(window);
 	spr.setTextureRect(animation.CurrentFrame());
 	if (lookingLeft) {
 		spr.setScale(-1.f, 1.f);
@@ -274,6 +275,8 @@ vert_exit:
 horz_exit:
 	pos = posf; //asignamos la posicion final a pos
 
+	polvito.pos = pos;
+	polvito.Update(dt);
 	animation.Update((int)(dt*1000));
 
 	if (crouched)

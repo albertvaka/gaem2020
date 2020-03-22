@@ -27,7 +27,9 @@ void JumpScene::EnterScene()
 	transition.goPos(GameData::GAME_ZOOM);
 
 	player.pos = vec(160, 160);
+	player.polvito.AddSprite(texture, sf::IntRect(69, 50, 2, 2));
 	player.Reset();
+
 	map.Randomize(time(NULL));
 
 	sf::Vector2i pos = map.tilePos(player.pos);
@@ -83,8 +85,6 @@ void JumpScene::Update(int dtMilis) {
 		sf::Vector2i tile = map.tilePos(pos);
 		map.set(tile.x, tile.y, what_to_set);
 	}
-
-
 }
 
 void JumpScene::Draw(sf::RenderTarget& window) 
@@ -97,13 +97,10 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	//player.bounds().Draw(window);
 	//Bounds(player.pos, vec(1, 1)).Draw(window, sf::Color::White);
 
-
-
-
 	ImGui::Begin(GameData::GAME_TITLE.c_str());
-	ImGui::SliderFloat("x", &player.pos.x, 0.f, 10 * 16.f);
 	ImGui::SliderFloat("y", &player.pos.y, 0.f, 25 * 16.f);
-
 	ImGui::End();
+
+	player.polvito.DrawImGUI("Polvito");
 }
 
