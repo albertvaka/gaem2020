@@ -56,6 +56,7 @@
     <ClInclude Include="src\scene_jumpman.h" />
     <ClInclude Include="src\scene_manager.h" />
     <ClInclude Include="src\selfregister.h" />
+    <ClInclude Include="src\setter.h" />
     <ClInclude Include="src\spawner.h" />
     <ClInclude Include="src\taca.h" />
     <ClInclude Include="src\tilemap.h" />

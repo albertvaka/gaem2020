@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "vector.h"
+#include "setter.h"
 
 struct PartSys {
 
@@ -11,22 +12,27 @@ struct PartSys {
 
 	vec max_vel = vec();
 	vec min_vel = vec();
+	setter<vec> vel = setter<vec>([this](vec n) { max_vel = min_vel = n; });
 
 	vec acc = vec();
 
 	float min_ttl = 1.f;
 	float max_ttl = 1.f;
+	setter<float> ttl = setter<float>([this](float n) { max_ttl = min_ttl = n; });
 
 	float min_interval = 0.2f; //min_interval < 0: no particles are created automatically
 	float max_interval = 0.2f;
+	setter<float> interval = setter<float>([this](float n) { max_interval = min_interval = n; });
 
 	float min_scale = 1.f;
 	float max_scale = 1.f;
+	setter<float> scale = setter<float>([this](float n) { max_scale = min_scale = n; });
 
 	float scale_vel = 0.f;
 
 	float min_rotation = 0.f;
 	float max_rotation = 0.f;
+	setter<float> rotation = setter<float>([this](float n) { max_rotation = min_rotation = n; });
 
 	float rotation_vel = 0.f;
 
