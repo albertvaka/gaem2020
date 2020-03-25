@@ -11,18 +11,19 @@ const float gravity_acc = 600;
 // friction X
 const float fri_acc_floor = 1000;
 const float fri_acc_floor_crouched = 450;
-const float fri_acc_air = 1000 / 8.f;
+const float fri_acc_air = 150;
 
 // friction Y
 const float fri_acc_wall_up = 1000;
 const float fri_acc_wall_down = 450;
 
 // jump
-const float vel_jump = -150;
-const float vel_walljump = 130;
+const float vel_jump = -165;
+const float vel_walljump = 150;
 const float jump_time = 0.35f;
 
 const vec vel_max(225, 200);
+const vec vel_max_onair(170, 200);
 
 JumpMan::JumpMan(TileMap* _map)
 	: vel(0, 0)
@@ -167,10 +168,18 @@ void JumpMan::Update(float dt)
 	vel = vel + acc * dt;
 
 	//Hacemos clamp de las velocidades
-	if (vel.x > vel_max.x) vel.x = vel_max.x;
-	if (vel.x < -vel_max.x) vel.x = -vel_max.x;
-	if (vel.y > vel_max.y) vel.y = vel_max.y;
-	if (vel.y < -vel_max.y) vel.y = -vel_max.y;
+	if (grounded) {
+		if (vel.x > vel_max.x) vel.x = vel_max.x;
+		if (vel.x < -vel_max.x) vel.x = -vel_max.x;
+		if (vel.y > vel_max.y) vel.y = vel_max.y;
+		if (vel.y < -vel_max.y) vel.y = -vel_max.y;
+	}
+	else {
+		if (vel.x > vel_max_onair.x) vel.x = vel_max_onair.x;
+		if (vel.x < -vel_max_onair.x) vel.x = -vel_max_onair.x;
+		if (vel.y > vel_max_onair.y) vel.y = vel_max_onair.y;
+		if (vel.y < -vel_max_onair.y) vel.y = -vel_max_onair.y;
+	}
 
 	//uniformly accelerated linear motion
 	vec pos0 = pos;
@@ -255,7 +264,7 @@ vert_exit:
 				if (map->isColl(x, y))
 				{
 					posf.x = map->Right(x) + cen.x;
-					vel.x = -3.f; //stay against wall
+					vel.x = -5.f; //stay against wall
 					onWall = ONWALL_LEFT;
 					lookingLeft = true;
 					goto horz_exit;
@@ -277,7 +286,7 @@ vert_exit:
 				if (map->isColl(x, y))
 				{
 					posf.x = map->Left(x) - csiz.x;
-					vel.x = 3.f; //stay against wall
+					vel.x = 5.f; //stay against wall
 					onWall = ONWALL_RIGHT;
 					lookingLeft = false;
 					goto horz_exit;
