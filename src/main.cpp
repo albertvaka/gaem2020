@@ -39,7 +39,7 @@ int main()
 	sf::Clock fpsClock;
 	int fps_counter = 0;
 #endif
-	bool frameByFrame = false;
+	bool frameByFrame = true;
 
 	sf::Clock dtClock;
 

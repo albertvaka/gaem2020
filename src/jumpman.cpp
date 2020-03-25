@@ -61,8 +61,9 @@ void JumpMan::Update(float dt)
 
 	//Si en el frame anterior estaba tocando el suelo, inicializando
 	//jumpTimeLeft a mas de 0 permite al jugador saltar durante ese rato
-	if (Keyboard::IsKeyJustPressed(GameKeys::UP, 0.15f) && (grounded || (onWall && !crouched)))
+	if (!jumped && Keyboard::IsKeyJustPressed(GameKeys::UP, 0.15f) && (grounded || (onWall && !crouched)))
 	{
+		jumped = true;
 		Keyboard::ConsumeJustPressed(GameKeys::UP);
 		//if (!Keyboard::IsKeyJustPressed(GameKeys::UP)) std::cout << "cheats" << std::endl;
 		jumpTimeLeft = jump_time;
@@ -197,8 +198,13 @@ void JumpMan::Update(float dt)
 	vec csiz = siz - cen;
 	vec direction = posf - pos;
 	const int N = 1;
+
+	static int frame = 0;
+	std::cout << "==================== frame " << frame++ << std::endl;
+
 	if (direction.y < 0) //Vamos hacia arriba
 	{
+		std::cout << "up" << std::endl;
 		int yo = map->tilePosY(pos.y - siz.y); // usamos la y superior del sprite
 		int yn = map->tilePosY(posf.y - siz.y);
 		int xl = map->tilePosX(pos.x - cen.x + N);
@@ -209,6 +215,7 @@ void JumpMan::Update(float dt)
 			{
 				if (map->isColl(x, y))
 				{
+					std::cout << "coll up" << std::endl;
 					posf.y = map->Top(y) + siz.y;
 					vel.y = 0;
 					jumpTimeLeft = 0;
@@ -216,6 +223,7 @@ void JumpMan::Update(float dt)
 				}
 			}
 		}
+		std::cout << "no collision up" << std::endl;
 		//No collision up
 	}
 	else if (direction.y > 0) //Vamos hacia abajo
@@ -230,6 +238,7 @@ void JumpMan::Update(float dt)
 			{
 				if (map->isColl(x, y))
 				{
+					std::cout << "coll down" << std::endl;
 					posf.y = map->Bottom(y);
 					DoPolvitoLand();
 					vel.y = 0;
@@ -237,6 +246,7 @@ void JumpMan::Update(float dt)
 				}
 			}
 		}
+		std::cout << "no collision down" << std::endl;
 		//No collision down
 	}
 
@@ -254,6 +264,7 @@ vert_exit:
 			{
 				if (map->isColl(x, y))
 				{
+					std::cout << "collision left" << std::endl;
 					posf.x = map->Right(x) + cen.x;
 					vel.x = -3.f; //stay against wall
 					onWall = ONWALL_LEFT;
@@ -276,6 +287,7 @@ vert_exit:
 			{
 				if (map->isColl(x, y))
 				{
+					std::cout << "collision right" << std::endl;
 					posf.x = map->Left(x) - csiz.x;
 					vel.x = 3.f; //stay against wall
 					onWall = ONWALL_RIGHT;

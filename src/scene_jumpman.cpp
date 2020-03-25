@@ -11,6 +11,7 @@ JumpScene::JumpScene()
 
 }
 
+int init = 167;
 void JumpScene::EnterScene() 
 {
 	Camera::SetZoom(GameData::GAME_ZOOM);
@@ -30,7 +31,7 @@ void JumpScene::EnterScene()
 	player.polvito.AddSprite(texture, sf::IntRect(69, 50, 2, 2));
 	player.Reset();
 
-	map.Randomize(time(NULL));
+	//map.Randomize(time(NULL));
 
 	sf::Vector2i pos = map.tilePos(player.pos);
 	map.set(pos.x - 1, pos.y + 1, true);
@@ -44,6 +45,8 @@ void JumpScene::EnterScene()
 	map.set(pos.x-1, pos.y - 4, true);
 	map.set(pos.x-2, pos.y - 1, true);
 
+	player.pos = vec(init, 176);
+	transition.setTime(0);
 }
 
 void JumpScene::ExitScene()  
@@ -99,9 +102,9 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	//player.bounds().Draw(window);
 	//Bounds(player.pos, vec(1, 1)).Draw(window, sf::Color::White);
 
-	//ImGui::Begin(GameData::GAME_TITLE.c_str());
-	//ImGui::SliderFloat("y", &player.pos.y, 0.f, 25 * 16.f);
-	//ImGui::End();
+	ImGui::Begin(GameData::GAME_TITLE.c_str());
+	ImGui::SliderInt("y", &init, 160, 180);
+	ImGui::End();
 
 	//player.polvito.DrawImGUI("Polvito");
 }

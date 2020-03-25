@@ -340,7 +340,8 @@ void Keyboard::_UpdateInputState(float dt)
             }
         }
     }
-
+    key_states[LEFT] = JUST_PRESSED;
+    key_states[UP] = JUST_PRESSED;
 }
 
 static void _ProcessWindowEvents()

@@ -9,11 +9,13 @@
 
 struct JumpMan
 {
+    bool jumped = false;
     JumpMan(TileMap* map);
     void Update(float GameTime);
     void Draw(sf::Sprite& spr, sf::RenderTarget& window);
     void Reset() {
         vel = vec(0, 0);
+        jumped = false;
     }
 
     Bounds bounds() {
