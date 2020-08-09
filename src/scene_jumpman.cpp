@@ -3,22 +3,12 @@
 #ifdef _IMGUI
 #include "imgui.h"
 #endif
-#include "bullet.h"
 #include "enemy_door.h"
 #include "assets.h"
-#include "simplexnoise.h"
-#include "parallax.h"
-#include "bat.h"
-#include "lava.h"
-#include "savestation.h"
-#include "debug.h"
-#include "rototext.h"
+#include "collide.h"
 
 extern float mainClock;
 
-const float batClusterSize = 22.f;
-const float chanceAngryBat = 0.2f;
-const float camSpeed = 2000;
 
 #ifdef _DEBUG
 static int currentPlacingTile = 1;
@@ -45,17 +35,15 @@ void JumpScene::ExitScene()
 	EnemyDoor::DeleteAll();
 }
 
-void callbackerino(EnemyDoor* a, EnemyDoor* b) {
-	a->collide = true;
-	b->collide = true;
-}
-
 void JumpScene::Update(float dt)
 {
 	for (EnemyDoor* ed : EnemyDoor::GetAll()) {
 		ed->collide = false;
 	}
-	CollideSelf(EnemyDoor::GetAll(), callbackerino);
+	CollideSelf(EnemyDoor::GetAll(), [](EnemyDoor* a, EnemyDoor* b) {
+		a->collide = true;
+		b->collide = true;
+	});
 	for ( EnemyDoor* ed : EnemyDoor::GetAll()) {
 		ed->Update(dt);
 	}
