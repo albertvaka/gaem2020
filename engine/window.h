@@ -8,23 +8,20 @@
 
 namespace Window
 {
-	extern SDL_Window* window;
-	extern GPU_Target* target;
-	extern bool focus;
-	extern SDL_GLContext glcontext;
-
 	constexpr const int GAME_HEIGHT = 21 * 16;
 	constexpr const int GAME_WIDTH = GAME_HEIGHT * 16.f / 9;
-	constexpr const char* WINDOW_TITLE = "Gaem";
-}
 
-namespace Window
-{
+	constexpr const char* WINDOW_TITLE = "Gaem";
+
+	extern SDL_Window* window;
+	extern GPU_Target* target;
+
+	extern bool has_focus;
+
 	int Init();
 	void ProcessEvents();
 
-	inline bool HasFocus() { return focus; }
-	bool IsMouseInsideWindow();
+	inline bool HasFocus() { return has_focus; }
 
 	inline void Clear(uint8_t r, uint8_t g, uint8_t b) {
 		GPU_ClearRGBA(Window::target, r, g, b, 255);
