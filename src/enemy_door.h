@@ -14,8 +14,8 @@ struct EnemyDoor : BoxEntity, SelfRegister<EnemyDoor>
 	vec speed;
 	EnemyDoor() : BoxEntity(vec(16,16)) {
 		float angle = Rand::rollf(360);
-		speed.x = cosf(Mates::DegsToRads(angle)) * (100 + Rand::roll(800));
-		speed.y = sinf(Mates::DegsToRads(angle)) * (100 + Rand::roll(800));
+		speed.x = cosf(Mates::DegsToRads(angle)) * (10 + Rand::roll(80));
+		speed.y = sinf(Mates::DegsToRads(angle)) * (10 + Rand::roll(80));
 
 		pos.x = Rand::roll(Window::GAME_WIDTH );
 		pos.y = Rand::roll(Window::GAME_HEIGHT);
