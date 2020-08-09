@@ -8,9 +8,8 @@
 
 namespace Window
 {
-	constexpr const int GAME_HEIGHT = 21 * 16;
-	constexpr const int GAME_WIDTH = GAME_HEIGHT * 16.f / 9;
-
+	constexpr const int GAME_HEIGHT = 1000;
+	constexpr const int GAME_WIDTH = 1500;
 	constexpr const char* WINDOW_TITLE = "Gaem";
 
 	extern SDL_Window* window;
