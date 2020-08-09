@@ -19,8 +19,8 @@ sf::Texture tex_tileset;
 sf::Font font;
 InputState input_state;
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
+const int WINDOW_WIDTH = 1500;
+const int WINDOW_HEIGHT = 1000;
 
 namespace EntS
 {
@@ -30,7 +30,6 @@ namespace EntS
 		COLLIDED
 	};
 
-	const int MAX_ENTITIES = 2048;
 	enum EntityType
 	{
 		NONE = 0,
@@ -39,6 +38,10 @@ namespace EntS
 		COUNT
 	};
 	
+#define ENTITY_NUM 3000
+
+	const int MAX_ENTITIES = ENTITY_NUM;
+#if true
 	EntityType ent_type[MAX_ENTITIES];
 	EntityState ent_state[MAX_ENTITIES];
 	int pos_x[MAX_ENTITIES];
@@ -46,8 +49,17 @@ namespace EntS
 	int speed_x[MAX_ENTITIES];
 	int speed_y[MAX_ENTITIES];
 	int timer[MAX_ENTITIES];
-	
 	Animation anim[MAX_ENTITIES];
+#else
+	vector<EntityType> ent_type(MAX_ENTITIES);
+	vector< EntityState> ent_state(MAX_ENTITIES);
+	vector<int> pos_x(MAX_ENTITIES);
+	vector<int> pos_y(MAX_ENTITIES);
+	vector<int> speed_x(MAX_ENTITIES);
+	vector<int> speed_y(MAX_ENTITIES);
+	vector<int> timer(MAX_ENTITIES);
+	vector<Animation> anim(MAX_ENTITIES);
+#endif
 
 	int __GetNewID()
 	{
@@ -90,8 +102,8 @@ namespace EntS
 			pos_x[id] = Dice::roll(WINDOW_WIDTH * 99);
 			pos_y[id] = Dice::roll(WINDOW_HEIGHT * 99);
 
-			speed_x[id] = cosf(Mates::DegsToRads(angle)) * (10 + Dice::roll(80));
-			speed_y[id] = sinf(Mates::DegsToRads(angle)) * (10 + Dice::roll(80));
+			speed_x[id] = cosf(Mates::DegsToRads(angle)) * (1 + Dice::roll(8));
+			speed_y[id] = sinf(Mates::DegsToRads(angle)) * (1 + Dice::roll(8));
 		}
 
 		anim[id].ResetAnim();
@@ -128,24 +140,7 @@ namespace EntS
 
 	void UpdateEntityExample(int id, int dt)
 	{
-		switch (ent_state[id])
-		{
-			case EntityState::MOVING:
-			{
-				anim[id].Ensure(AnimationType::ANIM_EXAMPLE);
-				MoveEntityExample(id, dt);
-			} break;
-			case EntityState::COLLIDED:
-			{
-				anim[id].Ensure(AnimationType::ANIM_EXAMPLE_COLLIDING);
-				timer[id] += dt;
-				if (timer[id] > 200)
-				{
-					ent_state[id] = EntityState::MOVING;
-				}
-				MoveEntityExample(id, dt);
-			} break;
-		}
+		MoveEntityExample(id, dt);
 	}
 
 	bool Collision(int a, int b)
@@ -171,21 +166,10 @@ namespace EntS
 
 				if (ent_type[i] == EntityType::ENTITY_EXAMPLE && 
 					ent_type[j] == EntityType::ENTITY_EXAMPLE &&
-
-					ent_state[i] != EntityState::COLLIDED &&
-					ent_state[j] != EntityState::COLLIDED &&
-
 					Collision(i, j))
 				{
 					ent_state[i] = EntityState::COLLIDED;
-					timer[i] = 0;
-					speed_x[i] = -speed_x[i];
-					speed_y[i] = -speed_y[i];
-
 					ent_state[j] = EntityState::COLLIDED;
-					timer[j] = 0;
-					speed_x[j] = -speed_x[j];
-					speed_y[j] = -speed_y[j];
 				}
 			}
 		}
@@ -193,6 +177,10 @@ namespace EntS
 
 	void UpdateEntities(int dt)
 	{
+		for (int id = 0; id < MAX_ENTITIES; ++id)
+		{
+			ent_state[id] = EntityState::MOVING;
+		}
 		UpdateCollisions(dt);
 
 		for (int id = 0; id < MAX_ENTITIES; ++id)
@@ -203,11 +191,6 @@ namespace EntS
 				{
 					UpdateEntityExample(id, dt);
 				} break;
-			}
-
-			if (ent_type[id] != EntityType::NONE)
-			{
-				anim[id].Update(dt);
 			}
 		}
 	}
@@ -220,40 +203,25 @@ namespace EntS
 		{
 			if (ent_type[id] != NONE)
 			{
-				draw_list.push_back(id);
+
+
+				float x = pos_x[id] / 100.0f;
+				float y = pos_y[id] / 100.0f;
+				spr.setPosition(x, y);
+
+				spr.setTextureRect(sf::IntRect(0,16,16,16));
+
+				if (ent_type[id] == EntityType::ENTITY_EXAMPLE &&
+					ent_state[id] == EntityState::COLLIDED)
+				{
+					spr.setColor(sf::Color::Red);
+				}
+				else {
+					spr.setColor(sf::Color::White);
+				}
+
+				wnd.draw(spr);
 			}
-		}
-		
-		std::sort(draw_list.begin(), draw_list.end(), [](int i, int j)
-		{
-
-			return pos_y[i] < pos_y[j];
-		});
-
-		for (size_t i = 0; i < draw_list.size(); ++i)
-		{
-			int id = draw_list[i];
-
-			spr.setScale(1, 1);
-			spr.setOrigin(0, 0);
-			
-			float x = pos_x[id]/100.0f;
-			float y = pos_y[id]/100.0f;
-			spr.setPosition(x, y);
-
-			spr.setOrigin(8, 8);
-
-			spr.setTextureRect(anim[id].CurrentFrame());
-			spr.setColor(sf::Color::White);
-
-			if (ent_type[id] == EntityType::ENTITY_EXAMPLE &&
-				ent_state[id] == EntityState::COLLIDED)
-			{
-				float sc = timer[id]/200.f;
-				spr.setScale(1.0f + sc*0.3f, 1.0f + sc * 0.3f);
-			}
-
-			wnd.draw(spr);
 		}
 
 	}
@@ -293,9 +261,11 @@ int main()
 	sf::Clock clk_fps;
 	int fps_counter = 0;
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < ENTITY_NUM; ++i)
 	{
-		EntS::SpawnEntity(EntS::EntityType::ENTITY_EXAMPLE, 200, 200);
+		float x = ((float)rand() / (WINDOW_WIDTH));
+		float y = ((float)rand() / (WINDOW_HEIGHT));
+		EntS::SpawnEntity(EntS::EntityType::ENTITY_EXAMPLE, x, y);
 	}
 
 	while (window.isOpen()) 
