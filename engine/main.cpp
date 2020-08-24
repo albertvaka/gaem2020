@@ -91,6 +91,8 @@ void init() {
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(Window::window, nullptr);
 	ImGui_ImplOpenGL3_Init(nullptr);
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 #endif
 
 	Assets::LoadAll();
