@@ -57,10 +57,10 @@ ifeq ($(strip $(IMGUI)),1)
 	IMGUIFLAGS=-D_IMGUI
 endif
 
-$(EXEC): $(OBJ) $(ENGINE_OBJ) $(DEP_OBJ) Makefile
-	$(CXX) $(LDFLAGS) $(OBJ) $(ENGINE_OBJ) $(DEP_OBJ) -o $(OUT_FILE)
+$(EXEC): $(DEP_OBJ) obj/main.cpp.o Makefile
+	$(CXX) $(LDFLAGS) obj/main.cpp.o $(DEP_OBJ) -o $(OUT_FILE)
 
-obj/main.cpp.o: engine/main.cpp src/*.h engine/*.h Makefile
+obj/main.cpp.o: engine/main.cpp Makefile
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 obj/engine/%.cpp.o: engine/%.cpp engine/*.h src/assets.h src/tiledexport.h Makefile
