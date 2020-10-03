@@ -13,7 +13,7 @@
 #include "assets.h"
 
 
-const float spriteScale = 1.2f;
+const float spriteScale = 0.5f;
 
 const float kRadius = 8.f;
 

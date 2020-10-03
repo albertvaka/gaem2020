@@ -49,6 +49,7 @@
     <ClInclude Include="src\oneshotanim.h" />
     <ClInclude Include="src\powerup.h" />
     <ClInclude Include="src\scene_main.h" />
+    <ClInclude Include="src\tiledexport.h" />
     <ClInclude Include="vendor\glew\glew.h" />
     <ClInclude Include="vendor\glew\glxew.h" />
     <ClInclude Include="vendor\glew\wglew.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\powerup.cpp" />
     <ClCompile Include="src\scene_main.cpp" />
+    <ClCompile Include="src\tiledexport.cpp" />
     <ClCompile Include="vendor\glew\glew.c" />
     <ClCompile Include="vendor\imgui\imgui.cpp" />
     <ClCompile Include="vendor\imgui\imgui_demo.cpp" />

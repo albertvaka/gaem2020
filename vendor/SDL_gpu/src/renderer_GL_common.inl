@@ -1199,7 +1199,7 @@ static void get_camera_matrix(GPU_Target* target, float* result)
         GPU_MatrixTranslate(result, offsetX, offsetY, 0);
     }
     
-    // Always rotate from the camera origin
+    // Always rotate from the camera center
     GPU_MatrixRotate(result, target->camera.angle, 0, 0, 1);
     
     if(target->camera.use_centered_origin)

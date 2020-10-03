@@ -10,34 +10,15 @@
 #include "camera.h"
 #include "window.h"
 #include "rand.h"
+#include "tiledexport.h"
 
 void MainScene::EnterScene()
 {
-	vec playerStartPos = vec(0, 0);
+	new Player(TiledEntities::spawn, 0);
 
-	new PowerUp(vec(0,90));
-	
-	new Player(playerStartPos, -90);
-
-	float innerRadius = 600;
-	float outerRadius = 800;
-	float amplitude = 30;
-	float freq = 15;
-	for (float angle = 0; angle < Angles::FullTurnInRads; angle += 0.05f) {
-		{
-			vec p;
-			p.x += (innerRadius + amplitude * sin(freq * angle)) * cos(angle);
-			p.y += (innerRadius + amplitude * sin(freq * angle)) * sin(angle);
-			new PowerUp(p);
-		}
-		{
-			vec p;
-			p.x += (outerRadius + amplitude * sin(freq * angle)) * cos(angle);
-			p.y += (outerRadius + amplitude * sin(freq * angle)) * sin(angle);
-			new PowerUp(p);
-		}
+	for (const vec& pos : TiledEntities::obstacle) {
+		new PowerUp(pos);
 	}
-		
 }
 
 void MainScene::ExitScene()
@@ -52,8 +33,7 @@ void MainScene::Update(float dt)
 	Player* player = Player::instance();
 	
 	Camera::SetRotationDegs(-player->angle - 90);
-	Camera::SetCenter(player->pos  + (player->vel * 0.25));
-
+	Camera::SetCenter(player->pos  + (player->vel * 0.25) + FxManager::GetScreenshake());
 
 	float zoomerino = 0.75 - 0.2f * (player->speed / player->kMaxSpeed);
 
