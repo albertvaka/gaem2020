@@ -50,11 +50,9 @@ void MainScene::Update(float dt)
 	FxManager::Update(dt);
 
 	Player* player = Player::instance();
-
-	Camera::camera.x = player->pos.x;
-	Camera::camera.y = player->pos.y;
-	Camera::camera.angle = player->angle;
-	GPU_SetCamera(Window::currentDrawTarget, &Camera::camera);
+	
+	Camera::SetRotationDegs(-player->angle - 90);
+	Camera::SetCenter(player->pos  + (player->vel * 0.25));
 
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
 		e->Update(dt);

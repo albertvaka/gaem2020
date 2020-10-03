@@ -1192,8 +1192,6 @@ static void get_camera_matrix(GPU_Target* target, float* result)
 
     GPU_MatrixIdentity(result);
 
-    GPU_MatrixTranslate(result, -target->camera.x, -target->camera.y, -target->camera.z);
-    
     if(target->camera.use_centered_origin)
     {
         offsetX = target->w/2.0f;
@@ -1206,6 +1204,9 @@ static void get_camera_matrix(GPU_Target* target, float* result)
     
     if(target->camera.use_centered_origin)
         GPU_MatrixTranslate(result, -offsetX, -offsetY, 0);
+
+    GPU_MatrixTranslate(result, -target->camera.x, -target->camera.y, -target->camera.z);
+
 }
 
 
