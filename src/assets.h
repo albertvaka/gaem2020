@@ -11,29 +11,11 @@ namespace Assets
 {
 	extern void LoadAll();
 
-	inline GPU_Image* blankTexture;
-
-	inline GPU_Image* hospitalTexture;
-
-	inline GPU_Image* marioTexture;
-	inline GPU_Image* wheelerTexture;
-	inline GPU_Image* mantisTexture;
-	inline GPU_Image* scifiTexture;
-
-	inline GPU_Image* menuBgTexture;
-
-	inline GPU_Image* fogTexture;
+	inline GPU_Image* spritesheet;
 
 	inline TTF_Font* font_30;
 	inline TTF_Font* font_30_outline;
 
 	inline Shader tintShader;
-	inline Shader fogShader;
-	inline Shader waveShader;
-	inline Shader fadeInDiamondsShader;
-	inline Shader fadeOutDiamondsShader;
-
-	inline std::array<GPU_Image*, 4> forestParallaxTextures;
-
 };
 

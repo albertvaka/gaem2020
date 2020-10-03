@@ -32,7 +32,7 @@ struct OneShotAnim : SelfRegister<OneShotAnim>
 
 	void Draw() const {
 		const GPU_Rect& rect = anim.GetCurrentRect();
-		Window::Draw(Assets::hospitalTexture, pos)
+		Window::Draw(Assets::spritesheet, pos)
 			.withRect(rect)
 			.withScale(scale)
 			.withOrigin(rect.w / 2, rect.h / 2);

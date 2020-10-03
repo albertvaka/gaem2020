@@ -4,11 +4,11 @@
 #include "input.h"
 #include "mates.h"
 #include "debug.h"
+#include "text.h"
 #include "camera.h"
 
 #include "../src/assets.h"
-#include "../src/scene_jumpman.h"
-#include "../src/scene_hellcross.h"
+#include "../src/scene_main.h"
 
 #ifdef _IMGUI
 #include "imgui.h"
@@ -107,8 +107,7 @@ void init() {
 
 	last_ticks = SDL_GetTicks();
 
-	//currentScene = new HellCrossScene();
-	currentScene = new JumpScene();
+	currentScene = new MainScene();
 	SceneManager::SetScene(currentScene);
 	currentScene->EnterScene();
 }

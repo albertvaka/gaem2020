@@ -12,16 +12,6 @@
 //static GPU_Image* renderToTextureTarget;
 
 void FxManager::Update(float dt) {
-	if (introTime > 0) {
-		introTime -= dt;
-		introfinished = introTime <= 0;
-	}
-
-	if (outtroTime > 0) {
-		outtroTime -= dt;
-		outtrofinished = outtroTime <= 0;
-	}
-
 	if (screenshakeTime > 0) {
 		screenshakeTime -= dt;
 		if (screenshakeTime <= 0) {
@@ -43,7 +33,6 @@ void FxManager::Update(float dt) {
 			}
 		}
 	}
-
 }
 
 void FxManager::DrawImgui() {
@@ -81,18 +70,4 @@ void FxManager::EndDraw() {
 	//Assets::waveShader.SetUniform("time", mainClock);
 	//Window::Draw(renderToTextureTarget(), Camera::GetTopLeft());
 	//Shader::Deactivate();
-
-	if (introTime > 0.f) {
-		Assets::fadeInDiamondsShader.Activate();
-		Assets::fadeInDiamondsShader.SetUniform("fadeInProgress", introTime / introDuration);
-		Window::Draw(Assets::blankTexture, Camera::GetBounds());
-		Shader::Deactivate();
-	}
-	if (outtroTime > 0.f) {
-		Assets::fadeOutDiamondsShader.Activate();
-		Assets::fadeOutDiamondsShader.SetUniform("fadeOutProgress", outtroTime / outtroDuration);
-		Window::Draw(Assets::blankTexture, Camera::GetBounds());
-		Shader::Deactivate();
-	}
-
 }
