@@ -69,6 +69,11 @@ void MainScene::Draw()
 		ImGui::Text("E to advance frame-by-frame");
 		ImGui::Text("F2: debug draw mode");
 		ImGui::End();
+
+		ImGui::Begin("car");
+		ImGui::SliderFloat("angle", &(Player::instance()->angle), 0, 360);
+		ImGui::SliderFloat("speed", &(Player::instance()->speed), 0, 200);
+		ImGui::End();
 	}
 #endif
 
