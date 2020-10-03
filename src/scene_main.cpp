@@ -47,7 +47,7 @@ void MainScene::Update(float dt)
 {
 	FxManager::Update(dt);
 
-	vec camPos = Player::instance()->pos;
+	vec camPos = Player::instance()->pos + Player::instance()->vel * 0.25f;
 	Camera::SetCenter(camPos + FxManager::GetScreenshake());
 
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
@@ -90,6 +90,7 @@ void MainScene::Draw()
 
 		ImGui::Begin("car");
 		ImGui::SliderFloat("angle", &(Player::instance()->angle), 0, 360);
+		ImGui::SliderFloat("angularSpeed", &(Player::instance()->angularSpeed), 0, 360);
 		ImGui::SliderFloat("speed", &(Player::instance()->speed), 0, 400);
 		ImGui::Text("position: %f,%f", Player::instance()->pos.x, Player::instance()->pos.y);
 		ImGui::End();

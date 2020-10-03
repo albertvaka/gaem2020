@@ -12,15 +12,16 @@
 #include "powerup.h"
 #include "assets.h"
 
-constexpr const float kTurnRate = 100.f; // in degrees/second
-
+constexpr const float kMaxSpeed = 400.f; // in pixels/second
 constexpr const float kAccel = 150.f; // in pixels/second^2
 constexpr const float kBrake = 140.f; 
-constexpr const float kFriction = 40.f; // brake force when not accelerating
+constexpr const float kDrag = 40.f; // brake force when not accelerating
 
-constexpr const float kMaxSpeed = 300.f; // in pixels/second
+constexpr const float kMaxAngularSpeed = 120.f; // in degrees/second
+constexpr const float kAngularAccel = 400.f; // in degrees/second^2
+constexpr const float kAngularDrag = 200.f; // brake force when not turning
 
-const float spriteScale = 1.5f;
+const float spriteScale = 1.2f;
 
 const float kRadius = 8.f;
 
@@ -44,11 +45,26 @@ void Player::Move(float dt)
 {
 
 	if (Input::IsPressed(0, GameKeys::LEFT)) {
-		angle -= kTurnRate * dt;
+		angularSpeed -= kAngularAccel * dt;
+	} else if (Input::IsPressed(0, GameKeys::RIGHT)) {
+		angularSpeed += kAngularAccel * dt;
 	}
-	if (Input::IsPressed(0, GameKeys::RIGHT)) {
-		angle += kTurnRate * dt;
+	else {
+		if (angularSpeed > 0) {
+			angularSpeed -= kAngularDrag * dt;
+			if (angularSpeed < 0) {
+				angularSpeed = 0;
+			}
+		}
+		if (angularSpeed < 0) {
+			angularSpeed += kAngularDrag * dt;
+			if (angularSpeed > 0) {
+				angularSpeed = 0;
+			}
+		}
 	}
+	Mates::Clamp(angularSpeed, -kMaxAngularSpeed, kMaxAngularSpeed);
+	angle += angularSpeed * dt;
 
 	if (angle > 360) angle -= 360;
 	else if (angle < 0) angle += 360;
@@ -62,7 +78,7 @@ void Player::Move(float dt)
 		speed -= kBrake * dt;
 	}
 	else {
-		speed -= kFriction * dt;
+		speed -= kDrag * dt;
 	}
 	Mates::Clamp(speed, 0, kMaxSpeed);
 

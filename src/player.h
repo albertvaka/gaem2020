@@ -11,6 +11,7 @@ struct Player : CircleEntity, SingleInstance<Player>
 	Animation2 anim;
 	float angle = 0;
 	float speed = 0;
+	float angularSpeed = 0;
 	GPU_Rect spriteBottom;
 	GPU_Rect spriteTop;
 
