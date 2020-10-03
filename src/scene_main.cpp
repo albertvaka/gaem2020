@@ -32,25 +32,18 @@ void MainScene::ExitScene()
 }
 
 
-float kCameraRotSpeed = 180.0f;
+float kCameraRotSpeed = 120.0f;
 
 void MainScene::Update(float dt)
 {
 	FxManager::Update(dt);
 
 	Player* player = Player::instance();
-	
 
-	if (cameraAngle < 0.0f)
-	{
-		cameraAngle += 360.0f;
-	}
-	if (cameraAngle > 360.0f)
-	{
-		cameraAngle -= 360.0f;
-	}
 
-	float playerAngle = -player->angle - 90;
+	float playerAngle = -player->angle - 90.0f;
+
+
 	if (cameraAngle < playerAngle)
 	{
 		cameraAngle += dt * kCameraRotSpeed;
@@ -95,7 +88,7 @@ void MainScene::Draw()
 {
 	FxManager::BeginDraw();
 
-	Window::Clear(30, 80, 30);
+	Window::Clear(16, 16, 16);
 
 	for (const PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
 	{

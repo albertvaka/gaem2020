@@ -18,7 +18,6 @@ const float kShotSpeed = 400.f;
 const float kTimeBetweenShots = 0.2f;
 
 const float spriteScale = 0.5f;
-
 const float kRadius = 8.f;
 
 
@@ -72,8 +71,8 @@ void Player::Move(float dt)
 	Mates::Clamp(angularSpeed, -kMaxAngularSpeed, kMaxAngularSpeed);
 	angle += angularSpeed * dt;
 
-	if (angle > 360) angle -= 360;
-	else if (angle < 0) angle += 360;
+	while (angle > 360.0f) angle -= 360.0f;
+	while (angle < 0.0f) angle += 360.0f;
 
 	vec heading = vec::FromAngleDegs(angle);
 
