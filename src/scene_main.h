@@ -15,4 +15,7 @@ struct MainScene : Scene {
 	void Update(float dt) override;
 	void Draw() override;
 
+
+	float cameraAngle = 0.0f;
+
 };

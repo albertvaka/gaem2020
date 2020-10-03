@@ -16,12 +16,11 @@ struct Player : CircleEntity, SingleInstance<Player>
 	const float kDrag = 40.f; // brake force when not accelerating
 
 	const float kMaxAngularSpeed = 120.f; // in degrees/second
-	const float kAngularAccel = 400.f; // in degrees/second^2
-	const float kAngularDrag = 200.f; // brake force when not turning
+	const float kAngularAccel = 200.f; // in degrees/second^2
+	const float kAngularDrag = 600.f; // brake force when not turning
 
 	Animation2 anim;
 	float angle = 0.0f;
-	float angleDerrape = 0.0f;
 	float speed = 0.0f;
 	float angularSpeed = 0.0f;
 	GPU_Rect spriteBottom;

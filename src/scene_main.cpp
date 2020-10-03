@@ -15,11 +15,14 @@
 void MainScene::EnterScene()
 {
 	float scale = 1.3f;
-	new Player(TiledEntities::spawn * scale, 0);
+	Player* p = new Player(TiledEntities::spawn * scale, 0);
 
-	for (const vec& pos : TiledEntities::obstacle) {
+	for (const vec& pos : TiledEntities::obstacle) 
+	{
 		new PowerUp(pos* scale);
 	}
+
+	cameraAngle = -p->angle - 90;
 }
 
 void MainScene::ExitScene()
@@ -27,17 +30,48 @@ void MainScene::ExitScene()
 	Entity::DeleteAll();
 }
 
+
+float kCameraRotSpeed = 180.0f;
+
 void MainScene::Update(float dt)
 {
 	FxManager::Update(dt);
 
 	Player* player = Player::instance();
 	
-	Camera::SetRotationDegs(-player->angle - 90);
+
+	if (cameraAngle < 0.0f)
+	{
+		cameraAngle += 360.0f;
+	}
+	if (cameraAngle > 360.0f)
+	{
+		cameraAngle -= 360.0f;
+	}
+
+	float playerAngle = -player->angle - 90;
+	if (cameraAngle < playerAngle)
+	{
+		cameraAngle += dt * kCameraRotSpeed;
+		if (cameraAngle > playerAngle)
+		{
+			cameraAngle = playerAngle;
+		}
+	}
+	else if (cameraAngle > playerAngle)
+	{
+		cameraAngle -= dt * kCameraRotSpeed;
+		if (cameraAngle < playerAngle)
+		{
+			cameraAngle = playerAngle;
+		}
+	}
+
+
+	Camera::SetRotationDegs(cameraAngle);
 	Camera::SetCenter(player->pos  + (player->vel * 0.25) + FxManager::GetScreenshake());
 
-	float zoomerino = 0.75 - 0.2f * (player->speed / player->kMaxSpeed);
-
+	float zoomerino = 0.5f - 0.25f * (player->speed / player->kMaxSpeed);
 	Camera::SetZoom(zoomerino, true);
 
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
