@@ -38,7 +38,7 @@ Player::Player(const vec& position, float angle)
 	int bottom = Rand::roll(10);
 	int bottomX = top % 6;
 	int bottomY = top / 6;
-	spriteBottom = { bottomX * 32.f, bottomY * 32.f, 32, 32 };
+	spriteBottom = { bottomX * 32.f, 64 + bottomY * 32.f, 32, 32 };
 }
 
 void Player::Move(float dt) 
