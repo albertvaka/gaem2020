@@ -13,7 +13,9 @@
 
 void MainScene::EnterScene()
 {
-	vec playerStartPos = vec(615, -47);
+	vec playerStartPos = vec(0, 0);
+
+	new PowerUp(vec(0,90));
 	
 	new Player(playerStartPos, -90);
 
@@ -47,8 +49,12 @@ void MainScene::Update(float dt)
 {
 	FxManager::Update(dt);
 
-	vec camPos = Player::instance()->pos + Player::instance()->vel * 0.25f;
-	Camera::SetCenter(camPos + FxManager::GetScreenshake());
+	Player* player = Player::instance();
+
+	Camera::camera.x = player->pos.x;
+	Camera::camera.y = player->pos.y;
+	Camera::camera.angle = player->angle;
+	GPU_SetCamera(Window::currentDrawTarget, &Camera::camera);
 
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
 		e->Update(dt);

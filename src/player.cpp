@@ -105,7 +105,7 @@ void Player::Update(float dt)
 
 void Player::Draw() const
 {
-	Window::DrawPrimitive::Line(pos, pos + (vel * 0.2), 2, { 255,255,0,255 });
+	Window::DrawPrimitive::Line(pos, pos + (vel * 0.25), 2, { 255,255,0,255 });
 	
 	Window::Draw(Assets::spritesheet, pos)
 		.withRect(spriteBottom)

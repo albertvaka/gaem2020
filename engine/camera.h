@@ -88,6 +88,25 @@ namespace Camera
 		return camera.zoom_x;
 	}
 
+	inline void SetRotationDegs(float angle)
+	{
+		camera.angle = angle;
+	}
+
+	inline void SetRotationRads(float angle)
+	{
+		camera.angle = Angles::RadsToDegs(angle);
+	}
+
+	inline float GetRotationDegs(float angle)
+	{
+		return camera.angle;
+	}
+
+	inline float GetRotationRads(float angle)
+	{
+		return Angles::DegsToRads(camera.angle);
+	}
 	namespace GUI
 	{
 		// GUI Camera is not affected by the current zoom nor camera displacement. Its top-left is always at 0,0
