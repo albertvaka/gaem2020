@@ -49,7 +49,16 @@ void MainScene::Update(float dt)
 		cameraAngle += kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle));
 	}
 
-	Camera::SetRotationDegs(cameraAngle);
+
+	if (player->is_derraping)
+	{
+		Camera::SetRotationDegs(-player->last_angle_before_derraping -90.0f);
+	}
+	else
+	{
+		Camera::SetRotationDegs(cameraAngle);
+	}
+	
 	Camera::SetCenter(player->pos  + (player->vel * 0.25) + FxManager::GetScreenshake());
 
 	float zoomerino = 0.5f - 0.25f * (player->speed / player->kMaxSpeed);

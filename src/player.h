@@ -32,4 +32,7 @@ struct Player : CircleEntity, SingleInstance<Player>
 	void Move(float dt);
 	void Update(float dt) override;
 	void Draw() const override;
+
+	bool is_derraping = false;
+	float last_angle_before_derraping = 0.0f;
 };

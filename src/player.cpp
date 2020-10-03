@@ -97,6 +97,17 @@ void Player::Update(float dt)
 {
 	anim.Update(dt);
 
+
+	if (Input::IsJustPressed(0, GameKeys::DERRAPE))
+	{
+		is_derraping = true;
+		last_angle_before_derraping = angle;
+	}
+	if (Input::IsJustReleased(0, GameKeys::DERRAPE))
+	{
+		is_derraping = false;
+	}
+
 	Move(dt);
 
 	for (PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
