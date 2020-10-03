@@ -71,9 +71,6 @@ void Player::Move(float dt)
 	Mates::Clamp(angularSpeed, -kMaxAngularSpeed, kMaxAngularSpeed);
 	angle += angularSpeed * dt;
 
-	while (angle > 360.0f) angle -= 360.0f;
-	while (angle < 0.0f) angle += 360.0f;
-
 	vec heading = vec::FromAngleDegs(angle);
 
 	if (Input::IsPressed(0, GameKeys::UP)) 

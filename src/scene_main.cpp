@@ -40,27 +40,14 @@ void MainScene::Update(float dt)
 
 	Player* player = Player::instance();
 
-
 	float playerAngle = -player->angle - 90.0f;
 
-
-	if (cameraAngle < playerAngle)
-	{
-		cameraAngle += dt * kCameraRotSpeed;
-		if (cameraAngle > playerAngle)
-		{
-			cameraAngle = playerAngle;
-		}
+	if (abs(cameraAngle - playerAngle) <= kCameraRotSpeed) {
+		cameraAngle = playerAngle;
 	}
-	else if (cameraAngle > playerAngle)
-	{
-		cameraAngle -= dt * kCameraRotSpeed;
-		if (cameraAngle < playerAngle)
-		{
-			cameraAngle = playerAngle;
-		}
+	else {
+		cameraAngle += kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle));
 	}
-
 
 	Camera::SetRotationDegs(cameraAngle);
 	Camera::SetCenter(player->pos  + (player->vel * 0.25) + FxManager::GetScreenshake());
