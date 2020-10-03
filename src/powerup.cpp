@@ -13,11 +13,12 @@ void PowerUp::Draw() const
 {
 	float y = 1.5f * sin(pos.x + pos.y + mainClock*2);
 
-	Window::Draw(Assets::spritesheet, pos.x, pos.y - y)
+	Window::Draw(Assets::spritesheet, pos.x, pos.y)
 		.withOrigin(8, 8)
 		.withRect(AnimLib::POWERUP);
 
-	if (Debug::Draw) {
+	if (Debug::Draw) 
+	{
 		bounds().Draw();
 	}
 }

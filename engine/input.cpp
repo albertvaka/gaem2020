@@ -28,6 +28,8 @@ inline void RemapGamePadInput()
 	};
 	gp_map[GameKeys::ACTION] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_A); };
 	gp_map[GameKeys::START] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_START); };
+
+	gp_map[GameKeys::DERRAPE] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_B); };
 }
 
 inline void RemapKeyboardInput()
@@ -49,6 +51,9 @@ inline void RemapKeyboardInput()
 	};
 	kb_map[GameKeys::START] = []() {
 		return Keyboard::IsKeyPressed(SDL_SCANCODE_RETURN) || Keyboard::IsKeyPressed(SDL_SCANCODE_ESCAPE);
+	};
+	kb_map[GameKeys::DERRAPE] = []() {
+		return Keyboard::IsKeyPressed(SDL_SCANCODE_SPACE) || Keyboard::IsKeyPressed(SDL_SCANCODE_SPACE);
 	};
 }
 

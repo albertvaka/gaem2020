@@ -12,14 +12,6 @@
 #include "powerup.h"
 #include "assets.h"
 
-constexpr const float kMaxSpeed = 400.f; // in pixels/second
-constexpr const float kAccel = 150.f; // in pixels/second^2
-constexpr const float kBrake = 140.f; 
-constexpr const float kDrag = 40.f; // brake force when not accelerating
-
-constexpr const float kMaxAngularSpeed = 120.f; // in degrees/second
-constexpr const float kAngularAccel = 400.f; // in degrees/second^2
-constexpr const float kAngularDrag = 200.f; // brake force when not turning
 
 const float spriteScale = 1.2f;
 
@@ -44,25 +36,34 @@ Player::Player(const vec& position, float angle)
 void Player::Move(float dt) 
 {
 
-	if (Input::IsPressed(0, GameKeys::LEFT)) {
+	if (Input::IsPressed(0, GameKeys::LEFT)) 
+	{
 		angularSpeed -= kAngularAccel * dt;
-	} else if (Input::IsPressed(0, GameKeys::RIGHT)) {
+	} 
+	else if (Input::IsPressed(0, GameKeys::RIGHT)) 
+	{
 		angularSpeed += kAngularAccel * dt;
 	}
-	else {
-		if (angularSpeed > 0) {
+	else 
+	{
+		if (angularSpeed > 0) 
+		{
 			angularSpeed -= kAngularDrag * dt;
-			if (angularSpeed < 0) {
+			if (angularSpeed < 0) 
+			{
 				angularSpeed = 0;
 			}
 		}
-		if (angularSpeed < 0) {
+		if (angularSpeed < 0) 
+		{
 			angularSpeed += kAngularDrag * dt;
-			if (angularSpeed > 0) {
+			if (angularSpeed > 0) 
+			{
 				angularSpeed = 0;
 			}
 		}
 	}
+
 	Mates::Clamp(angularSpeed, -kMaxAngularSpeed, kMaxAngularSpeed);
 	angle += angularSpeed * dt;
 
@@ -71,13 +72,16 @@ void Player::Move(float dt)
 
 	vec heading = vec::FromAngleDegs(angle);
 
-	if (Input::IsPressed(0, GameKeys::UP)) {
+	if (Input::IsPressed(0, GameKeys::UP)) 
+	{
 		speed += kAccel * dt;
 	}
-	else if (Input::IsPressed(0, GameKeys::DOWN)) {
+	else if (Input::IsPressed(0, GameKeys::DOWN)) 
+	{
 		speed -= kBrake * dt;
 	}
-	else {
+	else 
+	{
 		speed -= kDrag * dt;
 	}
 	Mates::Clamp(speed, 0, kMaxSpeed);
@@ -94,8 +98,10 @@ void Player::Update(float dt)
 
 	Move(dt);
 
-	for (PowerUp* e : SelfRegister<PowerUp>::GetAll()) {
-		if (Collide(this, e)) {
+	for (PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
+	{
+		if (Collide(this, e)) 
+		{
 			e->alive = false;
 			FxManager::StartScreenshakePreset(FxManager::ScreenShakePreset::Electroshok);
 		}
@@ -105,7 +111,7 @@ void Player::Update(float dt)
 
 void Player::Draw() const
 {
-	Window::DrawPrimitive::Line(pos, pos + (vel * 0.25), 2, { 255,255,0,255 });
+	//Window::DrawPrimitive::Line(pos, pos + (vel * 0.25), 2, { 255,255,0,255 }); //Elmeao
 	
 	Window::Draw(Assets::spritesheet, pos)
 		.withRect(spriteBottom)
@@ -119,7 +125,8 @@ void Player::Draw() const
 		.withRotationDegs(angle + 90)
 		.withOrigin(16, 16);
 
-	if (Debug::Draw) {
+	if (Debug::Draw) 
+	{
 		pos.Debuggerino();
 		DrawBounds();
 	}

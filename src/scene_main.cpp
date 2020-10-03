@@ -23,7 +23,7 @@ void MainScene::EnterScene()
 	float outerRadius = 800;
 	float amplitude = 30;
 	float freq = 15;
-	for (float angle = 0; angle < Angles::FullTurnInRads; angle+=0.05f) {
+	for (float angle = 0; angle < Angles::FullTurnInRads; angle += 0.05f) {
 		{
 			vec p;
 			p.x += (innerRadius + amplitude * sin(freq * angle)) * cos(angle);
@@ -54,6 +54,11 @@ void MainScene::Update(float dt)
 	Camera::SetRotationDegs(-player->angle - 90);
 	Camera::SetCenter(player->pos  + (player->vel * 0.25));
 
+
+	float zoomerino = 0.75 - 0.2f * (player->speed / player->kMaxSpeed);
+
+	Camera::SetZoom(zoomerino, true);
+
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
 		e->Update(dt);
 	}
@@ -76,7 +81,8 @@ void MainScene::Draw()
 
 	Window::Clear(30, 80, 30);
 
-	for (const PowerUp* e : SelfRegister<PowerUp>::GetAll()) {
+	for (const PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
+	{
 		e->Draw();
 	}
 

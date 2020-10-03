@@ -8,6 +8,8 @@ enum GameKeys
 	UP, DOWN, LEFT, RIGHT,
 	START,
 	ACTION,
+
+	DERRAPE
 };
 
 // Action-based input
