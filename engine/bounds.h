@@ -140,6 +140,294 @@ struct Bounds
 
 };
 
+struct RotableBounds : public Bounds
+{
+    vec TL, TR, BL, BR;
+    float angle = 0.0f;
+
+    RotableBounds() {}
+
+    RotableBounds(float x, float y, float w, float h) : Bounds(x, y, w, h)
+    { 
+        UpdateCorners();
+    }
+
+    void UpdateCorners()
+    {
+        TL = vec(left, top);
+        TR = vec(left + width, top);
+        BL = vec(left, top + height);
+        BR = vec(left + width, top + height);
+
+        float s = sin(angle * M_PI / 180.0f);
+        float c = cos(angle * M_PI / 180.0f);
+
+        {
+            TR = TR - TL;
+            float TR_x = TR.x * c - TR.y * s;
+            float TR_y = TR.x * s + TR.y * c;
+            TR.x = TR_x;
+            TR.y = TR_y;
+            TR = TR + TL;
+        }
+
+        {
+            BL = BL - TL;
+            float BL_x = BL.x * c - BL.y * s;
+            float BL_y = BL.x * s + BL.y * c;
+            BL.x = BL_x;
+            BL.y = BL_y;
+            BL = BL + TL;
+        }
+
+        {
+            BR = BR - TL;
+            float BR_x = BR.x * c - BR.y * s;
+            float BR_y = BR.x * s + BR.y * c;
+            BR.x = BR_x;
+            BR.y = BR_y;
+            BR = BR + TL;
+        }
+    }
+
+
+    void Draw(uint8_t r = 255, uint8_t g = 0, uint8_t b = 0) const;
+
+    //https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/2d-rotated-rectangle-collision-r2604/
+    bool Collision(const RotableBounds& rb)
+    {
+        vec Axis1(this->TR.x - this->TL.x, this->TR.y - this->TL.y);
+        {
+            float ax1_tl_a_k = (this->TL.x * Axis1.x + this->TL.y * Axis1.y) / (Axis1.x * Axis1.x + Axis1.y * Axis1.y);
+            vec ax1_tl_a = Axis1 * ax1_tl_a_k;
+
+            float ax1_tr_a_k = (this->TR.x * Axis1.x + this->TR.y * Axis1.y) / (Axis1.x * Axis1.x + Axis1.y * Axis1.y);
+            vec ax1_tr_a = Axis1 * ax1_tr_a_k;
+
+
+            float ax1_tl_b_k = (rb.TL.x * Axis1.x + rb.TL.y * Axis1.y) / (Axis1.x * Axis1.x + Axis1.y * Axis1.y);
+            vec ax1_tl_b(ax1_tl_b_k * Axis1.x, ax1_tl_b_k * Axis1.y);
+
+            float ax1_tr_b_k = (rb.TR.x * Axis1.x + rb.TR.y * Axis1.y) / (Axis1.x * Axis1.x + Axis1.y * Axis1.y);
+            vec ax1_tr_b(ax1_tr_b_k * Axis1.x, ax1_tr_b_k * Axis1.y);
+
+            float ax1_bl_b_k = (rb.BL.x * Axis1.x + rb.BL.y * Axis1.y) / (Axis1.x * Axis1.x + Axis1.y * Axis1.y);
+            vec ax1_bl_b(ax1_bl_b_k * Axis1.x, ax1_bl_b_k * Axis1.y);
+
+            float ax1_br_b_k = (rb.BR.x * Axis1.x + rb.BR.y * Axis1.y) / (Axis1.x * Axis1.x + Axis1.y * Axis1.y);
+            vec ax1_br_b(ax1_br_b_k * Axis1.x, ax1_br_b_k * Axis1.y);
+
+
+            float ax1_tl_a_sc = ax1_tl_a.x * Axis1.x + ax1_tl_a.y * Axis1.y;
+            float ax1_tr_a_sc = ax1_tr_a.x * Axis1.x + ax1_tr_a.y * Axis1.y;
+
+            float ax1_tl_b_sc = ax1_tl_b.x * Axis1.x + ax1_tl_b.y * Axis1.y;
+            float ax1_tr_b_sc = ax1_tr_b.x * Axis1.x + ax1_tr_b.y * Axis1.y;
+            float ax1_bl_b_sc = ax1_bl_b.x * Axis1.x + ax1_bl_b.y * Axis1.y;
+            float ax1_br_b_sc = ax1_br_b.x * Axis1.x + ax1_br_b.y * Axis1.y;
+
+            float min_a = ax1_tl_a_sc;
+            if (ax1_tr_a_sc < min_a) min_a = ax1_tr_a_sc;
+
+            float max_a = ax1_tl_a_sc;
+            if (ax1_tr_a_sc > max_a) max_a = ax1_tr_a_sc;
+
+            float min_b = ax1_tl_b_sc;
+            if (ax1_tr_b_sc < min_b) min_b = ax1_tr_b_sc;
+            if (ax1_bl_b_sc < min_b) min_b = ax1_bl_b_sc;
+            if (ax1_br_b_sc < min_b) min_b = ax1_br_b_sc;
+
+            float max_b = ax1_tl_b_sc;
+            if (ax1_tr_b_sc > max_b) max_b = ax1_tr_b_sc;
+            if (ax1_bl_b_sc > max_b) max_b = ax1_bl_b_sc;
+            if (ax1_br_b_sc > max_b) max_b = ax1_br_b_sc;
+
+            bool overlap = false;
+            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+
+            if (!overlap)
+            {
+                return false;
+            }
+        }
+
+        vec Axis2(this->TR.x - this->BR.x, this->TR.y - this->BR.y);
+        {
+            float ax1_tl_a_k = (this->TL.x * Axis2.x + this->TL.y * Axis2.y) / (Axis2.x * Axis2.x + Axis2.y * Axis2.y);
+            vec ax1_tl_a = Axis2 * ax1_tl_a_k;
+
+            float ax1_br_a_k = (this->BR.x * Axis2.x + this->BR.y * Axis2.y) / (Axis2.x * Axis2.x + Axis2.y * Axis2.y);
+            vec ax1_br_a = Axis2 * ax1_br_a_k;
+
+
+            float ax1_tl_b_k = (rb.TL.x * Axis2.x + rb.TL.y * Axis2.y) / (Axis2.x * Axis2.x + Axis2.y * Axis2.y);
+            vec ax1_tl_b(ax1_tl_b_k * Axis2.x, ax1_tl_b_k * Axis2.y);
+
+            float ax1_tr_b_k = (rb.TR.x * Axis2.x + rb.TR.y * Axis2.y) / (Axis2.x * Axis2.x + Axis2.y * Axis2.y);
+            vec ax1_tr_b(ax1_tr_b_k * Axis2.x, ax1_tr_b_k * Axis2.y);
+
+            float ax1_bl_b_k = (rb.BL.x * Axis2.x + rb.BL.y * Axis2.y) / (Axis2.x * Axis2.x + Axis2.y * Axis2.y);
+            vec ax1_bl_b(ax1_bl_b_k * Axis2.x, ax1_bl_b_k * Axis2.y);
+
+            float ax1_br_b_k = (rb.BR.x * Axis2.x + rb.BR.y * Axis2.y) / (Axis2.x * Axis2.x + Axis2.y * Axis2.y);
+            vec ax1_br_b(ax1_br_b_k * Axis2.x, ax1_br_b_k * Axis2.y);
+
+
+            float ax1_tl_a_sc = ax1_tl_a.x * Axis2.x + ax1_tl_a.y * Axis2.y;
+            float ax1_br_a_sc = ax1_br_a.x * Axis2.x + ax1_br_a.y * Axis2.y;
+
+            float ax1_tl_b_sc = ax1_tl_b.x * Axis2.x + ax1_tl_b.y * Axis2.y;
+            float ax1_tr_b_sc = ax1_tr_b.x * Axis2.x + ax1_tr_b.y * Axis2.y;
+            float ax1_bl_b_sc = ax1_bl_b.x * Axis2.x + ax1_bl_b.y * Axis2.y;
+            float ax1_br_b_sc = ax1_br_b.x * Axis2.x + ax1_br_b.y * Axis2.y;
+
+            float min_a = ax1_tl_a_sc;
+            if (ax1_br_a_sc < min_a) min_a = ax1_br_a_sc;
+
+            float max_a = ax1_tl_a_sc;
+            if (ax1_br_a_sc > max_a) max_a = ax1_br_a_sc;
+
+            float min_b = ax1_tl_b_sc;
+            if (ax1_tr_b_sc < min_b) min_b = ax1_tr_b_sc;
+            if (ax1_bl_b_sc < min_b) min_b = ax1_bl_b_sc;
+            if (ax1_br_b_sc < min_b) min_b = ax1_br_b_sc;
+
+            float max_b = ax1_tl_b_sc;
+            if (ax1_tr_b_sc > max_b) max_b = ax1_tr_b_sc;
+            if (ax1_bl_b_sc > max_b) max_b = ax1_bl_b_sc;
+            if (ax1_br_b_sc > max_b) max_b = ax1_br_b_sc;
+
+            bool overlap = false;
+            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+
+            if (!overlap)
+            {
+                return false;
+            }
+        }
+
+
+        vec Axis3(rb.TL.x - rb.BL.x, rb.TL.y - rb.BL.y);
+        {
+            float ax1_tl_a_k = (this->TL.x * Axis3.x + this->TL.y * Axis3.y) / (Axis3.x * Axis3.x + Axis3.y * Axis3.y);
+            vec ax1_tl_a = Axis3 * ax1_tl_a_k;
+
+            float ax1_tr_a_k = (this->TR.x * Axis3.x + this->TR.y * Axis3.y) / (Axis3.x * Axis3.x + Axis3.y * Axis3.y);
+            vec ax1_tr_a = Axis3 * ax1_tr_a_k;
+
+            float ax1_br_a_k = (this->BR.x * Axis3.x + this->BR.y * Axis3.y) / (Axis3.x * Axis3.x + Axis3.y * Axis3.y);
+            vec ax1_br_a = Axis3 * ax1_br_a_k;
+
+            float ax1_bl_a_k = (this->BL.x * Axis3.x + this->BL.y * Axis3.y) / (Axis3.x * Axis3.x + Axis3.y * Axis3.y);
+            vec ax1_bl_a = Axis3 * ax1_bl_a_k;
+
+
+            float ax1_tl_b_k = (rb.TL.x * Axis3.x + rb.TL.y * Axis3.y) / (Axis3.x * Axis3.x + Axis3.y * Axis3.y);
+            vec ax1_tl_b(ax1_tl_b_k * Axis3.x, ax1_tl_b_k * Axis3.y);
+
+            float ax1_bl_b_k = (rb.BL.x * Axis3.x + rb.BL.y * Axis3.y) / (Axis3.x * Axis3.x + Axis3.y * Axis3.y);
+            vec ax1_bl_b(ax1_bl_b_k * Axis3.x, ax1_bl_b_k * Axis3.y);
+
+            float ax1_tl_a_sc = ax1_tl_a.x * Axis3.x + ax1_tl_a.y * Axis3.y;
+            float ax1_tr_a_sc = ax1_tr_a.x * Axis3.x + ax1_tr_a.y * Axis3.y;
+            float ax1_bl_a_sc = ax1_bl_a.x * Axis3.x + ax1_bl_a.y * Axis3.y;
+            float ax1_br_a_sc = ax1_br_a.x * Axis3.x + ax1_br_a.y * Axis3.y;
+
+            float ax1_tl_b_sc = ax1_tl_b.x * Axis3.x + ax1_tl_b.y * Axis3.y;
+            float ax1_bl_b_sc = ax1_bl_b.x * Axis3.x + ax1_bl_b.y * Axis3.y;
+
+            float min_a = ax1_tl_a_sc;
+            if (ax1_tr_a_sc < min_a) min_a = ax1_tr_a_sc;
+            if (ax1_bl_a_sc < min_a) min_a = ax1_bl_a_sc;
+            if (ax1_br_a_sc < min_a) min_a = ax1_br_a_sc;
+
+
+            float max_a = ax1_tl_a_sc;
+            if (ax1_tr_a_sc > max_a) max_a = ax1_tr_a_sc;
+            if (ax1_bl_a_sc > max_a) max_a = ax1_bl_a_sc;
+            if (ax1_br_a_sc > max_a) max_a = ax1_br_a_sc;
+
+
+            float min_b = ax1_tl_b_sc;
+            if (ax1_bl_b_sc < min_b) min_b = ax1_bl_b_sc;
+
+            float max_b = ax1_tl_b_sc;
+            if (ax1_bl_b_sc > max_b) max_b = ax1_bl_b_sc;
+
+            bool overlap = false;
+            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+
+            if (!overlap)
+            {
+                return false;
+            }
+        }
+
+
+        vec Axis4(rb.TL.x - rb.TR.x, rb.TL.y - rb.TR.y);
+        {
+            float ax1_tl_a_k = (this->TL.x * Axis4.x + this->TL.y * Axis4.y) / (Axis4.x * Axis4.x + Axis4.y * Axis4.y);
+            vec ax1_tl_a = Axis4 * ax1_tl_a_k;
+
+            float ax1_tr_a_k = (this->TR.x * Axis4.x + this->TR.y * Axis4.y) / (Axis4.x * Axis4.x + Axis4.y * Axis4.y);
+            vec ax1_tr_a = Axis4 * ax1_tr_a_k;
+
+            float ax1_br_a_k = (this->BR.x * Axis4.x + this->BR.y * Axis4.y) / (Axis4.x * Axis4.x + Axis4.y * Axis4.y);
+            vec ax1_br_a = Axis4 * ax1_br_a_k;
+
+            float ax1_bl_a_k = (this->BL.x * Axis4.x + this->BL.y * Axis4.y) / (Axis4.x * Axis4.x + Axis4.y * Axis4.y);
+            vec ax1_bl_a = Axis4 * ax1_bl_a_k;
+
+
+            float ax1_tl_b_k = (rb.TL.x * Axis4.x + rb.TL.y * Axis4.y) / (Axis4.x * Axis4.x + Axis4.y * Axis4.y);
+            vec ax1_tl_b(ax1_tl_b_k * Axis4.x, ax1_tl_b_k * Axis4.y);
+
+            float ax1_tr_b_k = (rb.TR.x * Axis4.x + rb.TR.y * Axis4.y) / (Axis4.x * Axis4.x + Axis4.y * Axis4.y);
+            vec ax1_tr_b(ax1_tr_b_k * Axis4.x, ax1_tr_b_k * Axis4.y);
+
+
+            float ax1_tl_a_sc = ax1_tl_a.x * Axis4.x + ax1_tl_a.y * Axis4.y;
+            float ax1_tr_a_sc = ax1_tr_a.x * Axis4.x + ax1_tr_a.y * Axis4.y;
+            float ax1_bl_a_sc = ax1_bl_a.x * Axis4.x + ax1_bl_a.y * Axis4.y;
+            float ax1_br_a_sc = ax1_br_a.x * Axis4.x + ax1_br_a.y * Axis4.y;
+
+            float ax1_tl_b_sc = ax1_tl_b.x * Axis4.x + ax1_tl_b.y * Axis4.y;
+            float ax1_tr_b_sc = ax1_tr_b.x * Axis4.x + ax1_tr_b.y * Axis4.y;
+
+            float min_a = ax1_tl_a_sc;
+            if (ax1_tr_a_sc < min_a) min_a = ax1_tr_a_sc;
+            if (ax1_bl_a_sc < min_a) min_a = ax1_bl_a_sc;
+            if (ax1_br_a_sc < min_a) min_a = ax1_br_a_sc;
+
+
+            float max_a = ax1_tl_a_sc;
+            if (ax1_tr_a_sc > max_a) max_a = ax1_tr_a_sc;
+            if (ax1_bl_a_sc > max_a) max_a = ax1_bl_a_sc;
+            if (ax1_br_a_sc > max_a) max_a = ax1_br_a_sc;
+
+
+            float min_b = ax1_tl_b_sc;
+            if (ax1_tr_b_sc < min_b) min_b = ax1_tr_b_sc;
+
+            float max_b = ax1_tl_b_sc;
+            if (ax1_tr_b_sc > max_b) max_b = ax1_tr_b_sc;
+
+            bool overlap = false;
+            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+
+            if (!overlap)
+            {
+                return false;
+            }
+        }
+
+
+        return true;
+        
+    }
+};
+
+
 struct CircleBounds
 {
     constexpr CircleBounds(const vec& pos, float radius) : pos(pos), radius(radius) {}
@@ -161,23 +449,32 @@ struct CircleBounds
     }
 };
 
-inline float Bounds::DistanceSq(const Bounds& a) const {
+inline float Bounds::DistanceSq(const Bounds& a) const 
+{
     float sqrDist = 0;
-    if (a.Right() < this->left) {
+
+    if (a.Right() < this->left) 
+    {
         float d = a.Right() - this->left;
         sqrDist += d * d;
-    } else if (a.left > this->Right()) {
+    } 
+    else if (a.left > this->Right()) 
+    {
         float d = a.left - this->Right();
         sqrDist += d * d;
     }
-    if (a.Bottom() < this->top) {
+
+    if (a.Bottom() < this->top) 
+    {
         float d = a.Bottom() - this->top;
         sqrDist += d * d;
     }
-    else if (a.top > this->Bottom()) {
+    else if (a.top > this->Bottom()) 
+    {
         float d = a.top - this->Bottom();
         sqrDist += d * d;
     }
+
     return sqrDist;
 }
 
