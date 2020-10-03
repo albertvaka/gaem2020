@@ -9,6 +9,6 @@ namespace AnimLib {
 		{ {15 * 16, 16, 16, 16}, .2f },
 	};
 
-	constexpr const GPU_Rect POWERUP = {5*16, 11*16, 16, 16};
+	constexpr const GPU_Rect POWERUP = {170, 136, 13, 13};
 
 }

@@ -14,11 +14,13 @@
 
 constexpr const float kTurnRate = 100.f; // in degrees/second
 
-constexpr const float kAccel = 70.f; // in pixels/second^2
-constexpr const float kBrake = 70.f; 
-constexpr const float kFriction = 20.f; // brake force when not accelerating
+constexpr const float kAccel = 150.f; // in pixels/second^2
+constexpr const float kBrake = 140.f; 
+constexpr const float kFriction = 40.f; // brake force when not accelerating
 
-constexpr const float kMaxSpeed = 140.f; // in pixels/second
+constexpr const float kMaxSpeed = 300.f; // in pixels/second
+
+const float spriteScale = 1.5f;
 
 const float kRadius = 8.f;
 
@@ -27,6 +29,15 @@ Player::Player(const vec& position, float angle)
 	, anim(AnimLib::GOOMBA)
 	, angle(angle)
 {
+	int top = Rand::roll(10);
+	int topX = top % 6;
+	int topY = top / 6;
+	spriteTop = {topX * 32.f, topY * 32.f, 32, 32};
+
+	int bottom = Rand::roll(10);
+	int bottomX = top % 6;
+	int bottomY = top / 6;
+	spriteBottom = { bottomX * 32.f, bottomY * 32.f, 32, 32 };
 }
 
 void Player::Move(float dt) 
@@ -78,15 +89,23 @@ void Player::Update(float dt)
 
 void Player::Draw() const
 {
-	const GPU_Rect& rect = anim.GetCurrentRect();
-	Window::Draw(Assets::spritesheet, pos)
-		.withRect(rect)
-		.withOrigin(rect.w/2, rect.h/2);
+	Window::DrawPrimitive::Line(pos, pos + (vel * 0.2), 2, { 255,255,0,255 });
 	
+	Window::Draw(Assets::spritesheet, pos)
+		.withRect(spriteBottom)
+		.withScale(spriteScale)
+		.withRotationDegs(angle+90)
+		.withOrigin(16, 16);
+
+	Window::Draw(Assets::spritesheet, pos)
+		.withRect(spriteTop)
+		.withScale(spriteScale)
+		.withRotationDegs(angle + 90)
+		.withOrigin(16, 16);
+
 	if (Debug::Draw) {
 		pos.Debuggerino();
 		DrawBounds();
 	}
 
-	Window::DrawPrimitive::Line(pos, pos + vel, 2, { 255,255,0,255 });
 }

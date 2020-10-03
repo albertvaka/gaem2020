@@ -11,7 +11,7 @@ extern float mainClock;
 
 void PowerUp::Draw() const
 {
-	float y = 1.5f * sin(mainClock*2);
+	float y = 1.5f * sin(pos.x + pos.y + mainClock*2);
 
 	Window::Draw(Assets::spritesheet, pos.x, pos.y - y)
 		.withOrigin(8, 8)

@@ -13,11 +13,29 @@
 
 void MainScene::EnterScene()
 {
-	new Player(vec(Window::GAME_WIDTH/2, Window::GAME_HEIGHT/2), 0);
+	vec playerStartPos = vec(615, -47);
+	
+	new Player(playerStartPos, -90);
 
-	for (int i = 0; i < 10; i++) {
-		new PowerUp(Rand::rollf(0, Window::GAME_WIDTH), Rand::rollf(0, Window::GAME_HEIGHT));
+	float innerRadius = 600;
+	float outerRadius = 800;
+	float amplitude = 30;
+	float freq = 15;
+	for (float angle = 0; angle < Angles::FullTurnInRads; angle+=0.05f) {
+		{
+			vec p;
+			p.x += (innerRadius + amplitude * sin(freq * angle)) * cos(angle);
+			p.y += (innerRadius + amplitude * sin(freq * angle)) * sin(angle);
+			new PowerUp(p);
+		}
+		{
+			vec p;
+			p.x += (outerRadius + amplitude * sin(freq * angle)) * cos(angle);
+			p.y += (outerRadius + amplitude * sin(freq * angle)) * sin(angle);
+			new PowerUp(p);
+		}
 	}
+		
 }
 
 void MainScene::ExitScene()
@@ -29,7 +47,7 @@ void MainScene::Update(float dt)
 {
 	FxManager::Update(dt);
 
-	vec camPos = vec(Window::GAME_WIDTH / 2, Window::GAME_HEIGHT / 2);
+	vec camPos = Player::instance()->pos;
 	Camera::SetCenter(camPos + FxManager::GetScreenshake());
 
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
@@ -52,7 +70,7 @@ void MainScene::Draw()
 {
 	FxManager::BeginDraw();
 
-	Window::Clear(0, 0, 0);
+	Window::Clear(30, 80, 30);
 
 	for (const PowerUp* e : SelfRegister<PowerUp>::GetAll()) {
 		e->Draw();
@@ -72,7 +90,8 @@ void MainScene::Draw()
 
 		ImGui::Begin("car");
 		ImGui::SliderFloat("angle", &(Player::instance()->angle), 0, 360);
-		ImGui::SliderFloat("speed", &(Player::instance()->speed), 0, 200);
+		ImGui::SliderFloat("speed", &(Player::instance()->speed), 0, 400);
+		ImGui::Text("position: %f,%f", Player::instance()->pos.x, Player::instance()->pos.y);
 		ImGui::End();
 	}
 #endif
