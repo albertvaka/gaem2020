@@ -29,6 +29,9 @@ void MainScene::Update(float dt)
 {
 	FxManager::Update(dt);
 
+	vec camPos = vec(Window::GAME_WIDTH / 2, Window::GAME_HEIGHT / 2);
+	Camera::SetCenter(camPos + FxManager::GetScreenshake());
+
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
 		e->Update(dt);
 	}
