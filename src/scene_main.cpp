@@ -14,10 +14,11 @@
 
 void MainScene::EnterScene()
 {
-	new Player(TiledEntities::spawn, 0);
+	float scale = 1.3f;
+	new Player(TiledEntities::spawn * scale, 0);
 
 	for (const vec& pos : TiledEntities::obstacle) {
-		new PowerUp(pos);
+		new PowerUp(pos* scale);
 	}
 }
 

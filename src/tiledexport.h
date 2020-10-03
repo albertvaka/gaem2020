@@ -8,7 +8,7 @@
 
 struct TiledEntities
 {
-	static const std::array<vec, 1383> obstacle;
+	static const std::array<vec, 1405> obstacle;
 	static const vec spawn;
 	
 };
