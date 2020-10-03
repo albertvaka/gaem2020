@@ -9,13 +9,18 @@
 #include "collide.h"
 #include "input.h"
 #include "fxmanager.h"
+#include "shot.h"
 #include "powerup.h"
 #include "assets.h"
 
+const float kShotSpeed = 400.f;
+
+const float kTimeBetweenShots = 0.2f;
 
 const float spriteScale = 0.5f;
 
 const float kRadius = 8.f;
+
 
 Player::Player(const vec& position, float angle)
 	: CircleEntity(position, kRadius)
@@ -107,6 +112,13 @@ void Player::Update(float dt)
 		}
 	}
 
+	attack_timer -= dt;
+
+	if (Input::IsPressed(0, GameKeys::ATTACK) && attack_timer < 0.f) {
+		vec heading = vec::FromAngleDegs(angle);
+		new Shot(pos, vel+heading*kShotSpeed);
+		attack_timer = kTimeBetweenShots;
+	}
 }
 
 void Player::Draw() const

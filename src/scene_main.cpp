@@ -6,6 +6,7 @@
 #include "assets.h"
 #include "fxmanager.h"
 #include "player.h"
+#include "shot.h"
 #include "powerup.h"
 #include "camera.h"
 #include "window.h"
@@ -102,6 +103,11 @@ void MainScene::Draw()
 	}
 
 	Player::instance()->Draw();
+
+	for (const Shot* e : SelfRegister<Shot>::GetAll())
+	{
+		e->Draw();
+	}
 
 #ifdef _IMGUI
 	{

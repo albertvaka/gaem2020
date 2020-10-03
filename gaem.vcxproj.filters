@@ -199,6 +199,9 @@
     <ClInclude Include="src\tiledexport.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\shot.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="vendor\glew\glew.c">
@@ -310,6 +313,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tiledexport.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shot.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -25,6 +25,7 @@ struct Player : CircleEntity, SingleInstance<Player>
 	float angularSpeed = 0.0f;
 	GPU_Rect spriteBottom;
 	GPU_Rect spriteTop;
+	float attack_timer = 0.f;
 
 	Player(const vec& position, float angle);
 
