@@ -32,7 +32,7 @@ void MainScene::ExitScene()
 }
 
 
-float kCameraRotSpeed = 120.0f;
+float kCameraRotSpeed = 45.0f;
 
 void MainScene::Update(float dt)
 {
@@ -42,20 +42,20 @@ void MainScene::Update(float dt)
 
 	float playerAngle = -player->angle - 90.0f;
 
-	if (abs(cameraAngle - playerAngle) <= kCameraRotSpeed) {
-		cameraAngle = playerAngle;
-	}
-	else {
-		cameraAngle += kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle));
-	}
-
-
 	if (player->is_derraping)
 	{
 		Camera::SetRotationDegs(-player->last_angle_before_derraping -90.0f);
 	}
 	else
 	{
+		if (abs(cameraAngle - playerAngle) <= kCameraRotSpeed) 
+		{
+			cameraAngle = playerAngle;
+		}
+		else 
+		{
+			cameraAngle -= kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle)) * dt;
+		}
 		Camera::SetRotationDegs(cameraAngle);
 	}
 	
