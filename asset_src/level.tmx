@@ -1594,8 +1594,8 @@
   <object id="2488" type="start" x="406" y="604.333" width="25.5" height="169.167"/>
   <object id="2489" type="checkpoint" x="26.55" y="572.068" width="25.5" height="213.5"/>
   <object id="2490" type="checkpoint" x="-468.053" y="580.947" width="25.5" height="213.5"/>
-  <object id="2491" type="checkpoint" x="-1305.48" y="581.462" width="25.5" height="213.5"/>
-  <object id="2492" type="checkpoint" x="-888.75" y="561.25" width="25.5" height="213.5"/>
+  <object id="2491" type="checkpoint" x="-926.813" y="584.129" width="25.5" height="213.5"/>
+  <object id="2492" type="checkpoint" x="-1303.42" y="585.25" width="25.5" height="213.5"/>
   <object id="2497" type="checkpoint" x="-1758.08" y="581.25" width="25.5" height="213.5"/>
   <object id="2498" type="checkpoint" x="-2299.75" y="167.25" width="25.5" height="299.5"/>
   <object id="2499" type="checkpoint" x="-2689.75" y="-52.75" width="243.5" height="23.5"/>
@@ -1609,7 +1609,7 @@
   <object id="2507" type="checkpoint" x="-1209.75" y="230.25" width="262.5" height="26.5"/>
   <object id="2508" type="checkpoint" x="-1035.75" y="-175.75" width="284.5" height="31.5"/>
   <object id="2509" type="checkpoint" x="-314.75" y="-447.75" width="25.5" height="248.5"/>
-  <object id="2510" type="checkpoint" x="95.25" y="-240.75" width="25.5" height="308.5"/>
+  <object id="2510" type="checkpoint" x="95.25" y="-240.75" width="33.5" height="308.5"/>
   <object id="2511" type="checkpoint" x="447.25" y="0.25" width="25.5" height="310.5"/>
   <object id="2512" type="checkpoint" x="646.583" y="-194.75" width="31.5" height="233.5"/>
   <object id="2513" type="checkpoint" x="820.25" y="-520.75" width="25.5" height="213.5"/>

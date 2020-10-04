@@ -125,19 +125,8 @@ void Player::Update(float dt)
 	{
 		if (e->bounds().Collision(bbounds))
 		{
-			angle += e->inner ? 45 : -45;
+			angle += e->inner ? -40 : 40;
 		}
-	}
-
-	StartLine* start = StartLine::instance();
-	
-	if (start->bounds().Collision(bbounds))
-	{
-		start->PlayerCollided();
-	}
-	else
-	{
-		start->playerColliding = false;
 	}
 
 	attack_timer -= dt;

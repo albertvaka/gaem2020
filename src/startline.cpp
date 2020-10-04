@@ -4,6 +4,7 @@
 #include "assets.h"
 #include "window.h"
 #include "rand.h"
+#include "player.h"
 #include "assets.h"
 #include "anim_lib.h"
 
@@ -36,55 +37,37 @@ std::string StartLine::FormatTimelapText(float t) const
 	return formattedTime;
 }
 
-std::string StartLine::GetTimelapText() const
-{
-	return FormatTimelapText(timelapTimer);
-}
-
-std::string StartLine::GetBestlapText() const
-{
-	return FormatTimelapText(bestlapTimer);
-}
-
-bool StartLine::HasBestLap() const
-{
-	return bestlapTimer > 0.0f;
-}
-
 void StartLine::Update(float dt)
 {
-	if (!playerCollidedForFirstTime)
-	{
-		return;
+	playerColliding = (bbounds.Collision(Player::instance()->bbounds));
+	if (currentCheckpoint >= checkpoints.size()) {
+		if (playerColliding) {
+			if (!beforeStart) {
+				lastlapTimer = timelapTimer;
+				if (bestlapTimer < 0.0f)
+				{
+					bestlapTimer = timelapTimer;
+				}
+				else if (timelapTimer < bestlapTimer)
+				{
+					bestlapTimer = timelapTimer;
+				}
+			}
+			beforeStart = false;
+			timelapTimer = 0.0f;
+			currentCheckpoint = 0;
+		}
+	}
+	else {
+		if (checkpoints[currentCheckpoint].Collision(Player::instance()->bbounds)) {
+			//Debug::out << "checkpoint " << currentCheckpoint;
+			currentCheckpoint++;
+		}
 	}
 
-	timelapTimer += dt;
-}
-
-void StartLine::PlayerCollided()
-{
-	if (!playerColliding)
-	{
-		if (!playerCollidedForFirstTime)
-		{
-			playerCollidedForFirstTime = true;
-		}
-		else
-		{
-			if (bestlapTimer < 0.0f)
-			{
-				bestlapTimer = timelapTimer;
-			}
-			else if (timelapTimer < bestlapTimer)
-			{
-				bestlapTimer = timelapTimer;
-			}
-		}
-
-		timelapTimer = 0.0f;
+	if (!beforeStart) {
+		timelapTimer += dt;
 	}
-
-	playerColliding = true;
 }
 
 void StartLine::Draw() const
@@ -101,5 +84,10 @@ void StartLine::Draw() const
 	if (Debug::Draw) 
 	{
 		bbounds.Draw();
+
+		if (currentCheckpoint < checkpoints.size()) {
+			checkpoints[currentCheckpoint].Draw(0,255,0);
+		}
+
 	}
 }

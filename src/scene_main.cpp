@@ -43,6 +43,10 @@ void MainScene::EnterScene()
 	camCenter = p->pos + (p->vel * 0.25f) + FxManager::GetScreenshake();
 
 	startLine = new StartLine(TiledAreas::start[0]);
+	for (const Bounds& b : TiledAreas::checkpoint) {
+		startLine->checkpoints.push_back(RotableBounds(b));
+	}
+
 }
 
 void MainScene::ExitScene()
@@ -50,9 +54,8 @@ void MainScene::ExitScene()
 	Shot::DeleteAll();
 	Wall::DeleteAll();
 	delete Player::instance();
-	delete StartLine::instance();
+	delete startLine;
 }
-
 
 float kCameraRotSpeed = 360.0f;
 
@@ -93,7 +96,7 @@ void MainScene::Update(float dt)
 	}
 	Shot::DeleteNotAlive();
 
-	StartLine::instance()->Update(dt);
+	startLine->Update(dt);
 
 	Player::instance()->Update(dt);
 
@@ -118,7 +121,7 @@ void MainScene::Draw()
 		e->Draw();
 	}
 
-	StartLine::instance()->Draw();
+	startLine->Draw();
 	
 	Player::instance()->Draw();
 
@@ -151,20 +154,30 @@ void MainScene::Draw()
 
 	Camera::GUI::Begin();
 	
-	if (startLine->HasBestLap())
+
 	{
-		timelapText.SetString(startLine->GetBestlapText());
-		timelapText.SetFillColor(255, 0, 65);
-		timelapText.SetOutlineColor(59, 0, 0);
+		timelapText.SetString("Time: " + startLine->GetTimelapText());
+		timelapText.SetFillColor(0, 255, 65);
+		timelapText.SetOutlineColor(0, 59, 0);
 		Window::Draw(timelapText, 5, 5)
 			.withScale(0.2f);
 	}
 
+	if (startLine->HasBestLap())
 	{
-		timelapText.SetString(startLine->GetTimelapText());
+		timelapText.SetString("Best: " + startLine->GetBestlapText());
+		timelapText.SetFillColor(255, 0, 65);
+		timelapText.SetOutlineColor(59, 0, 0);
+		Window::Draw(timelapText, 5, 15)
+			.withScale(0.2f);
+	}
+
+	if (startLine->HasLastLap())
+	{
+		timelapText.SetString("Last: " + startLine->GetLastlapText());
 		timelapText.SetFillColor(0, 255, 65);
 		timelapText.SetOutlineColor(0, 59, 0);
-		Window::Draw(timelapText, 5, 15)
+		Window::Draw(timelapText, 5, 25)
 			.withScale(0.2f);
 	}
 
