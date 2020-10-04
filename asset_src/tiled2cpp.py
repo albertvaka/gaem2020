@@ -30,7 +30,7 @@ for e in entities:
 areas_by_type = defaultdict(list)
 polygons_by_type = defaultdict(list)
 for e in areas:
-    if e.points:
+    if isinstance(e, pytiled_parser.objects.PolygonObject):
         if e.type in polygons_by_type:
             print("Warning, more than one polygon of the same type is not supported", e.type, "will be overwritten")
         points = []

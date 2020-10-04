@@ -4,11 +4,15 @@
 #include "entity.h"
 #include "selfregister.h"
 
-struct StartLine : BoxEntity, SelfRegister<StartLine>
+struct StartLine : SelfRegister<StartLine>
 {
-	StartLine(const vec& p) : BoxEntity(p, {20, 220}) { }
-	void Update(float dt) override;
-	void Draw() const override;
+	RotableBounds bbounds;
+
+	RotableBounds bounds() { return bbounds; }
+
+	StartLine(const Bounds& start) : bbounds(start) { }
+	void Update(float dt);
+	void Draw() const;
 
 	void PlayerCollided();
 

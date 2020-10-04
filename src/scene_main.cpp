@@ -42,7 +42,7 @@ void MainScene::EnterScene()
 	cameraZoom = 0.5f - 0.3f * (p->speed / p->kMaxSpeed);
 	camCenter = p->pos + (p->vel * 0.25f) + FxManager::GetScreenshake();
 
-	startLine = new StartLine(TiledEntities::spawn * scale + vec(0, 60));
+	startLine = new StartLine(TiledAreas::start[0]);
 }
 
 void MainScene::ExitScene()
@@ -169,7 +169,6 @@ void MainScene::Draw()
 
 	Camera::GUI::Begin();
 	
-
 	if (startLine->HasBestLap())
 	{
 		timelapText.SetString(startLine->GetBestlapText());

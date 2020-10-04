@@ -1526,4 +1526,7 @@ const std::array<vec, 41> TiledPolygons::inner = {
 };
 
 
+const std::array<Bounds, 1> TiledAreas::start = {
+	Bounds(406.0f,608.0f,25.5f,165.5f),
+};
 

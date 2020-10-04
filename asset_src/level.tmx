@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="12" nextobjectid="2487">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="12" nextobjectid="2489">
  <editorsettings>
   <export target="." format="tmx"/>
  </editorsettings>
@@ -1591,6 +1591,7 @@
   <object id="2486" type="inner" x="-1376" y="-442">
    <polygon points="0,0 76,82 72,174 -20,280 -90,310 -750,314 -818,386 -830,490 -758,584 -248,904 304,908 362,826 396,576 708,88 812,72 912,110 2062,810 2238,842 2344,810 2378,742 2244,368 2030,278 1998,170 2024,116 2124,66 2492,216 2464,600 2572,662 2562,920 2438,1024 2310,1052 -592,1050 -644,958 -652,822 -694,738 -992,592 -1078,488 -1096,346 -1052,198 -888,60 -706,-2"/>
   </object>
+  <object id="2488" type="start" x="406" y="608" width="25.5" height="165.5"/>
  </objectgroup>
  <objectgroup id="2" name="Screens" visible="0"/>
 </map>

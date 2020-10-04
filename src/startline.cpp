@@ -80,15 +80,15 @@ void StartLine::Draw() const
 {
 	if (playerColliding)
 	{
-		Window::DrawPrimitive::Rectangle(bounds(), -1, 0, 255, 65, 128);
+		Window::DrawPrimitive::Rectangle(bbounds, -1, 0, 255, 65, 128);
 	}
 	else
 	{
-		Window::DrawPrimitive::Rectangle(bounds(), -1, 0, 143, 17, 128);
+		Window::DrawPrimitive::Rectangle(bbounds, -1, 0, 143, 17, 128);
 	}
 
 	if (Debug::Draw) 
 	{
-		bounds().Draw();
+		bbounds.Draw();
 	}
 }

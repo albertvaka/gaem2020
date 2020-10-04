@@ -22,5 +22,7 @@ PowerUp::PowerUp(const vec& from, const vec& to, bool inner)
 }
 void PowerUp::Draw() const
 {
-	bbounds.Draw();
+	if (Debug::Draw) {
+		bbounds.Draw();
+	}
 }

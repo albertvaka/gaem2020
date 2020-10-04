@@ -103,6 +103,10 @@ struct Bounds
         return vec(Right(), Top());
     }
 
+    [[nodiscard]] constexpr vec BottomLeft() const {
+        return vec(Left(), Bottom());
+    }
+
     [[nodiscard]] constexpr vec BottomRight() const {
         return vec(Right(), Bottom());
     }
@@ -146,6 +150,22 @@ struct RotableBounds : public Bounds
     float angle = 0.0f;
 
     RotableBounds() {}
+
+    RotableBounds(const Bounds& b)
+        : Bounds(b)
+    {
+        TL = b.TopLeft();
+        TR = b.TopRight();
+        BL = b.BottomLeft();
+        BR = b.BottomRight();
+    }
+
+    RotableBounds(const Bounds& b, float angle) 
+        : Bounds(b)
+        , angle(angle)
+    {
+        UpdateCorners();
+    }
 
     RotableBounds(float x, float y, float w, float h, float angle)
         : Bounds(x, y, w, h)

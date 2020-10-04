@@ -16,6 +16,7 @@ struct TiledEntities
 
 struct TiledAreas
 {
+	static const std::array<Bounds, 1> start;
 	
 };
 

@@ -140,7 +140,9 @@ void Player::Update(float dt)
 
 	for (StartLine* e : SelfRegister<StartLine>::GetAll())
 	{
-		if (Collide(this, e))
+		RotableBounds startbounds(e->bounds());
+		
+		if (startbounds.Collision(bbounds))
 		{
 			e->PlayerCollided();
 		}
