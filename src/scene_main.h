@@ -2,6 +2,7 @@
 
 #include "mates.h"
 #include "scene.h"
+#include "vec.h"
 
 struct Car;
 struct GunUp;
@@ -17,5 +18,6 @@ struct MainScene : Scene {
 
 
 	float cameraAngle = 0.0f;
-
+	float cameraZoom = 1.0f;
+	vec camCenter;
 };

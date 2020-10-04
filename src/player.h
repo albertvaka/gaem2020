@@ -10,8 +10,8 @@
 struct Player : CircleEntity, SingleInstance<Player>
 {
 
-	const float kMaxSpeed = 500.f; // in pixels/second
-	const float kAccel = 200.f; // in pixels/second^2
+	const float kMaxSpeed = 600.f; // in pixels/second
+	const float kAccel = 220.f; // in pixels/second^2
 	const float kBrake = 600.f;
 	const float kDrag = 40.f; // brake force when not accelerating
 

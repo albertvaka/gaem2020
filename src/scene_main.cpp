@@ -24,6 +24,9 @@ void MainScene::EnterScene()
 	}
 
 	cameraAngle = -p->angle - 90;
+
+	cameraZoom = 0.5f - 0.3f * (p->speed / p->kMaxSpeed);
+	camCenter = p->pos + (p->vel * 0.25f) + FxManager::GetScreenshake();
 }
 
 void MainScene::ExitScene()
@@ -34,6 +37,8 @@ void MainScene::ExitScene()
 
 float kCameraRotSpeed = 90.0f;
 
+float cameraZoom = 0.0f;
+
 void MainScene::Update(float dt)
 {
 	FxManager::Update(dt);
@@ -42,8 +47,6 @@ void MainScene::Update(float dt)
 
 	float playerAngle = -player->angle - 90.0f;
 
-	
-	
 	if (abs(cameraAngle - playerAngle) <= kCameraRotSpeed*dt) 
 	{
 		cameraAngle = playerAngle;
@@ -52,15 +55,22 @@ void MainScene::Update(float dt)
 	{
 		cameraAngle -= kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle)) * dt;
 	}
+
+
 	Camera::SetRotationDegs(cameraAngle);
+	//Camera::SetRotationDegs(playerAngle);
 	
-	
-	Camera::SetCenter(player->pos  + (player->vel * 0.25) + FxManager::GetScreenshake());
+	vec targetCenter = player->pos + (player->vel * 0.25) + FxManager::GetScreenshake();
+	camCenter.x = camCenter.x + dt * (targetCenter.x - camCenter.x) * 5.0f;
+	camCenter.y = camCenter.y + dt * (targetCenter.y - camCenter.y) * 5.0f;
+	Camera::SetCenter(camCenter);
 
-	float zoomerino = 0.5f - 0.3f * (player->speed / player->kMaxSpeed);
-	Camera::SetZoom(zoomerino, true);
+	float targetZoom = 0.5f - 0.3f * (player->speed / player->kMaxSpeed);
+	cameraZoom = cameraZoom + (targetZoom - cameraZoom) * dt * 0.8f;
+	Camera::SetZoom(cameraZoom, true);
 
-	for (Entity* e : SelfRegister<Entity>::GetAll()) {
+	for (Entity* e : SelfRegister<Entity>::GetAll()) 
+	{
 		e->Update(dt);
 	}
 

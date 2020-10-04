@@ -112,7 +112,7 @@ void Player::Update(float dt)
 	if (Input::IsJustReleased(0, GameKeys::DERRAPE))
 	{
 		is_derraping = false;
-		speed = kAccel * (timer_derraping / 2.0f) * ;
+		//speed = kAccel * (timer_derraping / 2.0f);
 	}
 
 	if (is_derraping)
