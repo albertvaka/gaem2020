@@ -48,3 +48,11 @@ const std::array<vec, {{v|length}}> TiledEntities::{{k}} = {
 	};
 {% endfor %}
 
+
+{% for k, v in polygons_by_type.items() -%}
+const std::array<vec, {{v|length}}> TiledPolygons::{{k}} = {
+	{%- for p in v %}
+	vec({{p[0]}}f,{{p[1]}}f),
+	{%- endfor %}
+};
+{% endfor %}

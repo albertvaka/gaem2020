@@ -123,8 +123,16 @@ for e in entities:
     entities_by_type[type_].append((e.location.x-min_x*tilesize, e.location.y-min_y*tilesize))
 
 areas_by_type = defaultdict(list)
+polygons_by_type = defaultdict(list)
 for e in areas:
-    areas_by_type[e.type].append((e.location.x-min_x*tilesize, e.location.y-min_y*tilesize, e.size.width, e.size.height))
+    if e.points:
+        if e.type in polygons_by_type:
+            print("Warning, more than one polygon of the same type is not supported", e.type, "will be overwritten")
+        for e.points
+            #TODO: Subtract min_x*tilesize, min_y*tilesize
+            polygons_by_type[e.type] = e.points
+    else:
+        areas_by_type[e.type].append((e.location.x-min_x*tilesize, e.location.y-min_y*tilesize, e.size.width, e.size.height))
 
 out_screens = []
 for e in screens:
