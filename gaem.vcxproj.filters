@@ -187,9 +187,6 @@
     <ClInclude Include="src\scene_main.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\powerup.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\oneshotanim.h">
       <Filter>engine</Filter>
     </ClInclude>
@@ -203,6 +200,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\startline.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wall.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -309,9 +309,6 @@
     <ClCompile Include="src\scene_main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\powerup.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\player.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -322,6 +319,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\startline.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wall.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

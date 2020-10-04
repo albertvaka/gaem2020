@@ -7,7 +7,7 @@
 #include "fxmanager.h"
 #include "player.h"
 #include "shot.h"
-#include "powerup.h"
+#include "wall.h"
 #include "camera.h"
 #include "window.h"
 #include "rand.h"
@@ -22,20 +22,20 @@ void MainScene::EnterScene()
 	const vec* prev = nullptr;
 	for (const vec& p : TiledPolygons::outter) {
 		if (prev) {
-			new PowerUp(p, *prev, false);
+			new Wall(p, *prev, false);
 		}
 		prev = &p;
 	}
-	new PowerUp(TiledPolygons::outter[0], *prev, false);
+	new Wall(TiledPolygons::outter[0], *prev, false);
 
 	prev = nullptr;
 	for (const vec& p : TiledPolygons::inner) {
 		if (prev) {
-			new PowerUp(p, *prev, true);
+			new Wall(p, *prev, true);
 		}
 		prev = &p;
 	}
-	new PowerUp(TiledPolygons::inner[0], *prev, true);
+	new Wall(TiledPolygons::inner[0], *prev, true);
 
 	cameraAngle = -p->angle - 90;
 
@@ -48,7 +48,7 @@ void MainScene::EnterScene()
 void MainScene::ExitScene()
 {
 	Shot::DeleteAll();
-	PowerUp::DeleteAll();
+	Wall::DeleteAll();
 	delete Player::instance();
 	delete StartLine::instance();
 }
@@ -113,7 +113,7 @@ void MainScene::Draw()
 
 	Window::Clear(16, 16, 16);
 
-	for (const PowerUp* e : PowerUp::GetAll()) 
+	for (const Wall* e : Wall::GetAll()) 
 	{
 		e->Draw();
 	}

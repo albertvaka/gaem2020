@@ -38,5 +38,4 @@ struct Player : SingleInstance<Player>
 
 	bool is_derraping = false;
 	float angle_before_derraping = 0.0f;
-	float timer_derraping = 0.0f;
 };

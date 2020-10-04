@@ -1,4 +1,4 @@
-#include "powerup.h"
+#include "wall.h"
 
 #include "mates.h"
 #include "assets.h"
@@ -9,7 +9,7 @@
 
 extern float mainClock;
 
-PowerUp::PowerUp(const vec& from, const vec& to, bool inner)
+Wall::Wall(const vec& from, const vec& to, bool inner)
 	: inner(inner)
 	, from(from)
 	, to(to)
@@ -22,7 +22,7 @@ PowerUp::PowerUp(const vec& from, const vec& to, bool inner)
 	bbounds.BR = to - perp;
 
 }
-void PowerUp::Draw() const
+void Wall::Draw() const
 {
 	Window::DrawPrimitive::Line(from, to, 2, { 255,255,255,255 });
 	if (Debug::Draw) {

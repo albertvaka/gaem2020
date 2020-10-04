@@ -10,7 +10,7 @@
 #include "input.h"
 #include "fxmanager.h"
 #include "shot.h"
-#include "powerup.h"
+#include "wall.h"
 #include "assets.h"
 #include "startline.h"
 
@@ -109,7 +109,7 @@ void Player::Update(float dt)
 	{
 		is_derraping = true;
 		angle_before_derraping = angle;
-		timer_derraping = 0.0f;
+
 	}
 	if (Input::IsJustReleased(0, GameKeys::DERRAPE))
 	{
@@ -117,20 +117,11 @@ void Player::Update(float dt)
 		//speed = kAccel * (timer_derraping / 2.0f);
 	}
 
-	if (is_derraping)
-	{
-		timer_derraping += dt;
-		if (timer_derraping > 2.0f)
-		{
-			timer_derraping = 2.0f;
-		}
-	}
-
 	Move(dt);
 
 	bbounds = RotableBounds(pos.x, pos.y, width, height, angle);
 
-	for (PowerUp* e : PowerUp::GetAll()) 
+	for (Wall* e : Wall::GetAll()) 
 	{
 		if (e->bounds().Collision(bbounds))
 		{

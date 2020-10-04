@@ -4,7 +4,7 @@
 #include "entity.h"
 #include "selfregister.h"
 
-struct PowerUp : SelfRegister<PowerUp>
+struct Wall : SelfRegister<Wall>
 {
 	vec from;
 	vec to;
@@ -15,7 +15,7 @@ struct PowerUp : SelfRegister<PowerUp>
 		return bbounds;
 	}
 
-	PowerUp(const vec& from, const vec& to, bool inner);
+	Wall(const vec& from, const vec& to, bool inner);
 	void Draw() const;
 };
 
