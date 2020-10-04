@@ -20,7 +20,8 @@ struct StartLine : SelfRegister<StartLine>
 	std::string GetBestlapText() const;
 	bool HasBestLap() const;
 
-	bool playerColliding = true;
+	bool playerCollidedForFirstTime = false;
+	bool playerColliding = false;
 	float timelapTimer = 0.0f;
 	float bestlapTimer = -1.0f;
 

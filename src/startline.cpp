@@ -53,6 +53,11 @@ bool StartLine::HasBestLap() const
 
 void StartLine::Update(float dt)
 {
+	if (!playerCollidedForFirstTime)
+	{
+		return;
+	}
+
 	timelapTimer += dt;
 }
 
@@ -60,14 +65,20 @@ void StartLine::PlayerCollided()
 {
 	if (!playerColliding)
 	{
-
-		if (bestlapTimer < 0.0f)
+		if (!playerCollidedForFirstTime)
 		{
-			bestlapTimer = timelapTimer;
+			playerCollidedForFirstTime = true;
 		}
-		else if (timelapTimer < bestlapTimer)
+		else
 		{
-			bestlapTimer = timelapTimer;
+			if (bestlapTimer < 0.0f)
+			{
+				bestlapTimer = timelapTimer;
+			}
+			else if (timelapTimer < bestlapTimer)
+			{
+				bestlapTimer = timelapTimer;
+			}
 		}
 
 		timelapTimer = 0.0f;
