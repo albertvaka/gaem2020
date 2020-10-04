@@ -147,7 +147,9 @@ struct RotableBounds : public Bounds
 
     RotableBounds() {}
 
-    RotableBounds(float x, float y, float w, float h) : Bounds(x, y, w, h)
+    RotableBounds(float x, float y, float w, float h, float angle)
+        : Bounds(x, y, w, h)
+        , angle(angle)
     { 
         UpdateCorners();
     }

@@ -33,8 +33,10 @@ for e in areas:
     if e.points:
         if e.type in polygons_by_type:
             print("Warning, more than one polygon of the same type is not supported", e.type, "will be overwritten")
-        for e.points 
-        polygons_by_type[e.type] = e.points
+        points = []
+        for p in e.points:
+            points.append((p[0]+e.location.x, p[1]+e.location.y))
+        polygons_by_type[e.type] = points
     else:
         areas_by_type[e.type].append((e.location.x, e.location.y, e.size.width, e.size.height))
 

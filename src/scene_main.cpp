@@ -17,13 +17,25 @@
 
 void MainScene::EnterScene()
 {
-	float scale = 1.3f;
-	Player* p = new Player(TiledEntities::spawn * scale, 0);
+	Player* p = new Player(TiledEntities::spawn, 0);
 
-	for (const vec& pos : TiledEntities::obstacle) 
-	{
-		new PowerUp(pos* scale);
+	const vec* prev = nullptr;
+	for (const vec& p : TiledPolygons::outter) {
+		if (prev) {
+			new PowerUp(p, *prev, false);
+		}
+		prev = &p;
 	}
+	new PowerUp(TiledPolygons::outter[0], *prev, false);
+
+	prev = nullptr;
+	for (const vec& p : TiledPolygons::inner) {
+		if (prev) {
+			new PowerUp(p, *prev, true);
+		}
+		prev = &p;
+	}
+	new PowerUp(TiledPolygons::inner[0], *prev, true);
 
 	cameraAngle = -p->angle - 90;
 
@@ -95,6 +107,24 @@ void MainScene::Draw()
 	FxManager::BeginDraw();
 
 	Window::Clear(16, 16, 16);
+
+	const vec* prev = nullptr;
+	for (const vec& p : TiledPolygons::outter) {
+		if (prev) {
+			Window::DrawPrimitive::Line(*prev, p, 2, { 255,255,255,255 });
+		}
+		prev = &p;
+	}
+	Window::DrawPrimitive::Line(*prev, TiledPolygons::outter[0], 2, { 255,255,255,255 });
+
+	prev = nullptr;
+	for (const vec& p : TiledPolygons::inner) {
+		if (prev) {
+			Window::DrawPrimitive::Line(*prev, p, 2, { 255,255,255,255 });
+		}
+		prev = &p;
+	}
+	Window::DrawPrimitive::Line(*prev, TiledPolygons::inner[0], 2, { 255,255,255,255 });
 
 	for (const PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
 	{

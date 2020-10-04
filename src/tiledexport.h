@@ -18,3 +18,10 @@ struct TiledAreas
 {
 	
 };
+
+struct TiledPolygons
+{
+	static const std::array<vec, 40> outter;
+	static const std::array<vec, 41> inner;
+	
+};

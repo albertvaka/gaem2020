@@ -4,10 +4,17 @@
 #include "entity.h"
 #include "selfregister.h"
 
-struct PowerUp : CircleEntity, SelfRegister<PowerUp>
+struct PowerUp : SelfRegister<PowerUp>
 {
-	PowerUp(const vec& p) : CircleEntity(p, 13/2.f) { }
-	void Update(float dt) override { };
-	void Draw() const override;
+	//bool alive = true;
+	bool inner;
+	RotableBounds bbounds;
+
+	RotableBounds bounds() {
+		return bbounds;
+	}
+
+	PowerUp(const vec& from, const vec& prev, bool inner);
+	void Draw() const;
 };
 

@@ -19,11 +19,12 @@ const float kShotSpeed = 400.f;
 const float kTimeBetweenShots = 0.2f;
 
 const float spriteScale = 0.5f;
-const float kRadius = 8.f;
 
+const float width = 32* spriteScale;
+const float height = 32* spriteScale;
 
 Player::Player(const vec& position, float angle)
-	: CircleEntity(position, kRadius)
+	: Entity(position)
 	, anim(AnimLib::GOOMBA)
 	, angle(angle)
 {
@@ -127,12 +128,13 @@ void Player::Update(float dt)
 
 	Move(dt);
 
+	bbounds = RotableBounds(pos.x, pos.y, width, height, angle);
+
 	for (PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
 	{
-		if (Collide(this, e)) 
+		if (e->bounds().Collision(bbounds))
 		{
-			e->alive = false;
-			FxManager::StartScreenshakePreset(FxManager::ScreenShakePreset::Electroshok);
+			angle += e->inner ? 45 : -45;
 		}
 	}
 
@@ -167,18 +169,18 @@ void Player::Draw() const
 		.withRect(spriteBottom)
 		.withScale(spriteScale)
 		.withRotationDegs(angle+90)
-		.withOrigin(16, 16);
+		.withOrigin(0, 32);
 
 	Window::Draw(Assets::spritesheet, pos)
 		.withRect(spriteTop)
 		.withScale(spriteScale)
 		.withRotationDegs(angle + 90)
-		.withOrigin(16, 16);
+		.withOrigin(0, 32);
 
 	if (Debug::Draw) 
 	{
 		pos.Debuggerino();
-		DrawBounds();
+		bbounds.Draw();
 	}
 
 }

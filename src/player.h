@@ -7,8 +7,10 @@
 #include "singleinstance.h"
 
 
-struct Player : CircleEntity, SingleInstance<Player>
+struct Player : Entity, SingleInstance<Player>
 {
+
+	RotableBounds bbounds;
 
 	const float kMaxSpeed = 600.f; // in pixels/second
 	const float kAccel = 220.f; // in pixels/second^2

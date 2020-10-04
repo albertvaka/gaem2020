@@ -9,16 +9,18 @@
 
 extern float mainClock;
 
+PowerUp::PowerUp(const vec& from, const vec& to, bool inner)
+	: inner(inner)
+{
+	vec perp = (from - to).Perp().Normalized() * 2;
+
+	bbounds.TL = from + perp;
+	bbounds.BL = from - perp;
+	bbounds.TR = to + perp;
+	bbounds.BR = to - perp;
+
+}
 void PowerUp::Draw() const
 {
-	float y = 1.5f * sin(pos.x + pos.y + mainClock*2);
-
-	Window::Draw(Assets::spritesheet, pos.x, pos.y)
-		.withOrigin(8, 8)
-		.withRect(AnimLib::POWERUP);
-
-	if (Debug::Draw) 
-	{
-		bounds().Draw();
-	}
+	bbounds.Draw();
 }
