@@ -23,3 +23,10 @@ struct TiledAreas
 		static const std::array<Bounds, {{v|length}}> {{k}};
 	{% endfor %}
 };
+
+struct TiledPolygons
+{
+	{% for k, v in polygons_by_type.items() -%}
+		static const std::array<vec, {{v|length}}> {{k}};
+	{% endfor %}
+};

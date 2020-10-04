@@ -28,13 +28,21 @@ for e in entities:
     entities_by_type[type_].append((e.location.x, e.location.y))
 
 areas_by_type = defaultdict(list)
+polygons_by_type = defaultdict(list)
 for e in areas:
-    areas_by_type[e.type].append((e.location.xe, e.location.y, e.size.width, e.size.height))
+    if e.points:
+        if e.type in polygons_by_type:
+            print("Warning, more than one polygon of the same type is not supported", e.type, "will be overwritten")
+        for e.points 
+        polygons_by_type[e.type] = e.points
+    else:
+        areas_by_type[e.type].append((e.location.x, e.location.y, e.size.width, e.size.height))
 
 tm = Template(Path('tiledexport.h.tmpl').read_text())
 out_h = tm.render(
     entities_by_type=entities_by_type,
     areas_by_type=areas_by_type,
+    polygons_by_type=polygons_by_type,
 )
 
 try:
@@ -51,6 +59,7 @@ tm = Template(Path('tiledexport.cpp.tmpl').read_text())
 out_cpp = tm.render(
     entities_by_type=entities_by_type,
     areas_by_type=areas_by_type,
+    polygons_by_type=polygons_by_type,
     debug = False,
 )
 

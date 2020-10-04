@@ -12,11 +12,19 @@ const std::array<vec, {{v|length}}> TiledEntities::{{k}} = {
 {% endif %}
 {% endfor %}
 
+{% for k, v in polygons_by_type.items() -%}
+const std::array<vec, {{v|length}}> TiledPolygons::{{k}} = {
+	{%- for p in v %}
+	vec({{p[0]}}f,{{p[1]}}f),
+	{%- endfor %}
+};
+{% endfor %}
+
 {% for k, v in areas_by_type.items() -%}
-	const std::array<Bounds, {{v|length}}> TiledAreas::{{k}} = {
-		{%- for s in v %}
-		Bounds({{s[0]}}f,{{s[1]}}f,{{s[2]}}f,{{s[3]}}f),
-		{%- endfor %}
-	};
+const std::array<Bounds, {{v|length}}> TiledAreas::{{k}} = {
+	{%- for s in v %}
+	Bounds({{s[0]}}f,{{s[1]}}f,{{s[2]}}f,{{s[3]}}f),
+	{%- endfor %}
+};
 {% endfor %}
 
