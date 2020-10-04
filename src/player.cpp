@@ -24,7 +24,7 @@ const float width = 32* spriteScale;
 const float height = 32* spriteScale;
 
 Player::Player(const vec& position, float angle)
-	: Entity(position)
+	: pos(position)
 	, anim(AnimLib::GOOMBA)
 	, angle(angle)
 {
@@ -130,7 +130,7 @@ void Player::Update(float dt)
 
 	bbounds = RotableBounds(pos.x, pos.y, width, height, angle);
 
-	for (PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
+	for (PowerUp* e : PowerUp::GetAll()) 
 	{
 		if (e->bounds().Collision(bbounds))
 		{
@@ -138,20 +138,16 @@ void Player::Update(float dt)
 		}
 	}
 
-	for (StartLine* e : SelfRegister<StartLine>::GetAll())
+	StartLine* start = StartLine::instance();
+	
+	if (start->bounds().Collision(bbounds))
 	{
-		RotableBounds startbounds(e->bounds());
-		
-		if (startbounds.Collision(bbounds))
-		{
-			e->PlayerCollided();
-		}
-		else
-		{
-			e->playerColliding = false;
-		}
+		start->PlayerCollided();
 	}
-
+	else
+	{
+		start->playerColliding = false;
+	}
 
 	attack_timer -= dt;
 

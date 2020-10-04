@@ -6,7 +6,8 @@
 
 struct PowerUp : SelfRegister<PowerUp>
 {
-	//bool alive = true;
+	vec from;
+	vec to;
 	bool inner;
 	RotableBounds bbounds;
 
@@ -14,7 +15,7 @@ struct PowerUp : SelfRegister<PowerUp>
 		return bbounds;
 	}
 
-	PowerUp(const vec& from, const vec& prev, bool inner);
+	PowerUp(const vec& from, const vec& to, bool inner);
 	void Draw() const;
 };
 

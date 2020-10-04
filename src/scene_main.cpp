@@ -47,7 +47,10 @@ void MainScene::EnterScene()
 
 void MainScene::ExitScene()
 {
-	Entity::DeleteAll();
+	Shot::DeleteAll();
+	PowerUp::DeleteAll();
+	delete Player::instance();
+	delete StartLine::instance();
 }
 
 
@@ -72,7 +75,6 @@ void MainScene::Update(float dt)
 		cameraAngle -= kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle)) * dt;
 	}
 
-
 	Camera::SetRotationDegs(cameraAngle);
 	//Camera::SetRotationDegs(playerAngle);
 	
@@ -85,12 +87,15 @@ void MainScene::Update(float dt)
 	cameraZoom = cameraZoom + (targetZoom - cameraZoom) * dt * 5.0f;
 	Camera::SetZoom(cameraZoom, true);
 
-	for (Entity* e : SelfRegister<Entity>::GetAll()) 
+	for (Shot* e : Shot::GetAll())
 	{
 		e->Update(dt);
 	}
+	Shot::DeleteNotAlive();
 
-	Entity::DeleteNotAlive();
+	StartLine::instance()->Update(dt);
+
+	Player::instance()->Update(dt);
 
 #ifdef _DEBUG
 	const SDL_Scancode restart = SDL_SCANCODE_F5;
@@ -108,42 +113,19 @@ void MainScene::Draw()
 
 	Window::Clear(16, 16, 16);
 
-	const vec* prev = nullptr;
-	for (const vec& p : TiledPolygons::outter) {
-		if (prev) {
-			Window::DrawPrimitive::Line(*prev, p, 2, { 255,255,255,255 });
-		}
-		prev = &p;
-	}
-	Window::DrawPrimitive::Line(*prev, TiledPolygons::outter[0], 2, { 255,255,255,255 });
-
-	prev = nullptr;
-	for (const vec& p : TiledPolygons::inner) {
-		if (prev) {
-			Window::DrawPrimitive::Line(*prev, p, 2, { 255,255,255,255 });
-		}
-		prev = &p;
-	}
-	Window::DrawPrimitive::Line(*prev, TiledPolygons::inner[0], 2, { 255,255,255,255 });
-
-	for (const PowerUp* e : SelfRegister<PowerUp>::GetAll()) 
+	for (const PowerUp* e : PowerUp::GetAll()) 
 	{
 		e->Draw();
 	}
 
-	for (const StartLine* e : SelfRegister<StartLine>::GetAll())
-	{
-		e->Draw();
-	}
-
+	StartLine::instance()->Draw();
+	
 	Player::instance()->Draw();
 
-	for (const Shot* e : SelfRegister<Shot>::GetAll())
+	for (const Shot* e : Shot::GetAll())
 	{
 		e->Draw();
 	}
-
-
 
 #ifdef _IMGUI
 	{

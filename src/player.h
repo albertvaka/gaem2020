@@ -7,9 +7,8 @@
 #include "singleinstance.h"
 
 
-struct Player : Entity, SingleInstance<Player>
+struct Player : SingleInstance<Player>
 {
-
 	RotableBounds bbounds;
 
 	const float kMaxSpeed = 600.f; // in pixels/second
@@ -22,6 +21,8 @@ struct Player : Entity, SingleInstance<Player>
 	const float kAngularDrag = 600.f; // brake force when not turning
 
 	Animation2 anim;
+	vec pos;
+	vec vel;
 	float angle = 0.0f;
 	float speed = 0.0f;
 	float angularSpeed = 0.0f;
@@ -32,8 +33,8 @@ struct Player : Entity, SingleInstance<Player>
 	Player(const vec& position, float angle);
 
 	void Move(float dt);
-	void Update(float dt) override;
-	void Draw() const override;
+	void Update(float dt);
+	void Draw() const;
 
 	bool is_derraping = false;
 	float angle_before_derraping = 0.0f;

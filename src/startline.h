@@ -2,9 +2,9 @@
 
 #include "vec.h"
 #include "entity.h"
-#include "selfregister.h"
+#include "singleinstance.h"
 
-struct StartLine : SelfRegister<StartLine>
+struct StartLine : SingleInstance<StartLine>
 {
 	RotableBounds bbounds;
 

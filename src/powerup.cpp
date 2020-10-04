@@ -11,6 +11,8 @@ extern float mainClock;
 
 PowerUp::PowerUp(const vec& from, const vec& to, bool inner)
 	: inner(inner)
+	, from(from)
+	, to(to)
 {
 	vec perp = (from - to).Perp().Normalized() * 2;
 
@@ -22,6 +24,7 @@ PowerUp::PowerUp(const vec& from, const vec& to, bool inner)
 }
 void PowerUp::Draw() const
 {
+	Window::DrawPrimitive::Line(from, to, 2, { 255,255,255,255 });
 	if (Debug::Draw) {
 		bbounds.Draw();
 	}

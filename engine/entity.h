@@ -4,14 +4,11 @@
 #include "selfregister.h"
 #include "bounds.h"
 
-struct Entity : SelfRegister<Entity>
+struct Entity
 {
-	Entity() : pos(0.f,0.f) {}
-	Entity(const vec& pos) : pos(pos) {}
-	Entity(const vec& pos, const vec& vel) : pos(pos), vel(vel) {}
-	virtual ~Entity() {}
-	virtual void Update(float dt) = 0;
-	virtual void Draw() const = 0;
+	constexpr Entity() : pos(0.f,0.f) {}
+	constexpr Entity(const vec& pos) : pos(pos) {}
+	constexpr Entity(const vec& pos, const vec& vel) : pos(pos), vel(vel) {}
 
 	vec pos;
 	vec vel = vec(0.f, 0.f);
@@ -19,9 +16,9 @@ struct Entity : SelfRegister<Entity>
 };
 
 struct BoxEntity : Entity {
-	BoxEntity(const vec& size) : size(size) {}
-	BoxEntity(const vec& pos, const vec& size) : Entity(pos), size(size) {}
-	BoxEntity(const Bounds& b) : Entity(b.Center()), size(b.Size()) {} //note that entities position is on their center
+	constexpr BoxEntity(const vec& size) : size(size) {}
+	constexpr BoxEntity(const vec& pos, const vec& size) : Entity(pos), size(size) {}
+	constexpr BoxEntity(const Bounds& b) : Entity(b.Center()), size(b.Size()) {} //note that entities position is on their center
 
 	vec size;
 
@@ -35,10 +32,10 @@ struct BoxEntity : Entity {
 };
 
 struct CircleEntity : Entity {
-	CircleEntity() : radius(8.f) {}
-	CircleEntity(float radius) : radius(radius) {}
-	CircleEntity(const vec& pos, float radius) : Entity(pos), radius(radius) {}
-	CircleEntity(const vec& pos, float radius, const vec& vel) : Entity(pos, vel), radius(radius) {}
+	constexpr CircleEntity() : radius(8.f) {}
+	constexpr CircleEntity(float radius) : radius(radius) {}
+	constexpr CircleEntity(const vec& pos, float radius) : Entity(pos), radius(radius) {}
+	constexpr CircleEntity(const vec& pos, float radius, const vec& vel) : Entity(pos, vel), radius(radius) {}
 
 	float radius;
 	
