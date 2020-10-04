@@ -12,6 +12,7 @@
 #include "window.h"
 #include "rand.h"
 #include "tiledexport.h"
+#include "startline.h"
 #include <text.h>
 
 void MainScene::EnterScene()
@@ -28,6 +29,8 @@ void MainScene::EnterScene()
 
 	cameraZoom = 0.5f - 0.3f * (p->speed / p->kMaxSpeed);
 	camCenter = p->pos + (p->vel * 0.25f) + FxManager::GetScreenshake();
+
+	startLine = new StartLine(TiledEntities::spawn * scale + vec(0, 60));
 }
 
 void MainScene::ExitScene()
@@ -42,8 +45,6 @@ float cameraZoom = 0.0f;
 
 void MainScene::Update(float dt)
 {
-	timelapTimer += dt;
-
 	FxManager::Update(dt);
 
 	Player* player = Player::instance();
@@ -100,12 +101,19 @@ void MainScene::Draw()
 		e->Draw();
 	}
 
+	for (const StartLine* e : SelfRegister<StartLine>::GetAll())
+	{
+		e->Draw();
+	}
+
 	Player::instance()->Draw();
 
 	for (const Shot* e : SelfRegister<Shot>::GetAll())
 	{
 		e->Draw();
 	}
+
+
 
 #ifdef _IMGUI
 	{
@@ -129,39 +137,26 @@ void MainScene::Draw()
 	
 	FxManager::EndDraw();
 
-	{
-		int minutes = (int)(timelapTimer / 60.0f);
-		int seconds = (int)(timelapTimer) % 60;
-		int millis = ((int)(timelapTimer * 100)) % 100;
-		std::string str_laptime = "";
-		if (minutes < 10)
-		{
-			str_laptime += "0";
-		}
-		str_laptime += std::to_string(minutes);
-		str_laptime += ":";
-		if (seconds < 10)
-		{
-			str_laptime += "0";
-		}
-		str_laptime += std::to_string(seconds);
-		str_laptime += ".";
-		if (millis < 10)
-		{
-			str_laptime += "0";
-		}
-		str_laptime += std::to_string(millis);
-
-		timelapText.SetString(str_laptime);
-	}
-	
-	timelapText.SetFillColor(0, 255, 65);
-	timelapText.SetOutlineColor(0, 59, 0);
-	
 	Camera::GUI::Begin();
+	
 
-	Window::Draw(timelapText, 5, 5)
-		.withScale(0.2f);
+	if (startLine->HasBestLap())
+	{
+		timelapText.SetString(startLine->GetBestlapText());
+		timelapText.SetFillColor(255, 0, 65);
+		timelapText.SetOutlineColor(59, 0, 0);
+		Window::Draw(timelapText, 5, 5)
+			.withScale(0.2f);
+	}
+
+	{
+		timelapText.SetString(startLine->GetTimelapText());
+		timelapText.SetFillColor(0, 255, 65);
+		timelapText.SetOutlineColor(0, 59, 0);
+		Window::Draw(timelapText, 5, 15)
+			.withScale(0.2f);
+	}
+
 
 	Camera::GUI::End();
 

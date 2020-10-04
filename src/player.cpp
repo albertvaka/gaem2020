@@ -12,6 +12,7 @@
 #include "shot.h"
 #include "powerup.h"
 #include "assets.h"
+#include "startline.h"
 
 const float kShotSpeed = 400.f;
 
@@ -134,6 +135,19 @@ void Player::Update(float dt)
 			FxManager::StartScreenshakePreset(FxManager::ScreenShakePreset::Electroshok);
 		}
 	}
+
+	for (StartLine* e : SelfRegister<StartLine>::GetAll())
+	{
+		if (Collide(this, e))
+		{
+			e->PlayerCollided();
+		}
+		else
+		{
+			e->playerColliding = false;
+		}
+	}
+
 
 	attack_timer -= dt;
 

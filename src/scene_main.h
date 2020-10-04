@@ -9,12 +9,13 @@
 struct Car;
 struct GunUp;
 struct EnemyDoor;
+struct StartLine;
 
 struct MainScene : Scene {
 
 	MainScene() : 
 		timelapText(Assets::font_30, Assets::font_30_outline),
-		timelapTimer(0.0f)
+		bestlapText(Assets::font_30, Assets::font_30_outline)
 		{};
 	void EnterScene() override;
 	void ExitScene() override;
@@ -27,5 +28,6 @@ struct MainScene : Scene {
 	vec camCenter;
 
 	Text timelapText;
-	float timelapTimer;
+	Text bestlapText;
+	StartLine* startLine;
 };
