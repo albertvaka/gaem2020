@@ -12,6 +12,7 @@
 #include "window.h"
 #include "rand.h"
 #include "tiledexport.h"
+#include <text.h>
 
 void MainScene::EnterScene()
 {
@@ -41,6 +42,8 @@ float cameraZoom = 0.0f;
 
 void MainScene::Update(float dt)
 {
+	timelapTimer += dt;
+
 	FxManager::Update(dt);
 
 	Player* player = Player::instance();
@@ -123,5 +126,43 @@ void MainScene::Draw()
 	}
 #endif
 
+	
 	FxManager::EndDraw();
+
+	{
+		int minutes = (int)(timelapTimer / 60.0f);
+		int seconds = (int)(timelapTimer) % 60;
+		int millis = ((int)(timelapTimer * 100)) % 100;
+		std::string str_laptime = "";
+		if (minutes < 10)
+		{
+			str_laptime += "0";
+		}
+		str_laptime += std::to_string(minutes);
+		str_laptime += ":";
+		if (seconds < 10)
+		{
+			str_laptime += "0";
+		}
+		str_laptime += std::to_string(seconds);
+		str_laptime += ".";
+		if (millis < 10)
+		{
+			str_laptime += "0";
+		}
+		str_laptime += std::to_string(millis);
+
+		timelapText.SetString(str_laptime);
+	}
+	
+	timelapText.SetFillColor(0, 255, 65);
+	timelapText.SetOutlineColor(0, 59, 0);
+	
+	Camera::GUI::Begin();
+
+	Window::Draw(timelapText, 5, 5)
+		.withScale(0.2f);
+
+	Camera::GUI::End();
+
 }
