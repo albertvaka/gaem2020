@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="11" nextobjectid="2483">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="11" nextobjectid="2485">
  <editorsettings>
   <export target="." format="tmx"/>
  </editorsettings>
@@ -1584,6 +1584,10 @@
   <object id="2481" gid="195" x="-870" y="-200" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="9" name="Notes" visible="0"/>
- <objectgroup id="8" name="Areas" visible="0"/>
+ <objectgroup id="8" name="Areas">
+  <object id="2484" type="outter" x="-1300" y="-572">
+   <polygon points="0,0 -840,12 -1070.67,98.6667 -1210.67,205.333 -1289.33,382.667 -1309.33,598.667 -1270.67,746.667 -1136,906.667 -865.333,1037.33 -810.667,1244 -757.333,1326.67 -632,1372 2385.33,1358.67 2560,1290.67 2669.33,1166.67 2702.67,724 2610.67,664 2636,308 2600,253.333 1998.67,65.3333 1872,136 1798.67,213.333 1774.67,337.333 1808,484 1989.33,584 2118.67,817.333 850.667,68 717.333,49.3333 624,68 550.667,114.667 198.667,660 185.333,832 138.667,905.333 -238.667,900 -697.333,586.667 -58.6667,581.333 100,482.667 188,293.333 185.333,153.333 100,33.3333"/>
+  </object>
+ </objectgroup>
  <objectgroup id="2" name="Screens" visible="0"/>
 </map>
