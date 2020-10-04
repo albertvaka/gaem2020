@@ -15,7 +15,7 @@ protected:
 		SingleInstance()
 		{
 #ifdef _DEBUG
-			assert(instance() == nullptr); //Creating a second instance of a singleton
+			//assert(instance() == nullptr); //Creating a second instance of a singleton
 #endif
 			instance() = (T*)this;
 		}

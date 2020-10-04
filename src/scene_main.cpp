@@ -17,6 +17,13 @@
 
 void MainScene::EnterScene()
 {
+	for (vec p : TiledEntities::oleada) {
+		Player* o = new Player(p, 0);
+		o->spriteTop.x += 6 * 32;
+		o->spriteBottom.x += 6 * 32;
+		o->enemy = true;
+	}
+
 	Player* p = new Player(TiledEntities::spawn, 180);
 
 	const vec* prev = nullptr;
@@ -53,7 +60,7 @@ void MainScene::ExitScene()
 {
 	Shot::DeleteAll();
 	Wall::DeleteAll();
-	delete Player::instance();
+	Player::DeleteAll();
 	delete startLine;
 }
 
@@ -98,7 +105,10 @@ void MainScene::Update(float dt)
 
 	startLine->Update(dt);
 
-	Player::instance()->Update(dt);
+	for (Player* e : Player::GetAll())
+	{
+		e->Update(dt);
+	}
 
 #ifdef _DEBUG
 	const SDL_Scancode restart = SDL_SCANCODE_F5;
@@ -122,8 +132,12 @@ void MainScene::Draw()
 	}
 
 	startLine->Draw();
-	
-	Player::instance()->Draw();
+
+	for (Player* e : Player::GetAll())
+	{
+		e->Draw();
+	}
+
 
 	for (const Shot* e : Shot::GetAll())
 	{

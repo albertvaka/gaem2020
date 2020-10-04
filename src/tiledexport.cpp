@@ -1437,6 +1437,26 @@ const std::array<vec, 28> TiledEntities::enemy_spawn = {
 	vec(-870.0f, -200.0f),
 };
 
+const std::array<vec, 17> TiledEntities::oleada = {
+	vec(910.667f, -396.0f),
+	vec(885.333f, -341.333f),
+	vec(878.667f, -417.333f),
+	vec(941.333f, -336.0f),
+	vec(977.333f, -372.0f),
+	vec(1004.0f, -318.667f),
+	vec(1040.0f, -360.0f),
+	vec(789.333f, -441.333f),
+	vec(778.667f, -392.0f),
+	vec(850.667f, -385.333f),
+	vec(912.0f, -357.333f),
+	vec(1057.33f, -288.0f),
+	vec(1078.67f, -340.0f),
+	vec(1112.0f, -278.667f),
+	vec(1114.67f, -318.667f),
+	vec(734.667f, -430.667f),
+	vec(1141.33f, -293.333f),
+};
+
 
 
 const std::array<vec, 40> TiledPolygons::outter = {

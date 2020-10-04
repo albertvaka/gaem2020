@@ -7,9 +7,11 @@
 #include "singleinstance.h"
 
 
-struct Player : SingleInstance<Player>
+struct Player : SelfRegister<Player>, SingleInstance<Player>
 {
 	RotableBounds bbounds;
+
+	bool enemy = false;
 
 	const float kMaxSpeed = 600.f; // in pixels/second
 	const float kAccel = 220.f; // in pixels/second^2

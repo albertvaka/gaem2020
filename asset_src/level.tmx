@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="12" nextobjectid="2518">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="12" nextobjectid="2535">
  <editorsettings>
   <export target="." format="tmx"/>
  </editorsettings>
@@ -127,6 +127,7 @@
     <property name="alias" value="door_bottom"/>
    </properties>
   </tile>
+  <tile id="299" type="oleada"/>
   <tile id="312" type="solid"/>
   <tile id="318" type="solid"/>
   <tile id="324" type="gunup"/>
@@ -1582,6 +1583,25 @@
   <object id="2479" gid="195" x="-1824" y="-486" width="16" height="16"/>
   <object id="2480" gid="195" x="-932" y="-106" width="16" height="16"/>
   <object id="2481" gid="195" x="-870" y="-200" width="16" height="16"/>
+  
+  
+  <object id="2518" gid="300" x="910.667" y="-396" width="16" height="16"/>
+  <object id="2519" gid="300" x="885.333" y="-341.333" width="16" height="16"/>
+  <object id="2520" gid="300" x="878.667" y="-417.333" width="16" height="16"/>
+  <object id="2521" gid="300" x="941.333" y="-336" width="16" height="16"/>
+  <object id="2522" gid="300" x="977.333" y="-372" width="16" height="16"/>
+  <object id="2523" gid="300" x="1004" y="-318.667" width="16" height="16"/>
+  <object id="2524" gid="300" x="1040" y="-360" width="16" height="16"/>
+  <object id="2525" gid="300" x="789.333" y="-441.333" width="16" height="16"/>
+  <object id="2526" gid="300" x="778.667" y="-392" width="16" height="16"/>
+  <object id="2527" gid="300" x="850.667" y="-385.333" width="16" height="16"/>
+  <object id="2528" gid="300" x="912" y="-357.333" width="16" height="16"/>
+  <object id="2529" gid="300" x="1057.33" y="-288" width="16" height="16"/>
+  <object id="2530" gid="300" x="1078.67" y="-340" width="16" height="16"/>
+  <object id="2531" gid="300" x="1112" y="-278.667" width="16" height="16"/>
+  <object id="2532" gid="300" x="1114.67" y="-318.667" width="16" height="16"/>
+  <object id="2533" gid="300" x="734.667" y="-430.667" width="16" height="16"/>
+  <object id="2534" gid="300" x="1141.33" y="-293.333" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="9" name="Notes" visible="0"/>
  <objectgroup id="8" name="Areas">

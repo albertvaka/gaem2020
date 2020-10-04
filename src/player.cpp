@@ -42,11 +42,11 @@ Player::Player(const vec& position, float angle)
 void Player::Move(float dt) 
 {
 
-	if (Input::IsPressed(0, GameKeys::LEFT)) 
+	if (Input::IsPressed(0, GameKeys::LEFT) && !enemy)
 	{
 		angularSpeed -= kAngularAccel * dt;
 	} 
-	else if (Input::IsPressed(0, GameKeys::RIGHT)) 
+	else if (Input::IsPressed(0, GameKeys::RIGHT) && !enemy)
 	{
 		angularSpeed += kAngularAccel * dt;
 	}
@@ -80,11 +80,11 @@ void Player::Move(float dt)
 		heading = vec::FromAngleDegs(angle_before_derraping);
 	}
 
-	if (Input::IsPressed(0, GameKeys::UP)) 
+	if (enemy || Input::IsPressed(0, GameKeys::UP))
 	{
 		speed += kAccel * dt;
 	}
-	else if (Input::IsPressed(0, GameKeys::DOWN)) 
+	else if (Input::IsPressed(0, GameKeys::DOWN) && !enemy)
 	{
 		speed -= kBrake * dt;
 	}
@@ -105,13 +105,13 @@ void Player::Update(float dt)
 	anim.Update(dt);
 
 
-	if (Input::IsJustPressed(0, GameKeys::DERRAPE))
+	if (Input::IsJustPressed(0, GameKeys::DERRAPE) && !enemy)
 	{
 		is_derraping = true;
 		angle_before_derraping = angle;
 
 	}
-	if (Input::IsJustReleased(0, GameKeys::DERRAPE))
+	if (Input::IsJustReleased(0, GameKeys::DERRAPE) && !enemy)
 	{
 		is_derraping = false;
 		//speed = kAccel * (timer_derraping / 2.0f);
@@ -131,7 +131,7 @@ void Player::Update(float dt)
 
 	attack_timer -= dt;
 
-	if (Input::IsPressed(0, GameKeys::ATTACK) && attack_timer < 0.f) 
+	if (Input::IsPressed(0, GameKeys::ATTACK) && attack_timer < 0.f && !enemy)
 	{
 		vec heading = vec::FromAngleDegs(angle);
 		new Shot(pos, vel+heading*kShotSpeed);
