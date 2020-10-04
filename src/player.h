@@ -16,7 +16,7 @@ struct Player : CircleEntity, SingleInstance<Player>
 	const float kDrag = 40.f; // brake force when not accelerating
 
 	const float kMaxAngularSpeed = 120.f; // in degrees/second
-	const float kAngularAccel = 200.f; // in degrees/second^2
+	const float kAngularAccel = 300.f; // in degrees/second^2
 	const float kAngularDrag = 600.f; // brake force when not turning
 
 	Animation2 anim;
@@ -34,5 +34,6 @@ struct Player : CircleEntity, SingleInstance<Player>
 	void Draw() const override;
 
 	bool is_derraping = false;
-	float last_angle_before_derraping = 0.0f;
+	float angle_before_derraping = 0.0f;
+	float timer_derraping = 0.0f;
 };

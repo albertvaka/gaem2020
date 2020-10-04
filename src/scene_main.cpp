@@ -32,7 +32,7 @@ void MainScene::ExitScene()
 }
 
 
-float kCameraRotSpeed = 45.0f;
+float kCameraRotSpeed = 90.0f;
 
 void MainScene::Update(float dt)
 {
@@ -42,26 +42,22 @@ void MainScene::Update(float dt)
 
 	float playerAngle = -player->angle - 90.0f;
 
-	if (player->is_derraping)
+	
+	
+	if (abs(cameraAngle - playerAngle) <= kCameraRotSpeed*dt) 
 	{
-		Camera::SetRotationDegs(-player->last_angle_before_derraping -90.0f);
+		cameraAngle = playerAngle;
 	}
-	else
+	else 
 	{
-		if (abs(cameraAngle - playerAngle) <= kCameraRotSpeed) 
-		{
-			cameraAngle = playerAngle;
-		}
-		else 
-		{
-			cameraAngle -= kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle)) * dt;
-		}
-		Camera::SetRotationDegs(cameraAngle);
+		cameraAngle -= kCameraRotSpeed * vec::FromAngleDegs(playerAngle).Sign(vec::FromAngleDegs(cameraAngle)) * dt;
 	}
+	Camera::SetRotationDegs(cameraAngle);
+	
 	
 	Camera::SetCenter(player->pos  + (player->vel * 0.25) + FxManager::GetScreenshake());
 
-	float zoomerino = 0.5f - 0.25f * (player->speed / player->kMaxSpeed);
+	float zoomerino = 0.5f - 0.3f * (player->speed / player->kMaxSpeed);
 	Camera::SetZoom(zoomerino, true);
 
 	for (Entity* e : SelfRegister<Entity>::GetAll()) {
