@@ -17,7 +17,7 @@
 
 void MainScene::EnterScene()
 {
-	Player* p = new Player(TiledEntities::spawn, 0);
+	Player* p = new Player(TiledEntities::spawn, 180);
 
 	const vec* prev = nullptr;
 	for (const vec& p : TiledPolygons::outter) {

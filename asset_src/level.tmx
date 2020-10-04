@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="12" nextobjectid="2489">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="12" nextobjectid="2518">
  <editorsettings>
   <export target="." format="tmx"/>
  </editorsettings>
@@ -1343,7 +1343,7 @@
   <object id="1860" gid="191" x="634.042" y="163.125" width="16" height="16"/>
   <object id="1861" gid="191" x="653.708" y="172.958" width="16" height="16"/>
   <object id="1868" gid="191" x="565.25" y="127.5" width="16" height="16"/>
-  <object id="1870" gid="33" x="326.5" y="653.5" width="16" height="16"/>
+  <object id="1870" gid="33" x="497" y="653.5" width="16" height="16"/>
   <object id="2207" gid="191" x="-2612.75" y="-236.25" width="16" height="16"/>
   <object id="2208" gid="191" x="-2618.75" y="-215.25" width="16" height="16"/>
   <object id="2213" gid="191" x="-2643.92" y="-14.25" width="16" height="16"/>
@@ -1586,12 +1586,37 @@
  <objectgroup id="9" name="Notes" visible="0"/>
  <objectgroup id="8" name="Areas">
   <object id="2484" type="outter" x="-1330" y="-588">
-   <polygon points="0,0 -840,12 -1070.67,98.6667 -1210.67,205.333 -1289.33,382.667 -1309.33,598.667 -1270.67,746.667 -1136,906.667 -865.333,1037.33 -810.667,1244 -757.333,1326.67 -632,1372 2385.33,1358.67 2560,1290.67 2669.33,1166.67 2702.67,724 2610.67,664 2636,308 2600,253.333 1998.67,65.3333 1872,136 1798.67,213.333 1774.67,337.333 1808,484 1989.33,584 2118.67,817.333 850.667,68 717.333,49.3333 624,68 550.667,114.667 198.667,660 185.333,832 138.667,905.333 -238.667,900 -697.333,586.667 -58.6667,581.333 100,482.667 188,293.333 185.333,153.333 100,33.3333"/>
+   <polygon points="0,0 -840,12 -1070.67,98.6667 -1210.67,205.333 -1289.33,382.667 -1309.33,598.667 -1270.67,746.667 -1136,906.667 -865.333,1037.33 -810.667,1244 -757.333,1326.67 -632,1372 2385.33,1358.67 2560,1290.67 2669.33,1166.67 2702.67,724 2610.67,664 2636,308 2600,253.333 2042.67,77.3333 1918.67,98.6667 1798.67,213.333 1774.67,337.333 1808,484 1989.33,584 2118.67,817.333 850.667,68 717.333,49.3333 624,68 550.667,114.667 198.667,660 185.333,832 138.667,905.333 -238.667,900 -697.333,586.667 -58.6667,581.333 100,482.667 188,293.333 185.333,153.333 100,33.3333"/>
   </object>
-  <object id="2486" type="inner" x="-1376" y="-442">
-   <polygon points="0,0 76,82 72,174 -20,280 -90,310 -750,314 -818,386 -830,490 -758,584 -248,904 304,908 362,826 396,576 708,88 812,72 912,110 2062,810 2238,842 2344,810 2378,742 2244,368 2030,278 1998,170 2024,116 2124,66 2492,216 2464,600 2572,662 2562,920 2438,1024 2310,1052 -592,1050 -644,958 -652,822 -694,738 -992,592 -1078,488 -1096,346 -1052,198 -888,60 -706,-2"/>
+  <object id="2486" type="inner" x="-1379.39" y="-447.636">
+   <polygon points="0,0 76,82 72,174 -20,280 -90,310 -750,314 -818,386 -830,490 -758,584 -248,904 304,908 362,826 396,576 706,106 789,95 897,116 2062,810 2238,842 2344,810 2360,708 2244,368 2030,278 1998,170 2024,116 2113.33,75.3333 2492,216 2464,600 2572,662 2562,920 2438,1024 2310,1052 -592,1050 -644,958 -652,822 -694,738 -992,592 -1078,488 -1096,346 -1052,198 -888,60 -706,-2"/>
   </object>
-  <object id="2488" type="start" x="406" y="608" width="25.5" height="165.5"/>
+  <object id="2488" type="start" x="406" y="604.333" width="25.5" height="169.167"/>
+  <object id="2489" type="checkpoint" x="26.55" y="572.068" width="25.5" height="213.5"/>
+  <object id="2490" type="checkpoint" x="-468.053" y="580.947" width="25.5" height="213.5"/>
+  <object id="2491" type="checkpoint" x="-1305.48" y="581.462" width="25.5" height="213.5"/>
+  <object id="2492" type="checkpoint" x="-888.75" y="561.25" width="25.5" height="213.5"/>
+  <object id="2497" type="checkpoint" x="-1758.08" y="581.25" width="25.5" height="213.5"/>
+  <object id="2498" type="checkpoint" x="-2299.75" y="167.25" width="25.5" height="299.5"/>
+  <object id="2499" type="checkpoint" x="-2689.75" y="-52.75" width="243.5" height="23.5"/>
+  <object id="2500" type="checkpoint" x="-2414.75" y="-499.75" width="25.5" height="260.5"/>
+  <object id="2501" type="checkpoint" x="-1988.75" y="-622.75" width="25.5" height="213.5"/>
+  <object id="2502" type="checkpoint" x="-1564.75" y="-614.75" width="25.5" height="213.5"/>
+  <object id="2503" type="checkpoint" x="-1344.75" y="-342.75" width="241.5" height="29.5"/>
+  <object id="2504" type="checkpoint" x="-1548.75" y="-178.75" width="25.5" height="213.5"/>
+  <object id="2505" type="checkpoint" x="-2250.75" y="-10.75" width="275.5" height="23.5"/>
+  <object id="2506" type="checkpoint" x="-1530.75" y="282.25" width="25.5" height="213.5"/>
+  <object id="2507" type="checkpoint" x="-1209.75" y="230.25" width="262.5" height="26.5"/>
+  <object id="2508" type="checkpoint" x="-1035.75" y="-175.75" width="284.5" height="31.5"/>
+  <object id="2509" type="checkpoint" x="-314.75" y="-447.75" width="25.5" height="248.5"/>
+  <object id="2510" type="checkpoint" x="95.25" y="-240.75" width="25.5" height="308.5"/>
+  <object id="2511" type="checkpoint" x="447.25" y="0.25" width="25.5" height="310.5"/>
+  <object id="2512" type="checkpoint" x="646.583" y="-194.75" width="31.5" height="233.5"/>
+  <object id="2513" type="checkpoint" x="820.25" y="-520.75" width="25.5" height="213.5"/>
+  <object id="2514" type="checkpoint" x="1078.25" y="-47.75" width="227.5" height="14.5"/>
+  <object id="2515" type="checkpoint" x="1150.25" y="391.25" width="272.5" height="26.5"/>
+  <object id="2516" type="checkpoint" x="931.25" y="585.25" width="25.5" height="213.5"/>
+  <object id="2517" type="checkpoint" x="507.25" y="587.917" width="25.5" height="213.5"/>
  </objectgroup>
  <objectgroup id="2" name="Screens" visible="0"/>
 </map>

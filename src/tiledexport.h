@@ -17,6 +17,7 @@ struct TiledEntities
 struct TiledAreas
 {
 	static const std::array<Bounds, 1> start;
+	static const std::array<Bounds, 25> checkpoint;
 	
 };
 
