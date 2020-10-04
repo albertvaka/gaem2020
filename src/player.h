@@ -12,11 +12,11 @@ struct Player : CircleEntity, SingleInstance<Player>
 
 	const float kMaxSpeed = 600.f; // in pixels/second
 	const float kAccel = 220.f; // in pixels/second^2
-	const float kBrake = 800.f;
+	const float kBrake = 1600.f;
 	const float kDrag = 40.f; // brake force when not accelerating
 
-	const float kMaxAngularSpeed = 120.f; // in degrees/second
-	const float kAngularAccel = 300.f; // in degrees/second^2
+	const float kMaxAngularSpeed = 180.f; // in degrees/second
+	const float kAngularAccel = 360.f; // in degrees/second^2
 	const float kAngularDrag = 600.f; // brake force when not turning
 
 	Animation2 anim;

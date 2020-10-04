@@ -35,7 +35,7 @@ void MainScene::ExitScene()
 }
 
 
-float kCameraRotSpeed = 90.0f;
+float kCameraRotSpeed = 360.0f;
 
 float cameraZoom = 0.0f;
 
