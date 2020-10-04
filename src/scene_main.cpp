@@ -66,7 +66,7 @@ void MainScene::Update(float dt)
 	Camera::SetCenter(camCenter);
 
 	float targetZoom = 0.5f - 0.3f * (player->speed / player->kMaxSpeed);
-	cameraZoom = cameraZoom + (targetZoom - cameraZoom) * dt * 0.8f;
+	cameraZoom = cameraZoom + (targetZoom - cameraZoom) * dt * 5.0f;
 	Camera::SetZoom(cameraZoom, true);
 
 	for (Entity* e : SelfRegister<Entity>::GetAll()) 
