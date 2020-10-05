@@ -130,6 +130,7 @@ void Player::Update(float dt)
 
 			if (!enemy)
 			{
+				e->JustCollided();
 				StartLine::instance()->AddPenalization();
 			}
 		}

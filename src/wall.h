@@ -16,6 +16,11 @@ struct Wall : SelfRegister<Wall>
 	}
 
 	Wall(const vec& from, const vec& to, bool inner);
+	void Update(float dt);
 	void Draw() const;
+
+	void JustCollided();
+
+	float timerLastCol = -1.0f;
 };
 

@@ -110,6 +110,11 @@ void MainScene::Update(float dt)
 		e->Update(dt);
 	}
 
+	for (Wall* e : Wall::GetAll())
+	{
+		e->Update(dt);
+	}
+
 #ifdef _DEBUG
 	const SDL_Scancode restart = SDL_SCANCODE_F5;
 	if (Keyboard::IsKeyJustPressed(restart)) {
