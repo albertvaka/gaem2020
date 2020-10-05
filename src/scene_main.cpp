@@ -14,6 +14,7 @@
 #include "tiledexport.h"
 #include "startline.h"
 #include <text.h>
+#include "textito.h"
 
 void MainScene::EnterScene()
 {
@@ -103,6 +104,12 @@ void MainScene::Update(float dt)
 	}
 	Shot::DeleteNotAlive();
 
+	for (Textito* e : Textito::GetAll())
+	{
+		e->Update(dt);
+	}
+	Textito::DeleteNotAlive();
+
 	startLine->Update(dt);
 
 	for (Player* e : Player::GetAll())
@@ -149,6 +156,11 @@ void MainScene::Draw()
 		e->Draw();
 	}
 
+	for (const Textito* e : Textito::GetAll())
+	{
+		e->Draw();
+	}
+
 #ifdef _IMGUI
 	{
 		ImGui::Begin("imgui ld47");
@@ -173,19 +185,8 @@ void MainScene::Draw()
 
 	Camera::GUI::Begin();
 	
-
-	{
-		timelapText.SetFillColor(0, 255, 65);
-		timelapText.SetOutlineColor(0, 59, 0);
-
-		timelapText.SetString("TIME");
-		Window::Draw(timelapText, 6, 2)
-			.withScale(0.08f);
-
-		timelapText.SetString(startLine->GetTimelapText());
-		Window::Draw(timelapText, 5, 5)
-			.withScale(0.2f);
-	}
+	startLine->DrawCurrentLapText();
+	
 
 	if (startLine->HasBestLap())
 	{

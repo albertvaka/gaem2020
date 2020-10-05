@@ -32,11 +32,25 @@ struct Player : SelfRegister<Player>, SingleInstance<Player>
 	GPU_Rect spriteTop;
 	float attack_timer = 0.f;
 
+	float collide_cooldown = -1.0f;
+
 	Player(const vec& position, float angle);
 
 	void Move(float dt);
 	void Update(float dt);
 	void Draw() const;
+
+	[[nodiscard]] float GetAngle() const
+	{
+		if (is_derraping)
+		{
+			return angle_before_derraping;
+		}
+		else
+		{
+			return angle;
+		}
+	}
 
 	bool is_derraping = false;
 	float angle_before_derraping = 0.0f;

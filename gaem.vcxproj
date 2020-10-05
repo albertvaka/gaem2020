@@ -47,6 +47,7 @@
     <ClInclude Include="src\assets.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\oneshotanim.h" />
+    <ClInclude Include="src\textito.h" />
     <ClInclude Include="src\wall.h" />
     <ClInclude Include="src\scene_main.h" />
     <ClInclude Include="src\shot.h" />
@@ -93,6 +94,7 @@
     <ClCompile Include="src\fxmanager.cpp" />
     <ClInclude Include="src\fxmanager.h" />
     <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\textito.cpp" />
     <ClCompile Include="src\wall.cpp" />
     <ClCompile Include="src\scene_main.cpp" />
     <ClCompile Include="src\shot.cpp" />

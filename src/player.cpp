@@ -1,4 +1,4 @@
-#include "player.h"
+﻿#include "player.h"
 
 #include "animation2.h"
 #include "anim_lib.h"
@@ -13,6 +13,7 @@
 #include "wall.h"
 #include "assets.h"
 #include "startline.h"
+#include "textito.h"
 
 const float kShotSpeed = 400.f;
 
@@ -104,6 +105,7 @@ void Player::Update(float dt)
 {
 	anim.Update(dt);
 
+	collide_cooldown -= dt;
 
 	if (Input::IsJustPressed(0, GameKeys::DERRAPE) && !enemy)
 	{
@@ -116,6 +118,8 @@ void Player::Update(float dt)
 		is_derraping = false;
 		//speed = kAccel * (timer_derraping / 2.0f);
 	}
+
+	vec heading = vec::FromAngleDegs(GetAngle());
 
 	Move(dt);
 
@@ -137,8 +141,13 @@ void Player::Update(float dt)
 
 			if (!enemy)
 			{
-				e->JustCollided();
-				StartLine::instance()->AddPenalization();
+				if (collide_cooldown < 0.0f)
+				{
+					collide_cooldown = 0.15f;
+					e->JustCollided();
+					StartLine::instance()->AddPenalization();
+					new Textito(this->pos, "+1", heading);
+				}
 			}
 		}
 	}
@@ -147,7 +156,6 @@ void Player::Update(float dt)
 
 	if (Input::IsPressed(0, GameKeys::ATTACK) && attack_timer < 0.f && !enemy)
 	{
-		vec heading = vec::FromAngleDegs(angle);
 		new Shot(pos, vel+heading*kShotSpeed);
 		attack_timer = kTimeBetweenShots;
 	}

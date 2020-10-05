@@ -6,6 +6,8 @@
 #include "assets.h"
 #include "text.h"
 
+const float kPenalizationFxTime = 0.5f;
+
 struct StartLine : SingleInstance<StartLine>
 {
 	std::vector<RotableBounds> checkpoints;
@@ -21,6 +23,7 @@ struct StartLine : SingleInstance<StartLine>
 	void Draw() const;
 
 	Text timelapText;
+	void DrawCurrentLapText();
 	void DrawBestLapText();
 	void DrawLastLapText();
 
@@ -42,11 +45,14 @@ struct StartLine : SingleInstance<StartLine>
 	bool HasBestLap() const { return bestlapTimer > 0.0f; }
 	bool HasLastLap() const { return lastlapTimer > 0.0f; };
 
+	float timerPenalization = -1.0f;
+
 	void AddPenalization()
 	{
 		if (!beforeStart)
 		{
 			timelapTimer += 1.0f;
+			timerPenalization = kPenalizationFxTime;
 		}
 	}
 

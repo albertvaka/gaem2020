@@ -205,6 +205,9 @@
     <ClInclude Include="src\wall.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\textito.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="vendor\glew\glew.c">
@@ -323,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="src\wall.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textito.cpp">
+      <Filter>engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
