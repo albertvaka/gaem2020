@@ -24,7 +24,9 @@
 #include <emscripten.h>
 #endif
 
+#ifdef _DEBUG
 #define _FPS_COUNTER
+#endif
 
 Scene* currentScene;
 Scene* SceneManager::currentScene = nullptr;
