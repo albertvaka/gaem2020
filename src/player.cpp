@@ -153,12 +153,14 @@ void Player::Update(float dt)
 	}
 
 	attack_timer -= dt;
-
+	
+	/*
 	if (Input::IsPressed(0, GameKeys::ATTACK) && attack_timer < 0.f && !enemy)
 	{
 		new Shot(pos, vel+heading*kShotSpeed);
 		attack_timer = kTimeBetweenShots;
 	}
+	*/
 }
 
 void Player::Draw() const
