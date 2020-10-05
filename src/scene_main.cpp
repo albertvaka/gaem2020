@@ -170,29 +170,49 @@ void MainScene::Draw()
 	
 
 	{
-		timelapText.SetString("Time: " + startLine->GetTimelapText());
 		timelapText.SetFillColor(0, 255, 65);
 		timelapText.SetOutlineColor(0, 59, 0);
+
+		timelapText.SetString("TIME");
+		Window::Draw(timelapText, 6, 2)
+			.withScale(0.08f);
+
+		timelapText.SetString(startLine->GetTimelapText());
 		Window::Draw(timelapText, 5, 5)
 			.withScale(0.2f);
 	}
 
 	if (startLine->HasBestLap())
 	{
-		timelapText.SetString("Best: " + startLine->GetBestlapText());
-		timelapText.SetFillColor(255, 0, 65);
-		timelapText.SetOutlineColor(59, 0, 0);
-		Window::Draw(timelapText, 5, 15)
-			.withScale(0.2f);
+		if (startLine->bestlapFx > 0.0f)
+		{
+			int t = int(startLine->bestlapFx * 100) % 40;
+			if (t > 20)
+			{
+				startLine->DrawBestLapText();
+			}
+		}
+		else
+		{
+			startLine->DrawBestLapText();
+		}
+		
 	}
 
 	if (startLine->HasLastLap())
 	{
-		timelapText.SetString("Last: " + startLine->GetLastlapText());
-		timelapText.SetFillColor(0, 255, 65);
-		timelapText.SetOutlineColor(0, 59, 0);
-		Window::Draw(timelapText, 5, 25)
-			.withScale(0.2f);
+		if (startLine->lastlapFx > 0.0f)
+		{
+			int t = int(startLine->lastlapFx * 100) % 40;
+			if (t > 20)
+			{
+				startLine->DrawLastLapText();
+			}
+		}
+		else
+		{
+			startLine->DrawLastLapText();
+		}
 	}
 
 

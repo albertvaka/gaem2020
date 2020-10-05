@@ -125,7 +125,13 @@ void Player::Update(float dt)
 	{
 		if (e->bounds().Collision(bbounds))
 		{
+			speed *= 0.65f;
 			angle += e->inner ? -40 : 40;
+
+			if (!enemy)
+			{
+				StartLine::instance()->AddPenalization();
+			}
 		}
 	}
 
