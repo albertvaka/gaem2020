@@ -160,6 +160,10 @@ struct RotableBounds : public Bounds
         BR = b.BottomRight();
     }
 
+    vec GetCenter() const {
+        return (TL + BR) / 2;
+    }
+
     RotableBounds(const Bounds& b, float angle) 
         : Bounds(b)
         , angle(angle)
@@ -264,8 +268,7 @@ struct RotableBounds : public Bounds
             if (ax1_bl_b_sc > max_b) max_b = ax1_bl_b_sc;
             if (ax1_br_b_sc > max_b) max_b = ax1_br_b_sc;
 
-            bool overlap = false;
-            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+            bool overlap = ((min_b <= max_a) && (max_b >= min_a));
 
             if (!overlap)
             {
@@ -319,8 +322,7 @@ struct RotableBounds : public Bounds
             if (ax1_bl_b_sc > max_b) max_b = ax1_bl_b_sc;
             if (ax1_br_b_sc > max_b) max_b = ax1_br_b_sc;
 
-            bool overlap = false;
-            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+            bool overlap = ((min_b <= max_a) && (max_b >= min_a));
 
             if (!overlap)
             {
@@ -376,8 +378,7 @@ struct RotableBounds : public Bounds
             float max_b = ax1_tl_b_sc;
             if (ax1_bl_b_sc > max_b) max_b = ax1_bl_b_sc;
 
-            bool overlap = false;
-            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+            bool overlap = ((min_b <= max_a) && (max_b >= min_a));
 
             if (!overlap)
             {
@@ -434,8 +435,7 @@ struct RotableBounds : public Bounds
             float max_b = ax1_tl_b_sc;
             if (ax1_tr_b_sc > max_b) max_b = ax1_tr_b_sc;
 
-            bool overlap = false;
-            if ((min_b <= max_a) && (max_b >= min_a)) overlap = true;
+            bool overlap = ((min_b <= max_a) && (max_b >= min_a));
 
             if (!overlap)
             {
@@ -443,9 +443,7 @@ struct RotableBounds : public Bounds
             }
         }
 
-
         return true;
-        
     }
 };
 
