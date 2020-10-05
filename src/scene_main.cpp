@@ -53,7 +53,7 @@ void MainScene::EnterScene()
 	cameraAngle = -p->angle - 90;
 
 	cameraZoom = 0.5f - 0.3f * (p->speed / p->kMaxSpeed);
-	camCenter = p->pos + (p->vel * 0.25f) + FxManager::GetScreenshake();
+	camCenter = p->pos + (p->vel * 0.33f) + FxManager::GetScreenshake();
 
 	startLine = new StartLine(TiledAreas::start[0]);
 	for (const Bounds& b : TiledAreas::checkpoint) {
@@ -94,7 +94,7 @@ void MainScene::Update(float dt)
 	Camera::SetRotationDegs(cameraAngle);
 	//Camera::SetRotationDegs(playerAngle);
 	
-	vec targetCenter = player->pos + (player->vel * 0.25) + FxManager::GetScreenshake();
+	vec targetCenter = player->pos + (player->vel * 0.33) + FxManager::GetScreenshake();
 	camCenter.x = camCenter.x + dt * (targetCenter.x - camCenter.x) * 5.0f;
 	camCenter.y = camCenter.y + dt * (targetCenter.y - camCenter.y) * 5.0f;
 	Camera::SetCenter(camCenter);
