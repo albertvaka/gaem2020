@@ -126,7 +126,14 @@ void Player::Update(float dt)
 		if (e->bounds().Collision(bbounds))
 		{
 			speed *= 0.65f;
-			angle += e->inner ? -40 : 40;
+			if (is_derraping)
+			{
+				angle_before_derraping += e->inner ? -40 : 40;
+			}
+			else
+			{
+				angle += e->inner ? -40 : 40;
+			}
 
 			if (!enemy)
 			{
