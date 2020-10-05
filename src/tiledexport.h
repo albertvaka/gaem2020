@@ -11,7 +11,7 @@ struct TiledEntities
 	static const std::array<vec, 1401> obstacle;
 	static const vec spawn;
 	static const std::array<vec, 28> enemy_spawn;
-	static const std::array<vec, 17> oleada;
+	static const std::array<vec, 144> oleada;
 	
 };
 
