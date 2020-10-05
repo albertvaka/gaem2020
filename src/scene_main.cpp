@@ -15,9 +15,14 @@
 #include "startline.h"
 #include <text.h>
 #include "textito.h"
+#include "sound.h"
 
 void MainScene::EnterScene()
 {
+	if (!MusicPlayer::IsPlaying()) {
+		MusicPlayer::Play(Assets::music);
+	}
+
 	for (vec p : TiledEntities::oleada) {
 		Player* o = new Player(p, 0);
 		o->spriteTop.x += 6 * 32;

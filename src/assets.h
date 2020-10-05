@@ -10,6 +10,8 @@ typedef struct _TTF_Font TTF_Font;
 namespace Assets
 {
 	extern void LoadAll();
+	
+	inline Mix_Music* music;
 
 	inline GPU_Image* spritesheet;
 

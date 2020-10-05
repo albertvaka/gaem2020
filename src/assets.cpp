@@ -5,6 +5,8 @@
 
 void Assets::LoadAll() {
 
+    music = LoadMusic("data/music.ogg");
+
     spritesheet = LoadImage("data/spritesheet.png");
 
     font_30 = LoadFont("data/PressStart2P.ttf", 30);
