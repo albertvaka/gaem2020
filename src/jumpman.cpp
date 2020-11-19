@@ -2,7 +2,7 @@
 //Based on the work of: Jordi Santiago
 
 #include "input.h"
-#include "bullet.h"
+import bullet;
 #include "mates.h"
 #include "assets.h"
 #include "debug.h"

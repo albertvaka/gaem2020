@@ -50,7 +50,11 @@
     <ClInclude Include="src\base_enemy.h" />
     <ClInclude Include="src\bat.h" />
     <ClInclude Include="src\bipedal.h" />
-    <ClInclude Include="src\bullet.h" />
+    <ClCompile Include="src\bullet.cppm">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="src\common_bullet.h" />
     <ClInclude Include="src\common_enemy.h" />
     <ClInclude Include="src\destroyedtiles.h" />
@@ -121,7 +125,6 @@
     <ClCompile Include="src\assets.cpp" />
     <ClCompile Include="src\bat.cpp" />
     <ClCompile Include="src\bipedal.cpp" />
-    <ClCompile Include="src\bullet.cpp" />
     <ClCompile Include="src\destroyedtiles.cpp" />
     <ClCompile Include="src\enemy_door.cpp" />
     <ClCompile Include="src\fireshot.cpp" />
@@ -236,11 +239,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\vendor\imgui;$(SolutionDir)\vendor\SDL2\include;$(SolutionDir)\vendor\imgui_impl;$(SolutionDir)\vendor\SDL_gpu\include;$(SolutionDir)\vendor\glew;$(SolutionDir)\vendor\stb_image;$(SolutionDir)\vendor\magic_enum;$(SolutionDir)\engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
       <PreprocessorDefinitions>_IMGUI;SDL_MAIN_HANDLED;GLEW_STATIC;SDL_GPU_DISABLE_GLES;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\vendor\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -254,12 +258,13 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\vendor\imgui;$(SolutionDir)\vendor\SDL2\include;$(SolutionDir)\vendor\imgui_impl;$(SolutionDir)\vendor\SDL_gpu\include;$(SolutionDir)\vendor\glew;$(SolutionDir)\vendor\stb_image;$(SolutionDir)\vendor\magic_enum;$(SolutionDir)\engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
       <PreprocessorDefinitions>_IMGUI;SDL_MAIN_HANDLED;GLEW_STATIC;SDL_GPU_DISABLE_GLES;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SupportJustMyCode>true</SupportJustMyCode>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\vendor\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

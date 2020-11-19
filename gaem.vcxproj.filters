@@ -157,9 +157,6 @@
     <ClInclude Include="src\bat.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\bullet.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\destroyedtiles.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -447,9 +444,6 @@
     <ClCompile Include="src\goomba.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\bullet.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\missile.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -460,6 +454,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\mantis.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bullet.cppm">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

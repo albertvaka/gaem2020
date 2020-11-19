@@ -1,7 +1,7 @@
 #pragma once
 
 #include "jumpman.h"
-#include "bullet.h"
+import bullet;
 #include "collide.h"
 #include "screen.h"
 

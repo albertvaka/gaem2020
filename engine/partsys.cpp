@@ -17,9 +17,12 @@ void PartSys::Spawn(float dt) {
 }
 
 void PartSys::UpdateParticles(float dt) {
-	particles.erase(std::remove_if(particles.begin(), particles.end(), [this, dt](Particle& p) { 
+	auto a = std::remove_if(particles.begin(), particles.end(), [this, dt](Particle& p) {
 		return p.Update(dt, *this);
-	}), particles.end());
+		});
+	if (a != particles.end()) {
+		particles.erase(a, particles.end());
+	}
 }
 
 

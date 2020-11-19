@@ -3,7 +3,7 @@
 #ifdef _IMGUI
 #include "imgui.h"
 #endif
-#include "bullet.h"
+import bullet;
 #include "enemy_door.h"
 #include "assets.h"
 #include "parallax.h"

@@ -5,7 +5,7 @@
 #include "assets.h"
 #include "window.h"
 #include "rand.h"
-#include "bullet.h"
+import bullet;
 #include "debug.h"
 #include "camera.h"
 #include "collide.h"

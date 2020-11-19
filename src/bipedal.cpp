@@ -10,7 +10,7 @@
 #include "missile.h"
 #include "fxmanager.h"
 #include "camera.h"
-#include "bullet.h"
+import bullet;
 #include "common_enemy.h"
 
 const float walking_speed = 30.f; //per second

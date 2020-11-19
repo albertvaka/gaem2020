@@ -5,7 +5,7 @@
 #endif
 
 #include "input.h"
-#include "bullet.h"
+import bullet;
 #include "assets.h"
 #include "simplexnoise.h"
 #include "bat.h"
