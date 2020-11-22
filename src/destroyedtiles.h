@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "vec.h"
+import vec;
 #include "spawningtile.h"
 #include "partsys.h"
 #include "tilemap.h"

@@ -5,7 +5,7 @@
 #include <SDL_ttf.h>
 #include <string>
 #include <vector>
-#include "vec.h"
+import vec;
 #include "window.h"
 
 class Text

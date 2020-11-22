@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-#include "vec.h"
+import vec;
 #include "debug.h"
 #include "SDL_gpu.h"
 

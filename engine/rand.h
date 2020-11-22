@@ -7,7 +7,7 @@
 #endif
 #include <math.h>
 
-#include "vec.h"
+import vec;
 
 namespace Rand
 {

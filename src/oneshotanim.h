@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec.h"
+import vec;
 #include "selfregister.h"
 #include "assets.h"
 #include "window.h"

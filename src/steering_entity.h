@@ -7,7 +7,7 @@
 
 #include "entity.h"
 #include "matrix2d.h"
-#include "vec.h"
+import vec;
 
 struct SteeringBehavior;
 

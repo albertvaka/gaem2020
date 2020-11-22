@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec.h"
+import vec;
 #include "bounds.h"
 
 struct Entity

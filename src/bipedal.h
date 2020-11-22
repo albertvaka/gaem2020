@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec.h"
+import vec;
 #include "animation2.h"
 #include "selfregister.h"
 #include "entity.h"

@@ -5,7 +5,7 @@
 #endif
 #include <math.h>
 
-#include "vec.h"
+import vec;
 #include "SDL_gpu.h"
 
 struct CircleBounds;

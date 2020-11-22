@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "vec.h"
+import vec;
 #include "singleinstance.h"
 #include "bounds.h"
 #include "mates.h"

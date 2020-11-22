@@ -226,9 +226,6 @@
     <ClInclude Include="engine\collide.h">
       <Filter>engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\vec.h">
-      <Filter>engine</Filter>
-    </ClInclude>
     <ClInclude Include="engine\rand.h">
       <Filter>engine</Filter>
     </ClInclude>
@@ -429,9 +426,6 @@
     <ClCompile Include="engine\camera.cpp">
       <Filter>engine</Filter>
     </ClCompile>
-    <ClCompile Include="engine\vec.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\scene_hellcross.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -458,6 +452,9 @@
     </ClCompile>
     <ClCompile Include="src\bullet.cppm">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\vec.cppm">
+      <Filter>engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

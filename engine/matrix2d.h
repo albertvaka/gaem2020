@@ -7,7 +7,7 @@
 #include <math.h>
 #include <vector>
 
-#include "vec.h"
+import vec;
 
 struct Matrix
 {

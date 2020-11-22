@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "vec.h"
+import vec;
 #include "bounds.h"
 #include "SDL_gpu.h"
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "vec.h"
+import vec;
 #include "selfregister.h"
 #include "entity.h"
 #include "tilemap.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec.h"
+import vec;
 #include "entity.h"
 #include "selfregister.h"
 #include "skilltree.h"

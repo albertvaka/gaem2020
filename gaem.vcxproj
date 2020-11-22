@@ -42,7 +42,11 @@
     <ClInclude Include="engine\sound.h" />
     <ClInclude Include="engine\text.h" />
     <ClInclude Include="engine\tilemap.h" />
-    <ClInclude Include="engine\vec.h" />
+    <ClCompile Include="engine\vec.cppm">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="engine\window.h" />
     <ClInclude Include="src\anim_data.h" />
     <ClInclude Include="src\anim_lib.h" />
@@ -119,7 +123,6 @@
     <ClCompile Include="engine\shader.cpp" />
     <ClCompile Include="engine\sound.cpp" />
     <ClCompile Include="engine\tilemap.cpp" />
-    <ClCompile Include="engine\vec.cpp" />
     <ClCompile Include="engine\window.cpp" />
     <ClCompile Include="src\anim_data.cpp" />
     <ClCompile Include="src\assets.cpp" />

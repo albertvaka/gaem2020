@@ -2,7 +2,7 @@
 
 #include "SDL_gpu.h"
 
-#include "vec.h"
+import vec;
 
 #include "../src/anim_lib.h"
 
