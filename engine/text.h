@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 import vec;
-#include "window.h"
+import window;
 
 class Text
 {

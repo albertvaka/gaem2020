@@ -1,6 +1,10 @@
 #pragma once
 
-#include "window.h"
+#include "SDL_gpu.h"
+
+import window;
+import vec;
+import bounds;
 
 namespace Camera
 {

@@ -3,7 +3,7 @@
 #include <array>
 
 import vec;
-#include "bounds.h"
+import bounds;
 #include "SDL_gpu.h"
 
 struct TiledTiles

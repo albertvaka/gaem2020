@@ -1,7 +1,7 @@
 #pragma once
 
 import vec;
-#include "bounds.h"
+import bounds;
 
 struct Entity
 {

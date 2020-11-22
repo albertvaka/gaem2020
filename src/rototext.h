@@ -1,7 +1,7 @@
 #pragma once
 
 #include "assets.h"
-#include "window.h"
+import window;
 #include "camera.h"
 #include "singleinstance.h"
 #include "text.h"

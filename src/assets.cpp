@@ -1,6 +1,6 @@
 #include "assets.h"
 
-#include "window.h"
+import window;
 #include "asset_load.h"
 
 void Assets::LoadAll() {

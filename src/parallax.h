@@ -1,7 +1,7 @@
 #pragma once
 
 #include "selfregister.h"
-#include "bounds.h"
+import bounds;
 
 struct Parallax : SelfRegister<Parallax>
 {

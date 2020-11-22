@@ -1,7 +1,7 @@
 #include "goomba.h"
 #include "jumpman.h"
 #include "collide.h"
-#include "window.h"
+import window;
 #include "assets.h"
 #include "tilemap.h"
 #include "rand.h"

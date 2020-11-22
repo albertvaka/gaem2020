@@ -5,7 +5,7 @@
 #endif
 
 #include "rand.h"
-#include "window.h"
+import window;
 
 void PartSys::Spawn(float dt) {
 	time += dt;

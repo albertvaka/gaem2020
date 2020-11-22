@@ -2,7 +2,7 @@
 
 #include "entity.h"
 import vec;
-#include "bounds.h"
+import bounds;
 #include "tilemap.h"
 #include "partsys.h"
 #include "animation.h"

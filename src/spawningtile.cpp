@@ -4,7 +4,7 @@
 #include "assets.h"
 #include "collide.h"
 #include "bat.h"
-#include "window.h"
+import window;
 #include "debug.h"
 
 const float respawnAnimTime = 0.2f;

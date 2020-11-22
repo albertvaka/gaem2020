@@ -106,9 +106,6 @@
     <ClInclude Include="engine\animation.h">
       <Filter>engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\bounds.h">
-      <Filter>engine</Filter>
-    </ClInclude>
     <ClInclude Include="engine\debug.h">
       <Filter>engine</Filter>
     </ClInclude>
@@ -149,9 +146,6 @@
       <Filter>engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\tilemap.h">
-      <Filter>engine</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\window.h">
       <Filter>engine</Filter>
     </ClInclude>
     <ClInclude Include="src\bat.h">
@@ -342,9 +336,6 @@
     <ClCompile Include="vendor\imgui_impl\imgui_impl_sdl.cpp">
       <Filter>Bundled Dependencies\imgui_imp</Filter>
     </ClCompile>
-    <ClCompile Include="engine\bounds.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
     <ClCompile Include="engine\debug.cpp">
       <Filter>engine</Filter>
     </ClCompile>
@@ -367,9 +358,6 @@
       <Filter>engine</Filter>
     </ClCompile>
     <ClCompile Include="engine\tilemap.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\window.cpp">
       <Filter>engine</Filter>
     </ClCompile>
     <ClCompile Include="src\destroyedtiles.cpp">
@@ -454,6 +442,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="engine\vec.cppm">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\bounds.cppm">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\window.cppm">
       <Filter>engine</Filter>
     </ClCompile>
   </ItemGroup>

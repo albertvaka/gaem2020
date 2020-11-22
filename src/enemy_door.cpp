@@ -2,7 +2,7 @@
 
 #include "tilemap.h"
 #include "assets.h"
-#include "window.h"
+import window;
 #include "fxmanager.h"
 
 const float openAnimationTime = 0.4f; //Animation will take twice this time per tile

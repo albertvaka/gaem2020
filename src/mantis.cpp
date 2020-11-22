@@ -2,7 +2,7 @@
 
 #include "jumpman.h"
 #include "collide.h"
-#include "window.h"
+import window;
 #include "assets.h"
 #include "shader.h"
 #include "tilemap.h"

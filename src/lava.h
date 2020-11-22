@@ -2,7 +2,7 @@
 
 #include "partsys.h"
 #include "selfregister.h"
-#include "bounds.h"
+import bounds;
 
 struct Lava : SelfRegister<Lava>
 {

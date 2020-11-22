@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bounds.h"
+import bounds;
 #include "singleinstance.h"
 #include <vector>
 

@@ -8,7 +8,7 @@
 #include "entity.h"
 import vec;
 #include "mates.h"
-#include "bounds.h"
+import bounds;
 #include "steering_entity.h"
 
 struct TileMap;

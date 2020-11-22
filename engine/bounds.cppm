@@ -1,37 +1,41 @@
-#pragma once
+module; 
 
-#ifndef _USE_MATH_DEFINES 
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
 
-import vec;
 #include "SDL_gpu.h"
 
-struct CircleBounds;
+export module bounds;
 
-struct Bounds
+import vec;
+import window;
+
+export struct CircleBounds;
+
+export struct Bounds
 {
     float left, top;
     float width, height;
 
-    constexpr Bounds(float x, float y, float w, float h) : left(x), top(y), width(w), height(h) { }
-    constexpr Bounds() : Bounds(-1,-1,0,0) { }
-    constexpr Bounds(const vec& topleft, const vec& size) : Bounds(topleft.x, topleft.y, size.x, size.y) {}
-    constexpr explicit Bounds(const vec& size) : Bounds(0,0,size.x,size.y) { }
-    constexpr explicit Bounds(const vec& pos, const vec& size, const vec& origin) : Bounds(pos.x, pos.y, size.x, size.y) {
+    inline constexpr Bounds(float x, float y, float w, float h) : left(x), top(y), width(w), height(h) { }
+    inline constexpr Bounds() : Bounds(-1,-1,0,0) { }
+    inline constexpr Bounds(const vec& topleft, const vec& size) : Bounds(topleft.x, topleft.y, size.x, size.y) {}
+    inline constexpr explicit Bounds(const vec& size) : Bounds(0,0,size.x,size.y) { }
+    inline constexpr explicit Bounds(const vec& pos, const vec& size, const vec& origin) : Bounds(pos.x, pos.y, size.x, size.y) {
         left -= origin.x;
         top -= origin.y;
     }
 
-    [[nodiscard]] static constexpr Bounds fromCenter(const vec& center, const vec& size) { return Bounds(center - size/2, size); }
+    [[nodiscard]] inline static constexpr Bounds fromCenter(const vec& center, const vec& size) { return Bounds(center - size/2, size); }
 
-    [[nodiscard]] GPU_Rect AsRect() {
+    [[nodiscard]] inline GPU_Rect AsRect() {
         return GPU_Rect{ left, top, width, height };
     }
 
     //Expands arround the center by a factor
-    [[nodiscard]] Bounds operator*(float f)
+    [[nodiscard]] inline Bounds operator*(float f)
 	{
         vec center = Center();
         Bounds ret = *this;
@@ -41,77 +45,80 @@ struct Bounds
         return ret;
     }
 
-    [[nodiscard]] constexpr vec Center() const
+    [[nodiscard]] inline constexpr vec Center() const
 	{
 		return vec(left + width/2, top + height/2);
 	}
 
-    [[nodiscard]] constexpr float Area() const
+    [[nodiscard]] inline constexpr float Area() const
     {
         return width * height;
     }
 
-    void SetCenter(float x, float y)
+    inline void SetCenter(float x, float y)
 	{
         left = x - width/2;
         top = y - height/2;
     }
 
-    void SetCenter(const vec& center)
+    inline void SetCenter(const vec& center)
 	{
         SetCenter(center.x, center.y);
     }
 
-    void SetTopLeft(float x, float y)
+    inline void SetTopLeft(float x, float y)
     {
         left = x;
         top = y;
     }
 
-    void SetTopLeft(const vec& center)
+    inline void SetTopLeft(const vec& center)
     {
         SetTopLeft(center.x, center.y);
     }
 
-    void Draw(uint8_t r = 255, uint8_t g = 0, uint8_t b = 0) const;
+    void Draw(uint8_t r = 255, uint8_t g = 0, uint8_t b = 0) const 
+    {
+        Window::DrawPrimitive::Rectangle(*this, 1, r, g, b);
+    }
 
-    [[nodiscard]] constexpr float Top() const
+    [[nodiscard]] inline constexpr float Top() const
 	{
         return top;
     }
 
-    [[nodiscard]] constexpr float Bottom() const
+    [[nodiscard]] inline constexpr float Bottom() const
 	{
         return top + height;
     }
 
-    [[nodiscard]] constexpr float Left() const
+    [[nodiscard]] inline constexpr float Left() const
 	{
         return left;
     }
 
-    [[nodiscard]] constexpr float Right() const
+    [[nodiscard]] inline constexpr float Right() const
 	{
         return left + width;
     }
 
-    [[nodiscard]] constexpr vec TopLeft() const {
+    [[nodiscard]] inline constexpr vec TopLeft() const {
         return vec(Left(), Top());
     }
 
-    [[nodiscard]] constexpr vec TopRight() const {
+    [[nodiscard]] inline constexpr vec TopRight() const {
         return vec(Right(), Top());
     }
 
-    [[nodiscard]] constexpr vec BottomLeft() const {
+    [[nodiscard]] inline constexpr vec BottomLeft() const {
         return vec(Left(), Bottom());
     }
 
-    [[nodiscard]] constexpr vec BottomRight() const {
+    [[nodiscard]] inline constexpr vec BottomRight() const {
         return vec(Right(), Bottom());
     }
 
-    [[nodiscard]] bool Contains(float x, float y) const
+    [[nodiscard]] inline bool Contains(float x, float y) const
     {
         if (x < left) return false;
         if (x >= left + width) return false;
@@ -120,12 +127,12 @@ struct Bounds
         return true;
     }
 
-    [[nodiscard]] bool Contains(const vec& point) const
+    [[nodiscard]] inline bool Contains(const vec& point) const
 	{
         return Contains(point.x, point.y);
     }
 
-    [[nodiscard]] bool Contains(const Bounds& b) const
+    [[nodiscard]] inline bool Contains(const Bounds& b) const
     {
         if (b.left < left) return false;
         if (b.left+b.width >= left + width) return false;
@@ -134,38 +141,40 @@ struct Bounds
         return true;
     }
 
-    [[nodiscard]] constexpr vec Size() const {
+    [[nodiscard]] inline constexpr vec Size() const {
         return vec(width, height);
     }
 
-    [[nodiscard]] vec ClosesPointInBounds(const vec& target) const;
-    [[nodiscard]] float DistanceSq(const Bounds& a) const;
-    [[nodiscard]] float DistanceSq(const CircleBounds& a) const;
-    [[nodiscard]] float Distance(const Bounds& a) const;
-    [[nodiscard]] float Distance(const CircleBounds& a) const;
+    [[nodiscard]] inline vec ClosesPointInBounds(const vec& target) const;
+    [[nodiscard]] inline float DistanceSq(const Bounds& a) const;
+    [[nodiscard]] inline float DistanceSq(const CircleBounds& a) const;
+    [[nodiscard]] inline float Distance(const Bounds& a) const;
+    [[nodiscard]] inline float Distance(const CircleBounds& a) const;
 
     //TODO
     //void ExpandToInclude(vec point);
 
 };
 
-struct CircleBounds
+export struct CircleBounds
 {
-    constexpr CircleBounds(const vec& pos, float radius) : pos(pos), radius(radius) {}
+    inline constexpr CircleBounds(const vec& pos, float radius) : pos(pos), radius(radius) {}
     vec pos;
     float radius;
 
-    void Draw(uint8_t r = 255, uint8_t g = 0, uint8_t b = 0) const;
+    void Draw(uint8_t r = 255, uint8_t g = 0, uint8_t b = 0) const {
+        Window::DrawPrimitive::Circle(*this, 1, r, g, b);
+    }
 
-    [[nodiscard]] const vec& Center() const { return pos; }
+    [[nodiscard]] inline const vec& Center() const { return pos; }
 
-    [[nodiscard]] float DistanceSq(const Bounds& a) const { return a.DistanceSq(*this); }
-    [[nodiscard]] float Distance(const Bounds& a) const { return a.Distance(*this); }
+    [[nodiscard]] inline float DistanceSq(const Bounds& a) const { return a.DistanceSq(*this); }
+    [[nodiscard]] inline float Distance(const Bounds& a) const { return a.Distance(*this); }
     
-    [[nodiscard]] float DistanceSq(const CircleBounds& a) const {
+    [[nodiscard]] inline float DistanceSq(const CircleBounds& a) const {
         return a.pos.DistanceSq(this->pos) - (a.radius + this->radius) * (a.radius + this->radius);
     }
-    [[nodiscard]] float Distance(const CircleBounds& a) const { 
+    [[nodiscard]] inline float Distance(const CircleBounds& a) const {
         return a.pos.Distance(this->pos) - (a.radius + this->radius);
     }
 };
@@ -213,7 +222,7 @@ inline float Bounds::Distance(const CircleBounds& a) const
     return sqrt(DistanceSq(a));
 }
 
-inline std::ostream& operator<<(std::ostream& os, const Bounds& rhs)
+export inline std::ostream& operator<<(std::ostream& os, const Bounds& rhs)
 {
     os << " " << rhs.left << " " << rhs.top << " " << rhs.width << " " << rhs.height;
     return os;

@@ -2,7 +2,7 @@
 
 #include "mates.h"
 #include "assets.h"
-#include "window.h"
+import window;
 #include "tilemap.h"
 #include "rand.h"
 

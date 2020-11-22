@@ -24,7 +24,11 @@
     <ClInclude Include="engine\animation2.h" />
     <ClInclude Include="engine\anim_frame.h" />
     <ClInclude Include="engine\asset_load.h" />
-    <ClInclude Include="engine\bounds.h" />
+    <ClCompile Include="engine\bounds.cppm">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="engine\camera.h" />
     <ClInclude Include="engine\collide.h" />
     <ClInclude Include="engine\debug.h" />
@@ -47,7 +51,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="engine\window.h" />
+    <ClCompile Include="engine\window.cppm">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="src\anim_data.h" />
     <ClInclude Include="src\anim_lib.h" />
     <ClInclude Include="src\assets.h" />
@@ -113,7 +121,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="engine\bounds.cpp" />
     <ClCompile Include="engine\camera.cpp" />
     <ClCompile Include="engine\debug.cpp" />
     <ClCompile Include="engine\input.cpp" />
@@ -123,7 +130,6 @@
     <ClCompile Include="engine\shader.cpp" />
     <ClCompile Include="engine\sound.cpp" />
     <ClCompile Include="engine\tilemap.cpp" />
-    <ClCompile Include="engine\window.cpp" />
     <ClCompile Include="src\anim_data.cpp" />
     <ClCompile Include="src\assets.cpp" />
     <ClCompile Include="src\bat.cpp" />

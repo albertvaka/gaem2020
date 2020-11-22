@@ -2,9 +2,10 @@
 
 #include <functional>
 
-#include "bounds.h"
 #include "entity.h"
 #include "selfregister.h"
+
+import bounds;
 
 // Boxes with box
 inline bool Collide(const Bounds& a, const Bounds& b) {

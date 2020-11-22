@@ -3,7 +3,7 @@
 #include <vector>
 import vec;
 #include "singleinstance.h"
-#include "bounds.h"
+import bounds;
 #include "mates.h"
 #include "../src/tiledexport.h"
 #include "SDL_gpu.h"

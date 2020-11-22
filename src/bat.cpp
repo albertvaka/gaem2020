@@ -3,7 +3,7 @@
 #include "jumpman.h"
 #include "screen.h"
 #include "assets.h"
-#include "window.h"
+import window;
 #include "rand.h"
 import bullet;
 #include "debug.h"

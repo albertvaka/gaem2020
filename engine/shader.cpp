@@ -2,8 +2,10 @@
 
 #include "debug.h"
 
+#include <sstream>
+
 #include "SDL_gpu.h"
-#include "window.h"
+import window;
 
 void Shader::loadAndAttach(GPU_ShaderEnum type, const char* path) {
 

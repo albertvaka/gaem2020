@@ -3,7 +3,7 @@
 import vec;
 #include "selfregister.h"
 #include "assets.h"
-#include "window.h"
+import window;
 #include "animation2.h"
 #include "entity.h"
 

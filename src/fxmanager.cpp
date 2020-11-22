@@ -4,7 +4,7 @@
 #include "SDL_gpu.h"
 #include "shader.h"
 #include "assets.h"
-#include "window.h"
+import window;
 #ifdef _IMGUI
 #include "imgui.h"
 #endif
