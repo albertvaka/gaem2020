@@ -5,6 +5,41 @@
 #include "SDL_gpu.h"
 #include "window.h"
 
+#include <SDL_rwops.h>
+
+// We want to read shader files using SDL_RWops for consistency with all the other asset files
+// This helper class makes sure we cleanup after ourselves using RAII
+struct RWopsFileReader {
+	char* contents;
+	RWopsFileReader(const char* path) {
+		SDL_RWops* rwops = SDL_RWFromFile(path, "r");
+
+		if (rwops == NULL) {
+			contents = nullptr;
+			return;
+		}
+
+		SDL_RWseek(rwops, 0, SEEK_SET);
+		size_t length = SDL_RWseek(rwops, 0, SEEK_END);
+		SDL_RWseek(rwops, 0, SEEK_SET);
+		contents = (char*)SDL_malloc(length+1); //+1 to later add a null-terminator
+		size_t read = SDL_RWread(rwops, contents, 1, length);
+		SDL_RWclose(rwops);
+
+		if (read != length) {
+			SDL_free(contents);
+			contents = nullptr;
+		}
+
+		contents[length] = 0; //null-terminate
+	}
+	~RWopsFileReader() {
+		if (contents != nullptr) {
+			SDL_free(contents);
+		}
+	}
+};
+
 void Shader::loadAndAttach(GPU_ShaderEnum type, const char* path) {
 
 	std::stringstream source;
@@ -42,13 +77,20 @@ precision mediump int;\n";
 		if (c == '\n') prefix_lines++;
 	}
 
-	source << std::ifstream(path).rdbuf();
+	RWopsFileReader shaderfile(path);
+	if (shaderfile.contents == nullptr) {
+		Debug::out << "Could not read shader from '" << path << "': " << SDL_GetError();
+		return;
+	}
+
+	source << shaderfile.contents;
 
 	int id = GPU_CompileShader(type, source.str().c_str());
 	if (id == 0) {
-		Debug::out << path;
+		Debug::out << path << " failed to compile";
 		Debug::out << "Note: Following line numbers offset by: " << prefix_lines;
-		Debug::out << GPU_GetShaderMessage();
+		Debug::out << "--error begin--";
+		Debug::out << GPU_GetShaderMessage() << "--error end--";
 	}
 	GPU_AttachShader(program, id);
 }
@@ -83,8 +125,9 @@ void Shader::Load(const char* vertex_path, const char* geometry_path, const char
 	shaderFilePaths = paths.str();
 
 	if (GPU_LinkShaderProgram(program) == GPU_FALSE) {
-		Debug::out << shaderFilePaths;
-		Debug::out << GPU_GetShaderMessage();
+		Debug::out << shaderFilePaths << " failed to link";
+		Debug::out << "--error begin--";
+		Debug::out << GPU_GetShaderMessage() << "--error end--";
 	}
 	block = GPU_LoadShaderBlock(program, "gpu_Vertex", "gpu_TexCoord", "gpu_Color", "gpu_ModelViewProjectionMatrix");
 }
