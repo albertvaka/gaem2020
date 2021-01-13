@@ -23,6 +23,8 @@ namespace Assets
 
 	inline GPU_Image* fogTexture;
 
+	inline TTF_Font* emojifont_64;
+
 	inline TTF_Font* font_30;
 	inline TTF_Font* font_30_outline;
 
