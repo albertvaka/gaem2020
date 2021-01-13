@@ -7,9 +7,9 @@ OBJ	= $(patsubst src/%, obj/%.o, $(SRC))
 ENGINE_SRC	= $(wildcard engine/*.cpp)
 ENGINE_OBJ	= $(patsubst engine/%, obj/engine/%.o, $(ENGINE_SRC))
 
-DEP_SRC = $(shell find vendor/ -type f -name '*.cpp' -o -name '*.c' ! -path 'vendor/glew/*')
+DEP_SRC = $(shell find vendor -type f -name '*.cpp' -o -name '*.c' ! -path 'vendor/glew/*' ! -path 'vendor/SDL2/*')
 DEP_OBJ = $(patsubst vendor/%, obj/vendor/%.o, $(DEP_SRC))
-DEP_INCLUDE = $(patsubst vendor/%, -I vendor/%, $(shell find vendor -maxdepth 2 -path \*\include ! -path vendor/SDL2/include) $(shell find vendor -mindepth 1 -maxdepth 1 ! -path vendor/glew -type d '!' -exec test -e "{}/include" ';' -print ))
+DEP_INCLUDE = $(patsubst vendor/%, -I vendor/%, $(shell find vendor -maxdepth 2 -path \*\include ! -path vendor/SDL2/include ! -path vendor/freetype) $(shell find vendor -mindepth 1 -maxdepth 1 ! -path vendor/glew -type d '!' -exec test -e "{}/include" ';' -print ))
 
 OPTIM     = 0
 DEBUG     = 1
@@ -37,11 +37,11 @@ ifdef EMSCRIPTEN
 else
 	OUT_FILE=$(EXEC)
 	ifeq ($(shell uname),Linux)
-		OS_CFLAGS=
-		OS_LDFLAGS=-lGL
+		OS_CFLAGS=-I/usr/include/freetype2/
+		OS_LDFLAGS=-lGL -lfreetype
 	else # MacOS
-		OS_CFLAGS=-DSDL_GPU_DISABLE_OPENGL_4
-		OS_LDFLAGS=-framework OpenGL
+		OS_CFLAGS=-DSDL_GPU_DISABLE_OPENGL_4 $(shell freetype-config --cflags)
+		OS_LDFLAGS=-framework OpenGL $(shell freetype-config --libs)
 	endif
 	PLATFORM_CFLAGS=$(OS_CFLAGS) -DSDL_GPU_DISABLE_GLES $(shell sdl2-config --cflags)
 	PLATFORM_LDFLAGS=$(OS_LDFLAGS) -lGLEW $(shell sdl2-config --libs)

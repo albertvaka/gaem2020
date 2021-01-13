@@ -50,6 +50,9 @@
     <Filter Include="src\generated">
       <UniqueIdentifier>{8c51efac-7be1-4746-af80-1e0855902e22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bundled Dependencies\sdl_ttf">
+      <UniqueIdentifier>{bafe9d39-2fd6-4a0a-85a5-53df96809fd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vendor\glew\glew.h">
@@ -319,6 +322,9 @@
     <ClInclude Include="src\savestate.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="engine\emoji.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="vendor\glew\glew.c">
@@ -506,6 +512,12 @@
     </ClCompile>
     <ClCompile Include="src\savestate.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\emoji.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\SDL2\SDL_ttf.c">
+      <Filter>Bundled Dependencies\sdl_ttf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

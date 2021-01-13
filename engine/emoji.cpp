@@ -19,7 +19,7 @@ static_assert(
 	(static_cast<unsigned char>("💩"[3]) == 0xA9), "Source or compiler not UTF-8 compliant! Add flag /utf-8 for Visual Studio.");
 
 
-const char* FT_Error_String(FT_Error err) {
+const char* GetErrorString(FT_Error err) {
   #undef __FTERRORS_H__
   #define FT_ERRORDEF( e, v, s )  case e: return s;
   #define FT_ERROR_START_LIST     switch (err) {
@@ -76,13 +76,13 @@ Emoji::Emoji(TTF_Font* font, const char* bytes) {
 
 		FT_Error fterr = FT_Load_Glyph(ftface, glyph_index, FT_LOAD_COLOR | FT_LOAD_DEFAULT);
 		if (fterr) {
-			Debug::out << "Emoji: FT_Load_Glyph: " << FT_Error_String(fterr);
+			Debug::out << "Emoji: FT_Load_Glyph: " << GetErrorString(fterr);
 			continue;
 		}
 
 		fterr = FT_Render_Glyph(ftface->glyph, FT_RENDER_MODE_NORMAL);
 		if (fterr) {
-			Debug::out << "Emoji: FT_Render_Glyph: " << FT_Error_String(fterr);
+			Debug::out << "Emoji: FT_Render_Glyph: " << GetErrorString(fterr);
 			continue;
 		}
 

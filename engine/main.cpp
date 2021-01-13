@@ -6,6 +6,7 @@
 #include "mates.h"
 #include "debug.h"
 #include "text.h"
+#include "emoji.h"
 #include "camera.h"
 
 #include "../src/assets.h"
@@ -42,6 +43,8 @@ Text* txt_fps;
 int fps_counter = 0;
 float fpsClock = 0.f;
 #endif
+
+Emoji* emoji;
 
 void init();
 void main_loop();
@@ -111,6 +114,8 @@ void init() {
 	txt_fps= new Text(Assets::font_30);
 	txt_fps->SetString("0");
 #endif
+
+	emoji = new Emoji(Assets::emojifont_64, "😊");
 
 	last_ticks = SDL_GetTicks();
 
@@ -226,8 +231,10 @@ void main_loop() {
 	}
 #endif
 
+
 	//Draw GUI
 	Camera::InScreenCoords::Begin();
+	Window::Draw(*emoji, vec(100, 100));
 	
 #ifdef _FPS_COUNTER
 	fps_counter++;
